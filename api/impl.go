@@ -121,5 +121,5 @@ func (Server) EachDataGet(ctx *gin.Context, altorithmId AlgorithmAlgorithmId, pa
 // (GET /status)
 func (Server) StatusGet(ctx *gin.Context) {
 	// TODO: Implement the functionality for getting status
-	ctx.JSON(http.StatusNotImplemented, nil)
+	ctx.Writer.WriteHeader(http.StatusOK)
 }
