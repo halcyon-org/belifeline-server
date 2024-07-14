@@ -1,0 +1,3 @@
+[submodule "belifeline-schema"]
+	path = belifeline-schema
+	url = https://github.com/halcyon-org/belifeline-schema.git
