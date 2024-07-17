@@ -1,4 +1,4 @@
-package api
+package api_test
 
 import (
 	"io"
@@ -7,22 +7,23 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
+	"github.com/halcyon-org/kizuna/api"
 	"github.com/stretchr/testify/assert"
 )
 
-func getRouter() *gin.Engine {
+func GetTestRouter() *gin.Engine {
 	gin.DefaultWriter = io.Discard
 
-	server := NewServer()
+	server := api.NewServer()
 	r := gin.Default()
 
-	RegisterHandlers(r, server)
+	api.RegisterHandlers(r, server)
 
 	return r
 }
 
-func TestStatusRoute(t *testing.T) {
-	router := getRouter()
+func TestStatusGet(t *testing.T) {
+	router := GetTestRouter()
 
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/status", nil)
