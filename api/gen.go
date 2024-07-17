@@ -255,11 +255,6 @@ type ClientCreateJSONBody struct {
 	Client ProviderClientDataCreate `json:"client"`
 }
 
-// ClientRevokeParams defines parameters for ClientRevoke.
-type ClientRevokeParams struct {
-	ClientId ProviderClientId `form:"client_id" json:"client_id"`
-}
-
 // ExtInfoCreateJSONBody defines parameters for ExtInfoCreate.
 type ExtInfoCreateJSONBody struct {
 	// Extinfo Basic information about the external information.
@@ -347,11 +342,11 @@ type ServerInterface interface {
 	// (POST /admin/client)
 	ClientCreate(c *gin.Context)
 
-	// (PUT /admin/client)
-	ClientRevoke(c *gin.Context, params ClientRevokeParams)
-
 	// (POST /admin/client/{client_id})
 	ClientDelete(c *gin.Context, clientId ProviderClientId)
+
+	// (POST /admin/client/{client_id}/revoke)
+	ClientRevoke(c *gin.Context, clientId ProviderClientId)
 
 	// (POST /admin/extinfo)
 	ExtInfoCreate(c *gin.Context)
@@ -359,7 +354,7 @@ type ServerInterface interface {
 	// (DELETE /admin/extinfo/{extinfo_id})
 	ExtInfoDelete(c *gin.Context, extinfoId ExtInfoExtInfoId)
 
-	// (PUT /admin/extinfo/{extinfo_id})
+	// (POST /admin/extinfo/{extinfo_id}/revoke)
 	ExtInfoRevoke(c *gin.Context, extinfoId ExtInfoExtInfoId)
 	// Create new koyo information
 	// (POST /admin/koyo)
@@ -368,7 +363,7 @@ type ServerInterface interface {
 	// (DELETE /admin/koyo/{koyo_id})
 	KoyoDelete(c *gin.Context, koyoId KoyoKoyoId)
 	// Revoke koyo api key
-	// (PUT /admin/koyo/{koyo_id})
+	// (POST /admin/koyo/{koyo_id}/revoke)
 	KoyoRevoke(c *gin.Context, koyoId KoyoKoyoId)
 
 	// (GET /extinfo)
@@ -457,41 +452,6 @@ func (siw *ServerInterfaceWrapper) ClientCreate(c *gin.Context) {
 	siw.Handler.ClientCreate(c)
 }
 
-// ClientRevoke operation middleware
-func (siw *ServerInterfaceWrapper) ClientRevoke(c *gin.Context) {
-
-	var err error
-
-	c.Set(ApiKeyAuthScopes, []string{})
-
-	// Parameter object where we will unmarshal all parameters from the context
-	var params ClientRevokeParams
-
-	// ------------- Required query parameter "client_id" -------------
-
-	if paramValue := c.Query("client_id"); paramValue != "" {
-
-	} else {
-		siw.ErrorHandler(c, fmt.Errorf("Query argument client_id is required, but not found"), http.StatusBadRequest)
-		return
-	}
-
-	err = runtime.BindQueryParameter("form", true, true, "client_id", c.Request.URL.Query(), &params.ClientId)
-	if err != nil {
-		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter client_id: %w", err), http.StatusBadRequest)
-		return
-	}
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		middleware(c)
-		if c.IsAborted() {
-			return
-		}
-	}
-
-	siw.Handler.ClientRevoke(c, params)
-}
-
 // ClientDelete operation middleware
 func (siw *ServerInterfaceWrapper) ClientDelete(c *gin.Context) {
 
@@ -516,6 +476,32 @@ func (siw *ServerInterfaceWrapper) ClientDelete(c *gin.Context) {
 	}
 
 	siw.Handler.ClientDelete(c, clientId)
+}
+
+// ClientRevoke operation middleware
+func (siw *ServerInterfaceWrapper) ClientRevoke(c *gin.Context) {
+
+	var err error
+
+	// ------------- Path parameter "client_id" -------------
+	var clientId ProviderClientId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "client_id", c.Param("client_id"), &clientId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter client_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	c.Set(ApiKeyAuthScopes, []string{})
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.ClientRevoke(c, clientId)
 }
 
 // ExtInfoCreate operation middleware
@@ -1013,14 +999,14 @@ func RegisterHandlersWithOptions(router gin.IRouter, si ServerInterface, options
 
 	router.GET(options.BaseURL+"/admin/client", wrapper.ClientList)
 	router.POST(options.BaseURL+"/admin/client", wrapper.ClientCreate)
-	router.PUT(options.BaseURL+"/admin/client", wrapper.ClientRevoke)
 	router.POST(options.BaseURL+"/admin/client/:client_id", wrapper.ClientDelete)
+	router.POST(options.BaseURL+"/admin/client/:client_id/revoke", wrapper.ClientRevoke)
 	router.POST(options.BaseURL+"/admin/extinfo", wrapper.ExtInfoCreate)
 	router.DELETE(options.BaseURL+"/admin/extinfo/:extinfo_id", wrapper.ExtInfoDelete)
-	router.PUT(options.BaseURL+"/admin/extinfo/:extinfo_id", wrapper.ExtInfoRevoke)
+	router.POST(options.BaseURL+"/admin/extinfo/:extinfo_id/revoke", wrapper.ExtInfoRevoke)
 	router.POST(options.BaseURL+"/admin/koyo", wrapper.KoyoCreate)
 	router.DELETE(options.BaseURL+"/admin/koyo/:koyo_id", wrapper.KoyoDelete)
-	router.PUT(options.BaseURL+"/admin/koyo/:koyo_id", wrapper.KoyoRevoke)
+	router.POST(options.BaseURL+"/admin/koyo/:koyo_id/revoke", wrapper.KoyoRevoke)
 	router.GET(options.BaseURL+"/extinfo", wrapper.ExtInfoList)
 	router.GET(options.BaseURL+"/extinfo/example_id/data", wrapper.ExampleInfoGet)
 	router.POST(options.BaseURL+"/extinfo/example_id/data", wrapper.ExampleInfoPost)
@@ -1068,23 +1054,6 @@ func (response ClientCreate200JSONResponse) VisitClientCreateResponse(w http.Res
 	return json.NewEncoder(w).Encode(response)
 }
 
-type ClientRevokeRequestObject struct {
-	Params ClientRevokeParams
-}
-
-type ClientRevokeResponseObject interface {
-	VisitClientRevokeResponse(w http.ResponseWriter) error
-}
-
-type ClientRevoke200JSONResponse ProviderClientData
-
-func (response ClientRevoke200JSONResponse) VisitClientRevokeResponse(w http.ResponseWriter) error {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(200)
-
-	return json.NewEncoder(w).Encode(response)
-}
-
 type ClientDeleteRequestObject struct {
 	ClientId ProviderClientId `json:"client_id"`
 }
@@ -1098,6 +1067,26 @@ type ClientDelete200JSONResponse struct {
 }
 
 func (response ClientDelete200JSONResponse) VisitClientDeleteResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ClientRevokeRequestObject struct {
+	ClientId ProviderClientId `json:"client_id"`
+}
+
+type ClientRevokeResponseObject interface {
+	VisitClientRevokeResponse(w http.ResponseWriter) error
+}
+
+type ClientRevoke200JSONResponse struct {
+	ApiKey   TypesAuthApiKey  `json:"api_key"`
+	ClientId ProviderClientId `json:"client_id"`
+}
+
+func (response ClientRevoke200JSONResponse) VisitClientRevokeResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
 
@@ -1464,11 +1453,11 @@ type StrictServerInterface interface {
 	// (POST /admin/client)
 	ClientCreate(ctx context.Context, request ClientCreateRequestObject) (ClientCreateResponseObject, error)
 
-	// (PUT /admin/client)
-	ClientRevoke(ctx context.Context, request ClientRevokeRequestObject) (ClientRevokeResponseObject, error)
-
 	// (POST /admin/client/{client_id})
 	ClientDelete(ctx context.Context, request ClientDeleteRequestObject) (ClientDeleteResponseObject, error)
+
+	// (POST /admin/client/{client_id}/revoke)
+	ClientRevoke(ctx context.Context, request ClientRevokeRequestObject) (ClientRevokeResponseObject, error)
 
 	// (POST /admin/extinfo)
 	ExtInfoCreate(ctx context.Context, request ExtInfoCreateRequestObject) (ExtInfoCreateResponseObject, error)
@@ -1476,7 +1465,7 @@ type StrictServerInterface interface {
 	// (DELETE /admin/extinfo/{extinfo_id})
 	ExtInfoDelete(ctx context.Context, request ExtInfoDeleteRequestObject) (ExtInfoDeleteResponseObject, error)
 
-	// (PUT /admin/extinfo/{extinfo_id})
+	// (POST /admin/extinfo/{extinfo_id}/revoke)
 	ExtInfoRevoke(ctx context.Context, request ExtInfoRevokeRequestObject) (ExtInfoRevokeResponseObject, error)
 	// Create new koyo information
 	// (POST /admin/koyo)
@@ -1485,7 +1474,7 @@ type StrictServerInterface interface {
 	// (DELETE /admin/koyo/{koyo_id})
 	KoyoDelete(ctx context.Context, request KoyoDeleteRequestObject) (KoyoDeleteResponseObject, error)
 	// Revoke koyo api key
-	// (PUT /admin/koyo/{koyo_id})
+	// (POST /admin/koyo/{koyo_id}/revoke)
 	KoyoRevoke(ctx context.Context, request KoyoRevokeRequestObject) (KoyoRevokeResponseObject, error)
 
 	// (GET /extinfo)
@@ -1594,33 +1583,6 @@ func (sh *strictHandler) ClientCreate(ctx *gin.Context) {
 	}
 }
 
-// ClientRevoke operation middleware
-func (sh *strictHandler) ClientRevoke(ctx *gin.Context, params ClientRevokeParams) {
-	var request ClientRevokeRequestObject
-
-	request.Params = params
-
-	handler := func(ctx *gin.Context, request interface{}) (interface{}, error) {
-		return sh.ssi.ClientRevoke(ctx, request.(ClientRevokeRequestObject))
-	}
-	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "ClientRevoke")
-	}
-
-	response, err := handler(ctx, request)
-
-	if err != nil {
-		ctx.Error(err)
-		ctx.Status(http.StatusInternalServerError)
-	} else if validResponse, ok := response.(ClientRevokeResponseObject); ok {
-		if err := validResponse.VisitClientRevokeResponse(ctx.Writer); err != nil {
-			ctx.Error(err)
-		}
-	} else if response != nil {
-		ctx.Error(fmt.Errorf("unexpected response type: %T", response))
-	}
-}
-
 // ClientDelete operation middleware
 func (sh *strictHandler) ClientDelete(ctx *gin.Context, clientId ProviderClientId) {
 	var request ClientDeleteRequestObject
@@ -1641,6 +1603,33 @@ func (sh *strictHandler) ClientDelete(ctx *gin.Context, clientId ProviderClientI
 		ctx.Status(http.StatusInternalServerError)
 	} else if validResponse, ok := response.(ClientDeleteResponseObject); ok {
 		if err := validResponse.VisitClientDeleteResponse(ctx.Writer); err != nil {
+			ctx.Error(err)
+		}
+	} else if response != nil {
+		ctx.Error(fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ClientRevoke operation middleware
+func (sh *strictHandler) ClientRevoke(ctx *gin.Context, clientId ProviderClientId) {
+	var request ClientRevokeRequestObject
+
+	request.ClientId = clientId
+
+	handler := func(ctx *gin.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.ClientRevoke(ctx, request.(ClientRevokeRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ClientRevoke")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		ctx.Error(err)
+		ctx.Status(http.StatusInternalServerError)
+	} else if validResponse, ok := response.(ClientRevokeResponseObject); ok {
+		if err := validResponse.VisitClientRevokeResponse(ctx.Writer); err != nil {
 			ctx.Error(err)
 		}
 	} else if response != nil {

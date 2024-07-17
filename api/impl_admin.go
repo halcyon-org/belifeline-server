@@ -18,15 +18,15 @@ func (Server) ClientCreate(ctx *gin.Context) {
 	ctx.JSON(http.StatusNotImplemented, nil)
 }
 
-// (PUT /admin/client)
-func (Server) ClientRevoke(ctx *gin.Context, params ClientRevokeParams) {
-	// TODO: Implement the functionality for revoking a client
-	ctx.JSON(http.StatusNotImplemented, nil)
-}
-
 // (POST /admin/client/{client_id})
 func (Server) ClientDelete(ctx *gin.Context, clientId ProviderClientId) {
 	// TODO: Implement the functionality for deleting a client
+	ctx.JSON(http.StatusNotImplemented, nil)
+}
+
+// (POST /admin/client/{client_id}/revoke)
+func (Server) ClientRevoke(ctx *gin.Context, clientId ProviderClientId) {
+	// TODO: Implement the functionality for revoking a client
 	ctx.JSON(http.StatusNotImplemented, nil)
 }
 
@@ -42,7 +42,7 @@ func (Server) ExtInfoDelete(ctx *gin.Context, extinfoId ExtInfoExtInfoId) {
 	ctx.JSON(http.StatusNotImplemented, nil)
 }
 
-// (PUT /admin/extinfo/{extinfo_id})
+// (POST /admin/extinfo/{extinfo_id}/revoke)
 func (Server) ExtInfoRevoke(ctx *gin.Context, extinfoId ExtInfoExtInfoId) {
 	// TODO: Implement the functionality for revoking extinfo
 	ctx.JSON(http.StatusNotImplemented, nil)
@@ -60,7 +60,7 @@ func (Server) KoyoDelete(ctx *gin.Context, koyoId KoyoKoyoId) {
 	ctx.JSON(http.StatusNotImplemented, nil)
 }
 
-// (PUT /admin/koyo/{koyo_id})
+// (POST /admin/koyo/{koyo_id}/revoke)
 func (Server) KoyoRevoke(ctx *gin.Context, koyoId KoyoKoyoId) {
 	// TODO: Implement the functionality for revoking koyo api key
 	ctx.JSON(http.StatusNotImplemented, nil)
