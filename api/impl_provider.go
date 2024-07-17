@@ -19,7 +19,7 @@ func (Server) DataList(ctx *gin.Context, params DataListParams) {
 }
 
 // (GET /provider/data/{altorithm_id})
-func (Server) EachDataGet(ctx *gin.Context, altorithmId AlgorithmAlgorithmId, params EachDataGetParams) {
+func (Server) EachDataGet(ctx *gin.Context, altorithmId KoyoKoyoId, params EachDataGetParams) {
 	// TODO: Implement the functionality for getting data for a specific algorithm ID
 	ctx.JSON(http.StatusNotImplemented, nil)
 }

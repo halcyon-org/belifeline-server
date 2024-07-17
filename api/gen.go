@@ -13,22 +13,23 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/oapi-codegen/runtime"
 	strictgin "github.com/oapi-codegen/runtime/strictmiddleware/gin"
+	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 const (
 	ApiKeyAuthScopes = "ApiKeyAuth.Scopes"
 )
 
-// Defines values for AlgorithmDataType.
-const (
-	Csv   AlgorithmDataType = "csv"
-	Image AlgorithmDataType = "image"
-	Json  AlgorithmDataType = "json"
-)
-
 // Defines values for ExtInfoExtInfoId.
 const (
-	HOGEID ExtInfoExtInfoId = "HOGE_ID"
+	ExampleId ExtInfoExtInfoId = "example_id"
+)
+
+// Defines values for KoyoDataType.
+const (
+	Csv   KoyoDataType = "csv"
+	Image KoyoDataType = "image"
+	Json  KoyoDataType = "json"
 )
 
 // Defines values for ProviderRequestType.
@@ -42,136 +43,185 @@ const (
 	MultiPolygon TypesGeoJSONMultiPolygonType = "MultiPolygon"
 )
 
-// AlgorithmAlgorithmData defines model for Algorithm.AlgorithmData.
-type AlgorithmAlgorithmData struct {
-	AlgorithmDataId AlgorithmAlgorithmDataId `json:"algorithm_data_id"`
-	AlgorithmId     AlgorithmAlgorithmId     `json:"algorithm_id"`
-	AlgorithmScale  AlgorithmAlgorithmScale  `json:"algorithm_scale"`
-	Content         []byte                   `json:"content"`
-	ContentType     AlgorithmDataType        `json:"content_type"`
-	EntryAt         time.Time                `json:"entry_at"`
-	TargetAt        time.Time                `json:"target_at"`
-
-	// Version Semantic versioning
-	Version TypesCommonVersion `json:"version"`
+// ExtInfoExampleInfoExampleData defines model for ExtInfo.ExampleInfo.ExampleData.
+type ExtInfoExampleInfoExampleData struct {
+	Area  TypesGeoJSONMultiPolygon `json:"area"`
+	Image []byte                   `json:"image"`
 }
-
-// AlgorithmAlgorithmDataCreateOrUpdate defines model for Algorithm.AlgorithmDataCreateOrUpdate.
-type AlgorithmAlgorithmDataCreateOrUpdate struct {
-	AlgorithmId    AlgorithmAlgorithmId    `json:"algorithm_id"`
-	AlgorithmScale AlgorithmAlgorithmScale `json:"algorithm_scale"`
-	Content        []byte                  `json:"content"`
-	ContentType    AlgorithmDataType       `json:"content_type"`
-
-	// Version Semantic versioning
-	Version TypesCommonVersion `json:"version"`
-}
-
-// AlgorithmAlgorithmInfomation defines model for Algorithm.AlgorithmInfomation.
-type AlgorithmAlgorithmInfomation struct {
-	AlgorithmDataIds     []AlgorithmAlgorithmDataId `json:"algorithm_data_ids"`
-	AlgorithmDescription string                     `json:"algorithm_description"`
-
-	// AlgorithmId From Admin API
-	AlgorithmId   AlgorithmAlgorithmId `json:"algorithm_id"`
-	AlgorithmName string               `json:"algorithm_name"`
-
-	// AlgorithmParams param name: param default
-	AlgorithmParams map[string]string         `json:"algorithm_params"`
-	AlgorithmScales []AlgorithmAlgorithmScale `json:"algorithm_scales"`
-	FirstEntryAt    time.Time                 `json:"first_entry_at"`
-	LastEntryAt     time.Time                 `json:"last_entry_at"`
-	LastUpdatedAt   time.Time                 `json:"last_updated_at"`
-	NeedExternal    []ExtInfoExtInfoId        `json:"need_external"`
-
-	// Version Semantic versioning
-	Version TypesCommonVersion `json:"version"`
-}
-
-// AlgorithmAlgorithmInfomationCreate defines model for Algorithm.AlgorithmInfomationCreate.
-type AlgorithmAlgorithmInfomationCreate struct {
-	AlgorithmDataIds     []AlgorithmAlgorithmDataId `json:"algorithm_data_ids"`
-	AlgorithmDescription string                     `json:"algorithm_description"`
-	AlgorithmName        string                     `json:"algorithm_name"`
-
-	// AlgorithmParams param name: param default
-	AlgorithmParams map[string]string         `json:"algorithm_params"`
-	AlgorithmScales []AlgorithmAlgorithmScale `json:"algorithm_scales"`
-	NeedExternal    []ExtInfoExtInfoId        `json:"need_external"`
-
-	// Version Semantic versioning
-	Version TypesCommonVersion `json:"version"`
-}
-
-// AlgorithmAlgorithmInfomationCreateOrUpdate defines model for Algorithm.AlgorithmInfomationCreateOrUpdate.
-type AlgorithmAlgorithmInfomationCreateOrUpdate struct {
-	AlgorithmDataIds     []AlgorithmAlgorithmDataId `json:"algorithm_data_ids"`
-	AlgorithmDescription string                     `json:"algorithm_description"`
-
-	// AlgorithmId From Admin API
-	AlgorithmId   AlgorithmAlgorithmId `json:"algorithm_id"`
-	AlgorithmName string               `json:"algorithm_name"`
-
-	// AlgorithmParams param name: param default
-	AlgorithmParams map[string]string         `json:"algorithm_params"`
-	AlgorithmScales []AlgorithmAlgorithmScale `json:"algorithm_scales"`
-	NeedExternal    []ExtInfoExtInfoId        `json:"need_external"`
-
-	// Version Semantic versioning
-	Version TypesCommonVersion `json:"version"`
-}
-
-// AlgorithmDataType defines model for Algorithm.DataType.
-type AlgorithmDataType string
-
-// AlgorithmAlgorithmDataId defines model for Algorithm.algorithmDataId.
-type AlgorithmAlgorithmDataId = string
-
-// AlgorithmAlgorithmId defines model for Algorithm.algorithmId.
-type AlgorithmAlgorithmId = string
-
-// AlgorithmAlgorithmScale defines model for Algorithm.algorithmScale.
-type AlgorithmAlgorithmScale = float32
 
 // ExtInfoExtInfoId defines model for ExtInfo.ExtInfoId.
 type ExtInfoExtInfoId string
 
-// ExtInfoExternalInfomation defines model for ExtInfo.ExternalInfomation.
+// ExtInfoExternalInfomation Basic information about the external information.
 type ExtInfoExternalInfomation struct {
-	ExternalDescription string           `json:"external_description"`
-	ExternalId          ExtInfoExtInfoId `json:"external_id"`
-	ExternalName        string           `json:"external_name"`
-	FirstEntryAt        time.Time        `json:"first_entry_at"`
-	LastUpdatedAt       time.Time        `json:"last_updated_at"`
-	UpdatedHistory      []time.Time      `json:"updated_history"`
+	ExternalDescription string `json:"external_description"`
+
+	// ExternalId This ID can be obtained through admin api.
+	// It is a human friendly format like GitHub repository names.
+	// Only the pattern `^[a-z_-]{1,64}$` is allowed.
+	ExternalId         ExtInfoExtInfoId `json:"external_id"`
+	ExternalName       string           `json:"external_name"`
+	FirstEntryAt       time.Time        `json:"first_entry_at"`
+	LastUpdatedAt      time.Time        `json:"last_updated_at"`
+	License            string           `json:"license"`
+	LicenseDescription string           `json:"license_description"`
+	UpdatedHistory     []time.Time      `json:"updated_history"`
 }
 
-// ExtInfoExternalInfomationCreate defines model for ExtInfo.ExternalInfomationCreate.
+// ExtInfoExternalInfomationCreate Basic information about the external information.
 type ExtInfoExternalInfomationCreate struct {
 	ExternalDescription string      `json:"external_description"`
 	ExternalName        string      `json:"external_name"`
 	FirstEntryAt        time.Time   `json:"first_entry_at"`
 	LastUpdatedAt       time.Time   `json:"last_updated_at"`
+	License             string      `json:"license"`
+	LicenseDescription  string      `json:"license_description"`
 	UpdatedHistory      []time.Time `json:"updated_history"`
 }
 
-// ProviderClientData defines model for Provider.ClientData.
-type ProviderClientData struct {
-	ApiKey   TypesAuthApiKey  `json:"api_key"`
-	ClientId ProviderClientId `json:"client_id"`
-	Name     string           `json:"name"`
+// KoyoDataType defines model for Koyo.DataType.
+type KoyoDataType string
+
+// KoyoKoyoData The data is the result of processing by the koyo.
+type KoyoKoyoData struct {
+	// Content The data content itself.
+	Content []byte `json:"content"`
+
+	// ContentType The type of data format.(enum: image, csv, json...)
+	ContentType KoyoDataType   `json:"content_type"`
+	EntryAt     time.Time      `json:"entry_at"`
+	KoyoDataId  KoyoKoyoDataId `json:"koyo_data_id"`
+
+	// KoyoId The ID of the koyo that generated the data.
+	KoyoId KoyoKoyoId `json:"koyo_id"`
+
+	// KoyoScale The resolution of the data.
+	KoyoScale KoyoKoyoScale `json:"koyo_scale"`
+
+	// TargetAt The time at which the data is targeted.
+	// The time at which data processing began (= the primary data from which the data was processed was updated).
+	// In other words, it indicates which time the data is based on.")
+	TargetAt time.Time `json:"target_at"`
+
+	// Version The version of the koyo used to generate the data.
+	Version TypesCommonVersion `json:"version"`
 }
 
-// ProviderClientDataCreate defines model for Provider.ClientDataCreate.
+// KoyoKoyoDataCreate The data is the result of processing by the koyo.
+type KoyoKoyoDataCreate struct {
+	// Content The data content itself.
+	Content []byte `json:"content"`
+
+	// ContentType The type of data format.(enum: image, csv, json...)
+	ContentType KoyoDataType `json:"content_type"`
+
+	// KoyoScale The resolution of the data.
+	KoyoScale KoyoKoyoScale `json:"koyo_scale"`
+
+	// Version The version of the koyo used to generate the data.
+	Version TypesCommonVersion `json:"version"`
+}
+
+// KoyoKoyoInfomation Basic information about the koyo.
+type KoyoKoyoInfomation struct {
+	// ExtLicenses Licenses for primary information and other information used by the koyo.
+	ExtLicenses     []string         `json:"ext_licenses"`
+	FirstEntryAt    time.Time        `json:"first_entry_at"`
+	KoyoDataIds     []KoyoKoyoDataId `json:"koyo_data_ids"`
+	KoyoDescription string           `json:"koyo_description"`
+
+	// KoyoId This ID can be obtained through admin api.
+	// It is a human friendly format like GitHub repository names.
+	// Only the pattern `^[a-z_-]{1,64}$` is allowed.
+	KoyoId   KoyoKoyoId `json:"koyo_id"`
+	KoyoName string     `json:"koyo_name"`
+
+	// KoyoParams Koyo parameters. The key is the parameter name and the value is the default value.
+	KoyoParams map[string]string `json:"koyo_params"`
+
+	// KoyoScales Koyo scales is resolution (e.g. one data per meter). Returns a list of supported scales.
+	KoyoScales    []KoyoKoyoScale    `json:"koyo_scales"`
+	LastEntryAt   time.Time          `json:"last_entry_at"`
+	LastUpdatedAt time.Time          `json:"last_updated_at"`
+	License       string             `json:"license"`
+	NeedExternal  []ExtInfoExtInfoId `json:"need_external"`
+	Version       TypesCommonVersion `json:"version"`
+}
+
+// KoyoKoyoInfomationCreate Basic information about the koyo.
+type KoyoKoyoInfomationCreate struct {
+	// ExtLicenses Licenses for primary information and other information used by the koyo.
+	ExtLicenses     []string         `json:"ext_licenses"`
+	KoyoDataIds     []KoyoKoyoDataId `json:"koyo_data_ids"`
+	KoyoDescription string           `json:"koyo_description"`
+	KoyoName        string           `json:"koyo_name"`
+
+	// KoyoParams Koyo parameters. The key is the parameter name and the value is the default value.
+	KoyoParams map[string]string `json:"koyo_params"`
+
+	// KoyoScales Koyo scales is resolution (e.g. one data per meter). Returns a list of supported scales.
+	KoyoScales   []KoyoKoyoScale    `json:"koyo_scales"`
+	License      string             `json:"license"`
+	NeedExternal []ExtInfoExtInfoId `json:"need_external"`
+	Version      TypesCommonVersion `json:"version"`
+}
+
+// KoyoKoyoInfomationCreateOrUpdate Basic information about the koyo.
+type KoyoKoyoInfomationCreateOrUpdate struct {
+	// ExtLicenses Licenses for primary information and other information used by the koyo.
+	ExtLicenses     []string         `json:"ext_licenses"`
+	KoyoDataIds     []KoyoKoyoDataId `json:"koyo_data_ids"`
+	KoyoDescription string           `json:"koyo_description"`
+
+	// KoyoId This ID can be obtained through admin api.
+	// It is a human friendly format like GitHub repository names.
+	// Only the pattern `^[a-z_-]{1,64}$` is allowed.
+	KoyoId   KoyoKoyoId `json:"koyo_id"`
+	KoyoName string     `json:"koyo_name"`
+
+	// KoyoParams Koyo parameters. The key is the parameter name and the value is the default value.
+	KoyoParams map[string]string `json:"koyo_params"`
+
+	// KoyoScales Koyo scales is resolution (e.g. one data per meter). Returns a list of supported scales.
+	KoyoScales   []KoyoKoyoScale    `json:"koyo_scales"`
+	License      string             `json:"license"`
+	NeedExternal []ExtInfoExtInfoId `json:"need_external"`
+	Version      TypesCommonVersion `json:"version"`
+}
+
+// KoyoKoyoDataId defines model for Koyo.koyoDataId.
+type KoyoKoyoDataId = openapi_types.UUID
+
+// KoyoKoyoId defines model for Koyo.koyoId.
+type KoyoKoyoId = string
+
+// KoyoKoyoScale defines model for Koyo.koyoScale.
+type KoyoKoyoScale = float32
+
+// ProviderClientData Data for the client to use the provider api.
+type ProviderClientData struct {
+	ApiKey    TypesAuthApiKey  `json:"api_key"`
+	ClientId  ProviderClientId `json:"client_id"`
+	CreatedAt time.Time        `json:"created_at"`
+
+	// LastUpdatedAt The last time the client updated the data.
+	LastUpdatedAt time.Time `json:"last_updated_at"`
+
+	// LastUsedAt The last time the client used the api.
+	LastUsedAt time.Time `json:"last_used_at"`
+	Username   string    `json:"username"`
+}
+
+// ProviderClientDataCreate Data for the client to use the provider api.
 type ProviderClientDataCreate struct {
-	Name string `json:"name"`
+	Username string `json:"username"`
 }
 
 // ProviderRequestType defines model for Provider.RequestType.
 type ProviderRequestType string
 
 // ProviderClientId defines model for Provider.clientId.
-type ProviderClientId = string
+type ProviderClientId = openapi_types.UUID
 
 // TypesAuthApiKey defines model for Types.Auth.apiKey.
 type TypesAuthApiKey = string
@@ -194,44 +244,32 @@ type TypesGeoJSONMultiPolygon struct {
 // TypesGeoJSONMultiPolygonType defines model for TypesGeoJSONMultiPolygon.Type.
 type TypesGeoJSONMultiPolygonType string
 
-// AlgorithmCreateJSONBody defines parameters for AlgorithmCreate.
-type AlgorithmCreateJSONBody struct {
-	Algorithm AlgorithmAlgorithmInfomationCreate `json:"algorithm"`
+// ClientListParams defines parameters for ClientList.
+type ClientListParams struct {
+	Limit *int32 `form:"limit,omitempty" json:"limit,omitempty"`
 }
 
 // ClientCreateJSONBody defines parameters for ClientCreate.
 type ClientCreateJSONBody struct {
+	// Client Data for the client to use the provider api.
 	Client ProviderClientDataCreate `json:"client"`
+}
+
+// ClientRevokeParams defines parameters for ClientRevoke.
+type ClientRevokeParams struct {
+	ClientId ProviderClientId `form:"client_id" json:"client_id"`
 }
 
 // ExtInfoCreateJSONBody defines parameters for ExtInfoCreate.
 type ExtInfoCreateJSONBody struct {
+	// Extinfo Basic information about the external information.
 	Extinfo ExtInfoExternalInfomationCreate `json:"extinfo"`
 }
 
-// AlgorithmListParams defines parameters for AlgorithmList.
-type AlgorithmListParams struct {
-	Limit *int32 `form:"limit,omitempty" json:"limit,omitempty"`
-}
-
-// EachAlgorithmUpdateJSONBody defines parameters for EachAlgorithmUpdate.
-type EachAlgorithmUpdateJSONBody struct {
-	UpdateAlgorithm AlgorithmAlgorithmInfomationCreateOrUpdate `json:"update_algorithm"`
-}
-
-// EachAlgorithmDataGetParams defines parameters for EachAlgorithmDataGet.
-type EachAlgorithmDataGetParams struct {
-	Scale AlgorithmAlgorithmScale `form:"scale" json:"scale"`
-}
-
-// EachAlgorithmDataUpdateJSONBody defines parameters for EachAlgorithmDataUpdate.
-type EachAlgorithmDataUpdateJSONBody struct {
-	UpdateData AlgorithmAlgorithmDataCreateOrUpdate `json:"update_data"`
-}
-
-// EachAlgorithmDataUpdateParams defines parameters for EachAlgorithmDataUpdate.
-type EachAlgorithmDataUpdateParams struct {
-	Scale AlgorithmAlgorithmScale `form:"scale" json:"scale"`
+// KoyoCreateJSONBody defines parameters for KoyoCreate.
+type KoyoCreateJSONBody struct {
+	// Koyo Basic information about the koyo.
+	Koyo KoyoKoyoInfomationCreate `json:"koyo"`
 }
 
 // ExtInfoListParams defines parameters for ExtInfoList.
@@ -239,9 +277,31 @@ type ExtInfoListParams struct {
 	Limit *int32 `form:"limit,omitempty" json:"limit,omitempty"`
 }
 
-// HogeGetParams defines parameters for HogeGet.
-type HogeGetParams struct {
+// ExampleInfoGetParams defines parameters for ExampleInfoGet.
+type ExampleInfoGetParams struct {
 	Area *TypesGeoJSONMultiPolygon `form:"area,omitempty" json:"area,omitempty"`
+}
+
+// ExampleInfoPostJSONBody defines parameters for ExampleInfoPost.
+type ExampleInfoPostJSONBody struct {
+	Data []ExtInfoExampleInfoExampleData `json:"data"`
+}
+
+// KoyoListParams defines parameters for KoyoList.
+type KoyoListParams struct {
+	Limit *int32 `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// EachKoyoUpdateJSONBody defines parameters for EachKoyoUpdate.
+type EachKoyoUpdateJSONBody struct {
+	// UpdateKoyo Basic information about the koyo.
+	UpdateKoyo KoyoKoyoInfomationCreateOrUpdate `json:"update_koyo"`
+}
+
+// EachKoyoDataNewJSONBody defines parameters for EachKoyoDataNew.
+type EachKoyoDataNewJSONBody struct {
+	// UpdateData The data is the result of processing by the koyo.
+	UpdateData KoyoKoyoDataCreate `json:"update_data"`
 }
 
 // DataListParams defines parameters for DataList.
@@ -251,17 +311,14 @@ type DataListParams struct {
 
 // EachDataGetParams defines parameters for EachDataGet.
 type EachDataGetParams struct {
-	Type            ProviderRequestType       `form:"type" json:"type"`
-	AlgorithmDataId *AlgorithmAlgorithmDataId `form:"algorithm_data_id,omitempty" json:"algorithm_data_id,omitempty"`
-	Area            *TypesGeoJSONMultiPolygon `form:"area,omitempty" json:"area,omitempty"`
-	Until           *TypesDateDateUntil       `form:"until,omitempty" json:"until,omitempty"`
-	UntilEntry      *TypesDateDateUntil       `form:"until_entry,omitempty" json:"until_entry,omitempty"`
-	Param           *map[string]string        `form:"param,omitempty" json:"param,omitempty"`
-	Scale           *AlgorithmAlgorithmScale  `form:"scale,omitempty" json:"scale,omitempty"`
+	Type       ProviderRequestType       `form:"type" json:"type"`
+	KoyoDataId *KoyoKoyoDataId           `form:"koyo_data_id,omitempty" json:"koyo_data_id,omitempty"`
+	Area       *TypesGeoJSONMultiPolygon `form:"area,omitempty" json:"area,omitempty"`
+	Until      *TypesDateDateUntil       `form:"until,omitempty" json:"until,omitempty"`
+	UntilEntry *TypesDateDateUntil       `form:"until_entry,omitempty" json:"until_entry,omitempty"`
+	Param      *map[string]string        `form:"param,omitempty" json:"param,omitempty"`
+	Scale      *KoyoKoyoScale            `form:"scale,omitempty" json:"scale,omitempty"`
 }
-
-// AlgorithmCreateJSONRequestBody defines body for AlgorithmCreate for application/json ContentType.
-type AlgorithmCreateJSONRequestBody AlgorithmCreateJSONBody
 
 // ClientCreateJSONRequestBody defines body for ClientCreate for application/json ContentType.
 type ClientCreateJSONRequestBody ClientCreateJSONBody
@@ -269,23 +326,29 @@ type ClientCreateJSONRequestBody ClientCreateJSONBody
 // ExtInfoCreateJSONRequestBody defines body for ExtInfoCreate for application/json ContentType.
 type ExtInfoCreateJSONRequestBody ExtInfoCreateJSONBody
 
-// EachAlgorithmUpdateJSONRequestBody defines body for EachAlgorithmUpdate for application/json ContentType.
-type EachAlgorithmUpdateJSONRequestBody EachAlgorithmUpdateJSONBody
+// KoyoCreateJSONRequestBody defines body for KoyoCreate for application/json ContentType.
+type KoyoCreateJSONRequestBody KoyoCreateJSONBody
 
-// EachAlgorithmDataUpdateJSONRequestBody defines body for EachAlgorithmDataUpdate for application/json ContentType.
-type EachAlgorithmDataUpdateJSONRequestBody EachAlgorithmDataUpdateJSONBody
+// ExampleInfoPostJSONRequestBody defines body for ExampleInfoPost for application/json ContentType.
+type ExampleInfoPostJSONRequestBody ExampleInfoPostJSONBody
+
+// EachKoyoUpdateJSONRequestBody defines body for EachKoyoUpdate for application/json ContentType.
+type EachKoyoUpdateJSONRequestBody EachKoyoUpdateJSONBody
+
+// EachKoyoDataNewJSONRequestBody defines body for EachKoyoDataNew for application/json ContentType.
+type EachKoyoDataNewJSONRequestBody EachKoyoDataNewJSONBody
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 
-	// (POST /admin/algorithm)
-	AlgorithmCreate(c *gin.Context)
-
-	// (DELETE /admin/algorithm/{algorithm_id})
-	AlgorithmDelete(c *gin.Context, algorithmId AlgorithmAlgorithmId)
+	// (GET /admin/client)
+	ClientList(c *gin.Context, params ClientListParams)
 
 	// (POST /admin/client)
 	ClientCreate(c *gin.Context)
+
+	// (PUT /admin/client)
+	ClientRevoke(c *gin.Context, params ClientRevokeParams)
 
 	// (POST /admin/client/{client_id})
 	ClientDelete(c *gin.Context, clientId ProviderClientId)
@@ -296,38 +359,47 @@ type ServerInterface interface {
 	// (DELETE /admin/extinfo/{extinfo_id})
 	ExtInfoDelete(c *gin.Context, extinfoId ExtInfoExtInfoId)
 
-	// (GET /algorithm)
-	AlgorithmList(c *gin.Context, params AlgorithmListParams)
-
-	// (GET /algorithm/{algorithm_id})
-	EachAlgorithmGet(c *gin.Context, algorithmId AlgorithmAlgorithmId)
-
-	// (PUT /algorithm/{algorithm_id})
-	EachAlgorithmUpdate(c *gin.Context, algorithmId AlgorithmAlgorithmId)
-
-	// (GET /algorithm/{algorithm_id}/data)
-	EachAlgorithmDataGet(c *gin.Context, algorithmId AlgorithmAlgorithmId, params EachAlgorithmDataGetParams)
-
-	// (PUT /algorithm/{algorithm_id}/data)
-	EachAlgorithmDataUpdate(c *gin.Context, algorithmId AlgorithmAlgorithmId, params EachAlgorithmDataUpdateParams)
+	// (PUT /admin/extinfo/{extinfo_id})
+	ExtInfoRevoke(c *gin.Context, extinfoId ExtInfoExtInfoId)
+	// Create new koyo information
+	// (POST /admin/koyo)
+	KoyoCreate(c *gin.Context)
+	// Delete koyo information
+	// (DELETE /admin/koyo/{koyo_id})
+	KoyoDelete(c *gin.Context, koyoId KoyoKoyoId)
+	// Revoke koyo api key
+	// (PUT /admin/koyo/{koyo_id})
+	KoyoRevoke(c *gin.Context, koyoId KoyoKoyoId)
 
 	// (GET /extinfo)
 	ExtInfoList(c *gin.Context, params ExtInfoListParams)
-
-	// (GET /extinfo/HOGE_ID/data)
-	HogeGet(c *gin.Context, params HogeGetParams)
+	// Get example data endpoint
+	// (GET /extinfo/example_id/data)
+	ExampleInfoGet(c *gin.Context, params ExampleInfoGetParams)
+	// Post example data endpoint
+	// (POST /extinfo/example_id/data)
+	ExampleInfoPost(c *gin.Context)
 
 	// (GET /extinfo/{extinfo_id})
-	EachExtInfoGet(c *gin.Context, extinfoId ExtInfoExtInfoId)
-
-	// (GET /provider/clients)
-	ClientsGetClient(c *gin.Context)
-
+	ExtInfoGet(c *gin.Context, extinfoId ExtInfoExtInfoId)
+	// Get a list of koyos' basic information
+	// (GET /koyo)
+	KoyoList(c *gin.Context, params KoyoListParams)
+	// Get koyos' basic information
+	// (GET /koyo/{koyo_id})
+	EachKoyoGet(c *gin.Context, koyoId KoyoKoyoId)
+	// Update information on own koyo
+	// (PUT /koyo/{koyo_id})
+	EachKoyoUpdate(c *gin.Context, koyoId KoyoKoyoId)
+	// Post new data of own koyo
+	// (POST /koyo/{koyo_id}/data)
+	EachKoyoDataNew(c *gin.Context, koyoId KoyoKoyoId)
+	// List of koyo's basic information
 	// (GET /provider/data)
 	DataList(c *gin.Context, params DataListParams)
-
+	// Get data from the koyo
 	// (GET /provider/data/{altorithm_id})
-	EachDataGet(c *gin.Context, altorithmId AlgorithmAlgorithmId, params EachDataGetParams)
+	EachDataGet(c *gin.Context, altorithmId KoyoKoyoId, params EachDataGetParams)
 
 	// (GET /status)
 	StatusGet(c *gin.Context)
@@ -342,36 +414,23 @@ type ServerInterfaceWrapper struct {
 
 type MiddlewareFunc func(c *gin.Context)
 
-// AlgorithmCreate operation middleware
-func (siw *ServerInterfaceWrapper) AlgorithmCreate(c *gin.Context) {
-
-	c.Set(ApiKeyAuthScopes, []string{})
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		middleware(c)
-		if c.IsAborted() {
-			return
-		}
-	}
-
-	siw.Handler.AlgorithmCreate(c)
-}
-
-// AlgorithmDelete operation middleware
-func (siw *ServerInterfaceWrapper) AlgorithmDelete(c *gin.Context) {
+// ClientList operation middleware
+func (siw *ServerInterfaceWrapper) ClientList(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "algorithm_id" -------------
-	var algorithmId AlgorithmAlgorithmId
+	c.Set(ApiKeyAuthScopes, []string{})
 
-	err = runtime.BindStyledParameterWithOptions("simple", "algorithm_id", c.Param("algorithm_id"), &algorithmId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ClientListParams
+
+	// ------------- Optional query parameter "limit" -------------
+
+	err = runtime.BindQueryParameter("form", true, false, "limit", c.Request.URL.Query(), &params.Limit)
 	if err != nil {
-		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter algorithm_id: %w", err), http.StatusBadRequest)
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter limit: %w", err), http.StatusBadRequest)
 		return
 	}
-
-	c.Set(ApiKeyAuthScopes, []string{})
 
 	for _, middleware := range siw.HandlerMiddlewares {
 		middleware(c)
@@ -380,7 +439,7 @@ func (siw *ServerInterfaceWrapper) AlgorithmDelete(c *gin.Context) {
 		}
 	}
 
-	siw.Handler.AlgorithmDelete(c, algorithmId)
+	siw.Handler.ClientList(c, params)
 }
 
 // ClientCreate operation middleware
@@ -396,6 +455,41 @@ func (siw *ServerInterfaceWrapper) ClientCreate(c *gin.Context) {
 	}
 
 	siw.Handler.ClientCreate(c)
+}
+
+// ClientRevoke operation middleware
+func (siw *ServerInterfaceWrapper) ClientRevoke(c *gin.Context) {
+
+	var err error
+
+	c.Set(ApiKeyAuthScopes, []string{})
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ClientRevokeParams
+
+	// ------------- Required query parameter "client_id" -------------
+
+	if paramValue := c.Query("client_id"); paramValue != "" {
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Query argument client_id is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	err = runtime.BindQueryParameter("form", true, true, "client_id", c.Request.URL.Query(), &params.ClientId)
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter client_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.ClientRevoke(c, params)
 }
 
 // ClientDelete operation middleware
@@ -465,23 +559,21 @@ func (siw *ServerInterfaceWrapper) ExtInfoDelete(c *gin.Context) {
 	siw.Handler.ExtInfoDelete(c, extinfoId)
 }
 
-// AlgorithmList operation middleware
-func (siw *ServerInterfaceWrapper) AlgorithmList(c *gin.Context) {
+// ExtInfoRevoke operation middleware
+func (siw *ServerInterfaceWrapper) ExtInfoRevoke(c *gin.Context) {
 
 	var err error
 
-	c.Set(ApiKeyAuthScopes, []string{})
+	// ------------- Path parameter "extinfo_id" -------------
+	var extinfoId ExtInfoExtInfoId
 
-	// Parameter object where we will unmarshal all parameters from the context
-	var params AlgorithmListParams
-
-	// ------------- Optional query parameter "limit" -------------
-
-	err = runtime.BindQueryParameter("form", true, false, "limit", c.Request.URL.Query(), &params.Limit)
+	err = runtime.BindStyledParameterWithOptions("simple", "extinfo_id", c.Param("extinfo_id"), &extinfoId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
 	if err != nil {
-		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter limit: %w", err), http.StatusBadRequest)
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter extinfo_id: %w", err), http.StatusBadRequest)
 		return
 	}
+
+	c.Set(ApiKeyAuthScopes, []string{})
 
 	for _, middleware := range siw.HandlerMiddlewares {
 		middleware(c)
@@ -490,22 +582,11 @@ func (siw *ServerInterfaceWrapper) AlgorithmList(c *gin.Context) {
 		}
 	}
 
-	siw.Handler.AlgorithmList(c, params)
+	siw.Handler.ExtInfoRevoke(c, extinfoId)
 }
 
-// EachAlgorithmGet operation middleware
-func (siw *ServerInterfaceWrapper) EachAlgorithmGet(c *gin.Context) {
-
-	var err error
-
-	// ------------- Path parameter "algorithm_id" -------------
-	var algorithmId AlgorithmAlgorithmId
-
-	err = runtime.BindStyledParameterWithOptions("simple", "algorithm_id", c.Param("algorithm_id"), &algorithmId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
-	if err != nil {
-		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter algorithm_id: %w", err), http.StatusBadRequest)
-		return
-	}
+// KoyoCreate operation middleware
+func (siw *ServerInterfaceWrapper) KoyoCreate(c *gin.Context) {
 
 	c.Set(ApiKeyAuthScopes, []string{})
 
@@ -516,20 +597,20 @@ func (siw *ServerInterfaceWrapper) EachAlgorithmGet(c *gin.Context) {
 		}
 	}
 
-	siw.Handler.EachAlgorithmGet(c, algorithmId)
+	siw.Handler.KoyoCreate(c)
 }
 
-// EachAlgorithmUpdate operation middleware
-func (siw *ServerInterfaceWrapper) EachAlgorithmUpdate(c *gin.Context) {
+// KoyoDelete operation middleware
+func (siw *ServerInterfaceWrapper) KoyoDelete(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "algorithm_id" -------------
-	var algorithmId AlgorithmAlgorithmId
+	// ------------- Path parameter "koyo_id" -------------
+	var koyoId KoyoKoyoId
 
-	err = runtime.BindStyledParameterWithOptions("simple", "algorithm_id", c.Param("algorithm_id"), &algorithmId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	err = runtime.BindStyledParameterWithOptions("simple", "koyo_id", c.Param("koyo_id"), &koyoId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
 	if err != nil {
-		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter algorithm_id: %w", err), http.StatusBadRequest)
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter koyo_id: %w", err), http.StatusBadRequest)
 		return
 	}
 
@@ -542,42 +623,24 @@ func (siw *ServerInterfaceWrapper) EachAlgorithmUpdate(c *gin.Context) {
 		}
 	}
 
-	siw.Handler.EachAlgorithmUpdate(c, algorithmId)
+	siw.Handler.KoyoDelete(c, koyoId)
 }
 
-// EachAlgorithmDataGet operation middleware
-func (siw *ServerInterfaceWrapper) EachAlgorithmDataGet(c *gin.Context) {
+// KoyoRevoke operation middleware
+func (siw *ServerInterfaceWrapper) KoyoRevoke(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "algorithm_id" -------------
-	var algorithmId AlgorithmAlgorithmId
+	// ------------- Path parameter "koyo_id" -------------
+	var koyoId KoyoKoyoId
 
-	err = runtime.BindStyledParameterWithOptions("simple", "algorithm_id", c.Param("algorithm_id"), &algorithmId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	err = runtime.BindStyledParameterWithOptions("simple", "koyo_id", c.Param("koyo_id"), &koyoId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
 	if err != nil {
-		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter algorithm_id: %w", err), http.StatusBadRequest)
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter koyo_id: %w", err), http.StatusBadRequest)
 		return
 	}
 
 	c.Set(ApiKeyAuthScopes, []string{})
-
-	// Parameter object where we will unmarshal all parameters from the context
-	var params EachAlgorithmDataGetParams
-
-	// ------------- Required query parameter "scale" -------------
-
-	if paramValue := c.Query("scale"); paramValue != "" {
-
-	} else {
-		siw.ErrorHandler(c, fmt.Errorf("Query argument scale is required, but not found"), http.StatusBadRequest)
-		return
-	}
-
-	err = runtime.BindQueryParameter("form", true, true, "scale", c.Request.URL.Query(), &params.Scale)
-	if err != nil {
-		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter scale: %w", err), http.StatusBadRequest)
-		return
-	}
 
 	for _, middleware := range siw.HandlerMiddlewares {
 		middleware(c)
@@ -586,51 +649,7 @@ func (siw *ServerInterfaceWrapper) EachAlgorithmDataGet(c *gin.Context) {
 		}
 	}
 
-	siw.Handler.EachAlgorithmDataGet(c, algorithmId, params)
-}
-
-// EachAlgorithmDataUpdate operation middleware
-func (siw *ServerInterfaceWrapper) EachAlgorithmDataUpdate(c *gin.Context) {
-
-	var err error
-
-	// ------------- Path parameter "algorithm_id" -------------
-	var algorithmId AlgorithmAlgorithmId
-
-	err = runtime.BindStyledParameterWithOptions("simple", "algorithm_id", c.Param("algorithm_id"), &algorithmId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
-	if err != nil {
-		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter algorithm_id: %w", err), http.StatusBadRequest)
-		return
-	}
-
-	c.Set(ApiKeyAuthScopes, []string{})
-
-	// Parameter object where we will unmarshal all parameters from the context
-	var params EachAlgorithmDataUpdateParams
-
-	// ------------- Required query parameter "scale" -------------
-
-	if paramValue := c.Query("scale"); paramValue != "" {
-
-	} else {
-		siw.ErrorHandler(c, fmt.Errorf("Query argument scale is required, but not found"), http.StatusBadRequest)
-		return
-	}
-
-	err = runtime.BindQueryParameter("form", true, true, "scale", c.Request.URL.Query(), &params.Scale)
-	if err != nil {
-		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter scale: %w", err), http.StatusBadRequest)
-		return
-	}
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		middleware(c)
-		if c.IsAborted() {
-			return
-		}
-	}
-
-	siw.Handler.EachAlgorithmDataUpdate(c, algorithmId, params)
+	siw.Handler.KoyoRevoke(c, koyoId)
 }
 
 // ExtInfoList operation middleware
@@ -661,15 +680,15 @@ func (siw *ServerInterfaceWrapper) ExtInfoList(c *gin.Context) {
 	siw.Handler.ExtInfoList(c, params)
 }
 
-// HogeGet operation middleware
-func (siw *ServerInterfaceWrapper) HogeGet(c *gin.Context) {
+// ExampleInfoGet operation middleware
+func (siw *ServerInterfaceWrapper) ExampleInfoGet(c *gin.Context) {
 
 	var err error
 
 	c.Set(ApiKeyAuthScopes, []string{})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params HogeGetParams
+	var params ExampleInfoGetParams
 
 	// ------------- Optional query parameter "area" -------------
 
@@ -686,11 +705,26 @@ func (siw *ServerInterfaceWrapper) HogeGet(c *gin.Context) {
 		}
 	}
 
-	siw.Handler.HogeGet(c, params)
+	siw.Handler.ExampleInfoGet(c, params)
 }
 
-// EachExtInfoGet operation middleware
-func (siw *ServerInterfaceWrapper) EachExtInfoGet(c *gin.Context) {
+// ExampleInfoPost operation middleware
+func (siw *ServerInterfaceWrapper) ExampleInfoPost(c *gin.Context) {
+
+	c.Set(ApiKeyAuthScopes, []string{})
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.ExampleInfoPost(c)
+}
+
+// ExtInfoGet operation middleware
+func (siw *ServerInterfaceWrapper) ExtInfoGet(c *gin.Context) {
 
 	var err error
 
@@ -712,11 +746,72 @@ func (siw *ServerInterfaceWrapper) EachExtInfoGet(c *gin.Context) {
 		}
 	}
 
-	siw.Handler.EachExtInfoGet(c, extinfoId)
+	siw.Handler.ExtInfoGet(c, extinfoId)
 }
 
-// ClientsGetClient operation middleware
-func (siw *ServerInterfaceWrapper) ClientsGetClient(c *gin.Context) {
+// KoyoList operation middleware
+func (siw *ServerInterfaceWrapper) KoyoList(c *gin.Context) {
+
+	var err error
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params KoyoListParams
+
+	// ------------- Optional query parameter "limit" -------------
+
+	err = runtime.BindQueryParameter("form", true, false, "limit", c.Request.URL.Query(), &params.Limit)
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter limit: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.KoyoList(c, params)
+}
+
+// EachKoyoGet operation middleware
+func (siw *ServerInterfaceWrapper) EachKoyoGet(c *gin.Context) {
+
+	var err error
+
+	// ------------- Path parameter "koyo_id" -------------
+	var koyoId KoyoKoyoId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "koyo_id", c.Param("koyo_id"), &koyoId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter koyo_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.EachKoyoGet(c, koyoId)
+}
+
+// EachKoyoUpdate operation middleware
+func (siw *ServerInterfaceWrapper) EachKoyoUpdate(c *gin.Context) {
+
+	var err error
+
+	// ------------- Path parameter "koyo_id" -------------
+	var koyoId KoyoKoyoId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "koyo_id", c.Param("koyo_id"), &koyoId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter koyo_id: %w", err), http.StatusBadRequest)
+		return
+	}
 
 	c.Set(ApiKeyAuthScopes, []string{})
 
@@ -727,7 +822,33 @@ func (siw *ServerInterfaceWrapper) ClientsGetClient(c *gin.Context) {
 		}
 	}
 
-	siw.Handler.ClientsGetClient(c)
+	siw.Handler.EachKoyoUpdate(c, koyoId)
+}
+
+// EachKoyoDataNew operation middleware
+func (siw *ServerInterfaceWrapper) EachKoyoDataNew(c *gin.Context) {
+
+	var err error
+
+	// ------------- Path parameter "koyo_id" -------------
+	var koyoId KoyoKoyoId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "koyo_id", c.Param("koyo_id"), &koyoId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter koyo_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	c.Set(ApiKeyAuthScopes, []string{})
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.EachKoyoDataNew(c, koyoId)
 }
 
 // DataList operation middleware
@@ -764,7 +885,7 @@ func (siw *ServerInterfaceWrapper) EachDataGet(c *gin.Context) {
 	var err error
 
 	// ------------- Path parameter "altorithm_id" -------------
-	var altorithmId AlgorithmAlgorithmId
+	var altorithmId KoyoKoyoId
 
 	err = runtime.BindStyledParameterWithOptions("simple", "altorithm_id", c.Param("altorithm_id"), &altorithmId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
 	if err != nil {
@@ -792,11 +913,11 @@ func (siw *ServerInterfaceWrapper) EachDataGet(c *gin.Context) {
 		return
 	}
 
-	// ------------- Optional query parameter "algorithm_data_id" -------------
+	// ------------- Optional query parameter "koyo_data_id" -------------
 
-	err = runtime.BindQueryParameter("form", true, false, "algorithm_data_id", c.Request.URL.Query(), &params.AlgorithmDataId)
+	err = runtime.BindQueryParameter("form", true, false, "koyo_data_id", c.Request.URL.Query(), &params.KoyoDataId)
 	if err != nil {
-		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter algorithm_data_id: %w", err), http.StatusBadRequest)
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter koyo_data_id: %w", err), http.StatusBadRequest)
 		return
 	}
 
@@ -890,75 +1011,40 @@ func RegisterHandlersWithOptions(router gin.IRouter, si ServerInterface, options
 		ErrorHandler:       errorHandler,
 	}
 
-	router.POST(options.BaseURL+"/admin/algorithm", wrapper.AlgorithmCreate)
-	router.DELETE(options.BaseURL+"/admin/algorithm/:algorithm_id", wrapper.AlgorithmDelete)
+	router.GET(options.BaseURL+"/admin/client", wrapper.ClientList)
 	router.POST(options.BaseURL+"/admin/client", wrapper.ClientCreate)
+	router.PUT(options.BaseURL+"/admin/client", wrapper.ClientRevoke)
 	router.POST(options.BaseURL+"/admin/client/:client_id", wrapper.ClientDelete)
 	router.POST(options.BaseURL+"/admin/extinfo", wrapper.ExtInfoCreate)
 	router.DELETE(options.BaseURL+"/admin/extinfo/:extinfo_id", wrapper.ExtInfoDelete)
-	router.GET(options.BaseURL+"/algorithm", wrapper.AlgorithmList)
-	router.GET(options.BaseURL+"/algorithm/:algorithm_id", wrapper.EachAlgorithmGet)
-	router.PUT(options.BaseURL+"/algorithm/:algorithm_id", wrapper.EachAlgorithmUpdate)
-	router.GET(options.BaseURL+"/algorithm/:algorithm_id/data", wrapper.EachAlgorithmDataGet)
-	router.PUT(options.BaseURL+"/algorithm/:algorithm_id/data", wrapper.EachAlgorithmDataUpdate)
+	router.PUT(options.BaseURL+"/admin/extinfo/:extinfo_id", wrapper.ExtInfoRevoke)
+	router.POST(options.BaseURL+"/admin/koyo", wrapper.KoyoCreate)
+	router.DELETE(options.BaseURL+"/admin/koyo/:koyo_id", wrapper.KoyoDelete)
+	router.PUT(options.BaseURL+"/admin/koyo/:koyo_id", wrapper.KoyoRevoke)
 	router.GET(options.BaseURL+"/extinfo", wrapper.ExtInfoList)
-	router.GET(options.BaseURL+"/extinfo/HOGE_ID/data", wrapper.HogeGet)
-	router.GET(options.BaseURL+"/extinfo/:extinfo_id", wrapper.EachExtInfoGet)
-	router.GET(options.BaseURL+"/provider/clients", wrapper.ClientsGetClient)
+	router.GET(options.BaseURL+"/extinfo/example_id/data", wrapper.ExampleInfoGet)
+	router.POST(options.BaseURL+"/extinfo/example_id/data", wrapper.ExampleInfoPost)
+	router.GET(options.BaseURL+"/extinfo/:extinfo_id", wrapper.ExtInfoGet)
+	router.GET(options.BaseURL+"/koyo", wrapper.KoyoList)
+	router.GET(options.BaseURL+"/koyo/:koyo_id", wrapper.EachKoyoGet)
+	router.PUT(options.BaseURL+"/koyo/:koyo_id", wrapper.EachKoyoUpdate)
+	router.POST(options.BaseURL+"/koyo/:koyo_id/data", wrapper.EachKoyoDataNew)
 	router.GET(options.BaseURL+"/provider/data", wrapper.DataList)
 	router.GET(options.BaseURL+"/provider/data/:altorithm_id", wrapper.EachDataGet)
 	router.GET(options.BaseURL+"/status", wrapper.StatusGet)
 }
 
-type AlgorithmCreateRequestObject struct {
-	Body *AlgorithmCreateJSONRequestBody
+type ClientListRequestObject struct {
+	Params ClientListParams
 }
 
-type AlgorithmCreateResponseObject interface {
-	VisitAlgorithmCreateResponse(w http.ResponseWriter) error
+type ClientListResponseObject interface {
+	VisitClientListResponse(w http.ResponseWriter) error
 }
 
-type AlgorithmCreate200JSONResponse struct {
-	AlgorithmDataIds     []AlgorithmAlgorithmDataId `json:"algorithm_data_ids"`
-	AlgorithmDescription string                     `json:"algorithm_description"`
+type ClientList200JSONResponse []ProviderClientData
 
-	// AlgorithmId From Admin API
-	AlgorithmId   AlgorithmAlgorithmId `json:"algorithm_id"`
-	AlgorithmName string               `json:"algorithm_name"`
-
-	// AlgorithmParams param name: param default
-	AlgorithmParams map[string]string         `json:"algorithm_params"`
-	AlgorithmScales []AlgorithmAlgorithmScale `json:"algorithm_scales"`
-	ApiKey          TypesAuthApiKey           `json:"api_key"`
-	FirstEntryAt    time.Time                 `json:"first_entry_at"`
-	LastEntryAt     time.Time                 `json:"last_entry_at"`
-	LastUpdatedAt   time.Time                 `json:"last_updated_at"`
-	NeedExternal    []ExtInfoExtInfoId        `json:"need_external"`
-
-	// Version Semantic versioning
-	Version TypesCommonVersion `json:"version"`
-}
-
-func (response AlgorithmCreate200JSONResponse) VisitAlgorithmCreateResponse(w http.ResponseWriter) error {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(200)
-
-	return json.NewEncoder(w).Encode(response)
-}
-
-type AlgorithmDeleteRequestObject struct {
-	AlgorithmId AlgorithmAlgorithmId `json:"algorithm_id"`
-}
-
-type AlgorithmDeleteResponseObject interface {
-	VisitAlgorithmDeleteResponse(w http.ResponseWriter) error
-}
-
-type AlgorithmDelete200JSONResponse struct {
-	DeleteAlgorithmId AlgorithmAlgorithmId `json:"delete_algorithm_id"`
-}
-
-func (response AlgorithmDelete200JSONResponse) VisitAlgorithmDeleteResponse(w http.ResponseWriter) error {
+func (response ClientList200JSONResponse) VisitClientListResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
 
@@ -976,6 +1062,23 @@ type ClientCreateResponseObject interface {
 type ClientCreate200JSONResponse ProviderClientData
 
 func (response ClientCreate200JSONResponse) VisitClientCreateResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ClientRevokeRequestObject struct {
+	Params ClientRevokeParams
+}
+
+type ClientRevokeResponseObject interface {
+	VisitClientRevokeResponse(w http.ResponseWriter) error
+}
+
+type ClientRevoke200JSONResponse ProviderClientData
+
+func (response ClientRevoke200JSONResponse) VisitClientRevokeResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
 
@@ -1009,7 +1112,21 @@ type ExtInfoCreateResponseObject interface {
 	VisitExtInfoCreateResponse(w http.ResponseWriter) error
 }
 
-type ExtInfoCreate200JSONResponse ExtInfoExternalInfomation
+type ExtInfoCreate200JSONResponse struct {
+	ApiKey              TypesAuthApiKey `json:"api_key"`
+	ExternalDescription string          `json:"external_description"`
+
+	// ExternalId This ID can be obtained through admin api.
+	// It is a human friendly format like GitHub repository names.
+	// Only the pattern `^[a-z_-]{1,64}$` is allowed.
+	ExternalId         ExtInfoExtInfoId `json:"external_id"`
+	ExternalName       string           `json:"external_name"`
+	FirstEntryAt       time.Time        `json:"first_entry_at"`
+	LastUpdatedAt      time.Time        `json:"last_updated_at"`
+	License            string           `json:"license"`
+	LicenseDescription string           `json:"license_description"`
+	UpdatedHistory     []time.Time      `json:"updated_history"`
+}
 
 func (response ExtInfoCreate200JSONResponse) VisitExtInfoCreateResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
@@ -1037,89 +1154,101 @@ func (response ExtInfoDelete200JSONResponse) VisitExtInfoDeleteResponse(w http.R
 	return json.NewEncoder(w).Encode(response)
 }
 
-type AlgorithmListRequestObject struct {
-	Params AlgorithmListParams
+type ExtInfoRevokeRequestObject struct {
+	ExtinfoId ExtInfoExtInfoId `json:"extinfo_id"`
 }
 
-type AlgorithmListResponseObject interface {
-	VisitAlgorithmListResponse(w http.ResponseWriter) error
+type ExtInfoRevokeResponseObject interface {
+	VisitExtInfoRevokeResponse(w http.ResponseWriter) error
 }
 
-type AlgorithmList200JSONResponse []AlgorithmAlgorithmInfomation
+type ExtInfoRevoke200JSONResponse struct {
+	ApiKey    TypesAuthApiKey  `json:"api_key"`
+	ExtinfoId ExtInfoExtInfoId `json:"extinfo_id"`
+}
 
-func (response AlgorithmList200JSONResponse) VisitAlgorithmListResponse(w http.ResponseWriter) error {
+func (response ExtInfoRevoke200JSONResponse) VisitExtInfoRevokeResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
 
 	return json.NewEncoder(w).Encode(response)
 }
 
-type EachAlgorithmGetRequestObject struct {
-	AlgorithmId AlgorithmAlgorithmId `json:"algorithm_id"`
+type KoyoCreateRequestObject struct {
+	Body *KoyoCreateJSONRequestBody
 }
 
-type EachAlgorithmGetResponseObject interface {
-	VisitEachAlgorithmGetResponse(w http.ResponseWriter) error
+type KoyoCreateResponseObject interface {
+	VisitKoyoCreateResponse(w http.ResponseWriter) error
 }
 
-type EachAlgorithmGet200JSONResponse AlgorithmAlgorithmInfomation
+type KoyoCreate200JSONResponse struct {
+	ApiKey TypesAuthApiKey `json:"api_key"`
 
-func (response EachAlgorithmGet200JSONResponse) VisitEachAlgorithmGetResponse(w http.ResponseWriter) error {
+	// ExtLicenses Licenses for primary information and other information used by the koyo.
+	ExtLicenses     []string         `json:"ext_licenses"`
+	FirstEntryAt    time.Time        `json:"first_entry_at"`
+	KoyoDataIds     []KoyoKoyoDataId `json:"koyo_data_ids"`
+	KoyoDescription string           `json:"koyo_description"`
+
+	// KoyoId This ID can be obtained through admin api.
+	// It is a human friendly format like GitHub repository names.
+	// Only the pattern `^[a-z_-]{1,64}$` is allowed.
+	KoyoId   KoyoKoyoId `json:"koyo_id"`
+	KoyoName string     `json:"koyo_name"`
+
+	// KoyoParams Koyo parameters. The key is the parameter name and the value is the default value.
+	KoyoParams map[string]string `json:"koyo_params"`
+
+	// KoyoScales Koyo scales is resolution (e.g. one data per meter). Returns a list of supported scales.
+	KoyoScales    []KoyoKoyoScale    `json:"koyo_scales"`
+	LastEntryAt   time.Time          `json:"last_entry_at"`
+	LastUpdatedAt time.Time          `json:"last_updated_at"`
+	License       string             `json:"license"`
+	NeedExternal  []ExtInfoExtInfoId `json:"need_external"`
+	Version       TypesCommonVersion `json:"version"`
+}
+
+func (response KoyoCreate200JSONResponse) VisitKoyoCreateResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
 
 	return json.NewEncoder(w).Encode(response)
 }
 
-type EachAlgorithmUpdateRequestObject struct {
-	AlgorithmId AlgorithmAlgorithmId `json:"algorithm_id"`
-	Body        *EachAlgorithmUpdateJSONRequestBody
+type KoyoDeleteRequestObject struct {
+	KoyoId KoyoKoyoId `json:"koyo_id"`
 }
 
-type EachAlgorithmUpdateResponseObject interface {
-	VisitEachAlgorithmUpdateResponse(w http.ResponseWriter) error
+type KoyoDeleteResponseObject interface {
+	VisitKoyoDeleteResponse(w http.ResponseWriter) error
 }
 
-type EachAlgorithmUpdate200JSONResponse AlgorithmAlgorithmInfomation
+type KoyoDelete200JSONResponse struct {
+	DeleteKoyoId KoyoKoyoId `json:"delete_koyo_id"`
+}
 
-func (response EachAlgorithmUpdate200JSONResponse) VisitEachAlgorithmUpdateResponse(w http.ResponseWriter) error {
+func (response KoyoDelete200JSONResponse) VisitKoyoDeleteResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
 
 	return json.NewEncoder(w).Encode(response)
 }
 
-type EachAlgorithmDataGetRequestObject struct {
-	AlgorithmId AlgorithmAlgorithmId `json:"algorithm_id"`
-	Params      EachAlgorithmDataGetParams
+type KoyoRevokeRequestObject struct {
+	KoyoId KoyoKoyoId `json:"koyo_id"`
 }
 
-type EachAlgorithmDataGetResponseObject interface {
-	VisitEachAlgorithmDataGetResponse(w http.ResponseWriter) error
+type KoyoRevokeResponseObject interface {
+	VisitKoyoRevokeResponse(w http.ResponseWriter) error
 }
 
-type EachAlgorithmDataGet200JSONResponse AlgorithmAlgorithmData
-
-func (response EachAlgorithmDataGet200JSONResponse) VisitEachAlgorithmDataGetResponse(w http.ResponseWriter) error {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(200)
-
-	return json.NewEncoder(w).Encode(response)
+type KoyoRevoke200JSONResponse struct {
+	ApiKey TypesAuthApiKey `json:"api_key"`
+	KoyoId KoyoKoyoId      `json:"koyo_id"`
 }
 
-type EachAlgorithmDataUpdateRequestObject struct {
-	AlgorithmId AlgorithmAlgorithmId `json:"algorithm_id"`
-	Params      EachAlgorithmDataUpdateParams
-	Body        *EachAlgorithmDataUpdateJSONRequestBody
-}
-
-type EachAlgorithmDataUpdateResponseObject interface {
-	VisitEachAlgorithmDataUpdateResponse(w http.ResponseWriter) error
-}
-
-type EachAlgorithmDataUpdate200JSONResponse AlgorithmAlgorithmData
-
-func (response EachAlgorithmDataUpdate200JSONResponse) VisitEachAlgorithmDataUpdateResponse(w http.ResponseWriter) error {
+func (response KoyoRevoke200JSONResponse) VisitKoyoRevokeResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
 
@@ -1143,53 +1272,123 @@ func (response ExtInfoList200JSONResponse) VisitExtInfoListResponse(w http.Respo
 	return json.NewEncoder(w).Encode(response)
 }
 
-type HogeGetRequestObject struct {
-	Params HogeGetParams
+type ExampleInfoGetRequestObject struct {
+	Params ExampleInfoGetParams
 }
 
-type HogeGetResponseObject interface {
-	VisitHogeGetResponse(w http.ResponseWriter) error
+type ExampleInfoGetResponseObject interface {
+	VisitExampleInfoGetResponse(w http.ResponseWriter) error
 }
 
-type HogeGet200JSONResponse []struct {
-	ContentType HogeGet200JSONResponseContentType `json:"contentType"`
-	Image       []byte                            `json:"image"`
+type ExampleInfoGet200JSONResponse []struct {
+	ContentType ExampleInfoGet200JSONResponseContentType `json:"contentType"`
+	Data        ExtInfoExampleInfoExampleData            `json:"data"`
 }
 
-func (response HogeGet200JSONResponse) VisitHogeGetResponse(w http.ResponseWriter) error {
+func (response ExampleInfoGet200JSONResponse) VisitExampleInfoGetResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
 
 	return json.NewEncoder(w).Encode(response)
 }
 
-type EachExtInfoGetRequestObject struct {
+type ExampleInfoPostRequestObject struct {
+	Body *ExampleInfoPostJSONRequestBody
+}
+
+type ExampleInfoPostResponseObject interface {
+	VisitExampleInfoPostResponse(w http.ResponseWriter) error
+}
+
+type ExampleInfoPost204Response struct {
+}
+
+func (response ExampleInfoPost204Response) VisitExampleInfoPostResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
+	return nil
+}
+
+type ExtInfoGetRequestObject struct {
 	ExtinfoId ExtInfoExtInfoId `json:"extinfo_id"`
 }
 
-type EachExtInfoGetResponseObject interface {
-	VisitEachExtInfoGetResponse(w http.ResponseWriter) error
+type ExtInfoGetResponseObject interface {
+	VisitExtInfoGetResponse(w http.ResponseWriter) error
 }
 
-type EachExtInfoGet200JSONResponse ExtInfoExternalInfomation
+type ExtInfoGet200JSONResponse ExtInfoExternalInfomation
 
-func (response EachExtInfoGet200JSONResponse) VisitEachExtInfoGetResponse(w http.ResponseWriter) error {
+func (response ExtInfoGet200JSONResponse) VisitExtInfoGetResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
 
 	return json.NewEncoder(w).Encode(response)
 }
 
-type ClientsGetClientRequestObject struct {
+type KoyoListRequestObject struct {
+	Params KoyoListParams
 }
 
-type ClientsGetClientResponseObject interface {
-	VisitClientsGetClientResponse(w http.ResponseWriter) error
+type KoyoListResponseObject interface {
+	VisitKoyoListResponse(w http.ResponseWriter) error
 }
 
-type ClientsGetClient200JSONResponse ProviderClientData
+type KoyoList200JSONResponse []KoyoKoyoInfomation
 
-func (response ClientsGetClient200JSONResponse) VisitClientsGetClientResponse(w http.ResponseWriter) error {
+func (response KoyoList200JSONResponse) VisitKoyoListResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type EachKoyoGetRequestObject struct {
+	KoyoId KoyoKoyoId `json:"koyo_id"`
+}
+
+type EachKoyoGetResponseObject interface {
+	VisitEachKoyoGetResponse(w http.ResponseWriter) error
+}
+
+type EachKoyoGet200JSONResponse KoyoKoyoInfomation
+
+func (response EachKoyoGet200JSONResponse) VisitEachKoyoGetResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type EachKoyoUpdateRequestObject struct {
+	KoyoId KoyoKoyoId `json:"koyo_id"`
+	Body   *EachKoyoUpdateJSONRequestBody
+}
+
+type EachKoyoUpdateResponseObject interface {
+	VisitEachKoyoUpdateResponse(w http.ResponseWriter) error
+}
+
+type EachKoyoUpdate200JSONResponse KoyoKoyoInfomation
+
+func (response EachKoyoUpdate200JSONResponse) VisitEachKoyoUpdateResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type EachKoyoDataNewRequestObject struct {
+	KoyoId KoyoKoyoId `json:"koyo_id"`
+	Body   *EachKoyoDataNewJSONRequestBody
+}
+
+type EachKoyoDataNewResponseObject interface {
+	VisitEachKoyoDataNewResponse(w http.ResponseWriter) error
+}
+
+type EachKoyoDataNew200JSONResponse KoyoKoyoData
+
+func (response EachKoyoDataNew200JSONResponse) VisitEachKoyoDataNewResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
 
@@ -1204,7 +1403,7 @@ type DataListResponseObject interface {
 	VisitDataListResponse(w http.ResponseWriter) error
 }
 
-type DataList200JSONResponse []AlgorithmAlgorithmInfomation
+type DataList200JSONResponse []KoyoKoyoInfomation
 
 func (response DataList200JSONResponse) VisitDataListResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
@@ -1214,7 +1413,7 @@ func (response DataList200JSONResponse) VisitDataListResponse(w http.ResponseWri
 }
 
 type EachDataGetRequestObject struct {
-	AltorithmId AlgorithmAlgorithmId `json:"altorithm_id"`
+	AltorithmId KoyoKoyoId `json:"altorithm_id"`
 	Params      EachDataGetParams
 }
 
@@ -1222,7 +1421,7 @@ type EachDataGetResponseObject interface {
 	VisitEachDataGetResponse(w http.ResponseWriter) error
 }
 
-type EachDataGet200JSONResponse AlgorithmAlgorithmData
+type EachDataGet200JSONResponse KoyoKoyoData
 
 func (response EachDataGet200JSONResponse) VisitEachDataGetResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
@@ -1259,14 +1458,14 @@ func (response StatusGet500JSONResponse) VisitStatusGetResponse(w http.ResponseW
 // StrictServerInterface represents all server handlers.
 type StrictServerInterface interface {
 
-	// (POST /admin/algorithm)
-	AlgorithmCreate(ctx context.Context, request AlgorithmCreateRequestObject) (AlgorithmCreateResponseObject, error)
-
-	// (DELETE /admin/algorithm/{algorithm_id})
-	AlgorithmDelete(ctx context.Context, request AlgorithmDeleteRequestObject) (AlgorithmDeleteResponseObject, error)
+	// (GET /admin/client)
+	ClientList(ctx context.Context, request ClientListRequestObject) (ClientListResponseObject, error)
 
 	// (POST /admin/client)
 	ClientCreate(ctx context.Context, request ClientCreateRequestObject) (ClientCreateResponseObject, error)
+
+	// (PUT /admin/client)
+	ClientRevoke(ctx context.Context, request ClientRevokeRequestObject) (ClientRevokeResponseObject, error)
 
 	// (POST /admin/client/{client_id})
 	ClientDelete(ctx context.Context, request ClientDeleteRequestObject) (ClientDeleteResponseObject, error)
@@ -1277,36 +1476,45 @@ type StrictServerInterface interface {
 	// (DELETE /admin/extinfo/{extinfo_id})
 	ExtInfoDelete(ctx context.Context, request ExtInfoDeleteRequestObject) (ExtInfoDeleteResponseObject, error)
 
-	// (GET /algorithm)
-	AlgorithmList(ctx context.Context, request AlgorithmListRequestObject) (AlgorithmListResponseObject, error)
-
-	// (GET /algorithm/{algorithm_id})
-	EachAlgorithmGet(ctx context.Context, request EachAlgorithmGetRequestObject) (EachAlgorithmGetResponseObject, error)
-
-	// (PUT /algorithm/{algorithm_id})
-	EachAlgorithmUpdate(ctx context.Context, request EachAlgorithmUpdateRequestObject) (EachAlgorithmUpdateResponseObject, error)
-
-	// (GET /algorithm/{algorithm_id}/data)
-	EachAlgorithmDataGet(ctx context.Context, request EachAlgorithmDataGetRequestObject) (EachAlgorithmDataGetResponseObject, error)
-
-	// (PUT /algorithm/{algorithm_id}/data)
-	EachAlgorithmDataUpdate(ctx context.Context, request EachAlgorithmDataUpdateRequestObject) (EachAlgorithmDataUpdateResponseObject, error)
+	// (PUT /admin/extinfo/{extinfo_id})
+	ExtInfoRevoke(ctx context.Context, request ExtInfoRevokeRequestObject) (ExtInfoRevokeResponseObject, error)
+	// Create new koyo information
+	// (POST /admin/koyo)
+	KoyoCreate(ctx context.Context, request KoyoCreateRequestObject) (KoyoCreateResponseObject, error)
+	// Delete koyo information
+	// (DELETE /admin/koyo/{koyo_id})
+	KoyoDelete(ctx context.Context, request KoyoDeleteRequestObject) (KoyoDeleteResponseObject, error)
+	// Revoke koyo api key
+	// (PUT /admin/koyo/{koyo_id})
+	KoyoRevoke(ctx context.Context, request KoyoRevokeRequestObject) (KoyoRevokeResponseObject, error)
 
 	// (GET /extinfo)
 	ExtInfoList(ctx context.Context, request ExtInfoListRequestObject) (ExtInfoListResponseObject, error)
-
-	// (GET /extinfo/HOGE_ID/data)
-	HogeGet(ctx context.Context, request HogeGetRequestObject) (HogeGetResponseObject, error)
+	// Get example data endpoint
+	// (GET /extinfo/example_id/data)
+	ExampleInfoGet(ctx context.Context, request ExampleInfoGetRequestObject) (ExampleInfoGetResponseObject, error)
+	// Post example data endpoint
+	// (POST /extinfo/example_id/data)
+	ExampleInfoPost(ctx context.Context, request ExampleInfoPostRequestObject) (ExampleInfoPostResponseObject, error)
 
 	// (GET /extinfo/{extinfo_id})
-	EachExtInfoGet(ctx context.Context, request EachExtInfoGetRequestObject) (EachExtInfoGetResponseObject, error)
-
-	// (GET /provider/clients)
-	ClientsGetClient(ctx context.Context, request ClientsGetClientRequestObject) (ClientsGetClientResponseObject, error)
-
+	ExtInfoGet(ctx context.Context, request ExtInfoGetRequestObject) (ExtInfoGetResponseObject, error)
+	// Get a list of koyos' basic information
+	// (GET /koyo)
+	KoyoList(ctx context.Context, request KoyoListRequestObject) (KoyoListResponseObject, error)
+	// Get koyos' basic information
+	// (GET /koyo/{koyo_id})
+	EachKoyoGet(ctx context.Context, request EachKoyoGetRequestObject) (EachKoyoGetResponseObject, error)
+	// Update information on own koyo
+	// (PUT /koyo/{koyo_id})
+	EachKoyoUpdate(ctx context.Context, request EachKoyoUpdateRequestObject) (EachKoyoUpdateResponseObject, error)
+	// Post new data of own koyo
+	// (POST /koyo/{koyo_id}/data)
+	EachKoyoDataNew(ctx context.Context, request EachKoyoDataNewRequestObject) (EachKoyoDataNewResponseObject, error)
+	// List of koyo's basic information
 	// (GET /provider/data)
 	DataList(ctx context.Context, request DataListRequestObject) (DataListResponseObject, error)
-
+	// Get data from the koyo
 	// (GET /provider/data/{altorithm_id})
 	EachDataGet(ctx context.Context, request EachDataGetRequestObject) (EachDataGetResponseObject, error)
 
@@ -1326,23 +1534,17 @@ type strictHandler struct {
 	middlewares []StrictMiddlewareFunc
 }
 
-// AlgorithmCreate operation middleware
-func (sh *strictHandler) AlgorithmCreate(ctx *gin.Context) {
-	var request AlgorithmCreateRequestObject
+// ClientList operation middleware
+func (sh *strictHandler) ClientList(ctx *gin.Context, params ClientListParams) {
+	var request ClientListRequestObject
 
-	var body AlgorithmCreateJSONRequestBody
-	if err := ctx.ShouldBindJSON(&body); err != nil {
-		ctx.Status(http.StatusBadRequest)
-		ctx.Error(err)
-		return
-	}
-	request.Body = &body
+	request.Params = params
 
 	handler := func(ctx *gin.Context, request interface{}) (interface{}, error) {
-		return sh.ssi.AlgorithmCreate(ctx, request.(AlgorithmCreateRequestObject))
+		return sh.ssi.ClientList(ctx, request.(ClientListRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "AlgorithmCreate")
+		handler = middleware(handler, "ClientList")
 	}
 
 	response, err := handler(ctx, request)
@@ -1350,35 +1552,8 @@ func (sh *strictHandler) AlgorithmCreate(ctx *gin.Context) {
 	if err != nil {
 		ctx.Error(err)
 		ctx.Status(http.StatusInternalServerError)
-	} else if validResponse, ok := response.(AlgorithmCreateResponseObject); ok {
-		if err := validResponse.VisitAlgorithmCreateResponse(ctx.Writer); err != nil {
-			ctx.Error(err)
-		}
-	} else if response != nil {
-		ctx.Error(fmt.Errorf("unexpected response type: %T", response))
-	}
-}
-
-// AlgorithmDelete operation middleware
-func (sh *strictHandler) AlgorithmDelete(ctx *gin.Context, algorithmId AlgorithmAlgorithmId) {
-	var request AlgorithmDeleteRequestObject
-
-	request.AlgorithmId = algorithmId
-
-	handler := func(ctx *gin.Context, request interface{}) (interface{}, error) {
-		return sh.ssi.AlgorithmDelete(ctx, request.(AlgorithmDeleteRequestObject))
-	}
-	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "AlgorithmDelete")
-	}
-
-	response, err := handler(ctx, request)
-
-	if err != nil {
-		ctx.Error(err)
-		ctx.Status(http.StatusInternalServerError)
-	} else if validResponse, ok := response.(AlgorithmDeleteResponseObject); ok {
-		if err := validResponse.VisitAlgorithmDeleteResponse(ctx.Writer); err != nil {
+	} else if validResponse, ok := response.(ClientListResponseObject); ok {
+		if err := validResponse.VisitClientListResponse(ctx.Writer); err != nil {
 			ctx.Error(err)
 		}
 	} else if response != nil {
@@ -1412,6 +1587,33 @@ func (sh *strictHandler) ClientCreate(ctx *gin.Context) {
 		ctx.Status(http.StatusInternalServerError)
 	} else if validResponse, ok := response.(ClientCreateResponseObject); ok {
 		if err := validResponse.VisitClientCreateResponse(ctx.Writer); err != nil {
+			ctx.Error(err)
+		}
+	} else if response != nil {
+		ctx.Error(fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ClientRevoke operation middleware
+func (sh *strictHandler) ClientRevoke(ctx *gin.Context, params ClientRevokeParams) {
+	var request ClientRevokeRequestObject
+
+	request.Params = params
+
+	handler := func(ctx *gin.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.ClientRevoke(ctx, request.(ClientRevokeRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ClientRevoke")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		ctx.Error(err)
+		ctx.Status(http.StatusInternalServerError)
+	} else if validResponse, ok := response.(ClientRevokeResponseObject); ok {
+		if err := validResponse.VisitClientRevokeResponse(ctx.Writer); err != nil {
 			ctx.Error(err)
 		}
 	} else if response != nil {
@@ -1506,17 +1708,17 @@ func (sh *strictHandler) ExtInfoDelete(ctx *gin.Context, extinfoId ExtInfoExtInf
 	}
 }
 
-// AlgorithmList operation middleware
-func (sh *strictHandler) AlgorithmList(ctx *gin.Context, params AlgorithmListParams) {
-	var request AlgorithmListRequestObject
+// ExtInfoRevoke operation middleware
+func (sh *strictHandler) ExtInfoRevoke(ctx *gin.Context, extinfoId ExtInfoExtInfoId) {
+	var request ExtInfoRevokeRequestObject
 
-	request.Params = params
+	request.ExtinfoId = extinfoId
 
 	handler := func(ctx *gin.Context, request interface{}) (interface{}, error) {
-		return sh.ssi.AlgorithmList(ctx, request.(AlgorithmListRequestObject))
+		return sh.ssi.ExtInfoRevoke(ctx, request.(ExtInfoRevokeRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "AlgorithmList")
+		handler = middleware(handler, "ExtInfoRevoke")
 	}
 
 	response, err := handler(ctx, request)
@@ -1524,8 +1726,8 @@ func (sh *strictHandler) AlgorithmList(ctx *gin.Context, params AlgorithmListPar
 	if err != nil {
 		ctx.Error(err)
 		ctx.Status(http.StatusInternalServerError)
-	} else if validResponse, ok := response.(AlgorithmListResponseObject); ok {
-		if err := validResponse.VisitAlgorithmListResponse(ctx.Writer); err != nil {
+	} else if validResponse, ok := response.(ExtInfoRevokeResponseObject); ok {
+		if err := validResponse.VisitExtInfoRevokeResponse(ctx.Writer); err != nil {
 			ctx.Error(err)
 		}
 	} else if response != nil {
@@ -1533,40 +1735,11 @@ func (sh *strictHandler) AlgorithmList(ctx *gin.Context, params AlgorithmListPar
 	}
 }
 
-// EachAlgorithmGet operation middleware
-func (sh *strictHandler) EachAlgorithmGet(ctx *gin.Context, algorithmId AlgorithmAlgorithmId) {
-	var request EachAlgorithmGetRequestObject
+// KoyoCreate operation middleware
+func (sh *strictHandler) KoyoCreate(ctx *gin.Context) {
+	var request KoyoCreateRequestObject
 
-	request.AlgorithmId = algorithmId
-
-	handler := func(ctx *gin.Context, request interface{}) (interface{}, error) {
-		return sh.ssi.EachAlgorithmGet(ctx, request.(EachAlgorithmGetRequestObject))
-	}
-	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "EachAlgorithmGet")
-	}
-
-	response, err := handler(ctx, request)
-
-	if err != nil {
-		ctx.Error(err)
-		ctx.Status(http.StatusInternalServerError)
-	} else if validResponse, ok := response.(EachAlgorithmGetResponseObject); ok {
-		if err := validResponse.VisitEachAlgorithmGetResponse(ctx.Writer); err != nil {
-			ctx.Error(err)
-		}
-	} else if response != nil {
-		ctx.Error(fmt.Errorf("unexpected response type: %T", response))
-	}
-}
-
-// EachAlgorithmUpdate operation middleware
-func (sh *strictHandler) EachAlgorithmUpdate(ctx *gin.Context, algorithmId AlgorithmAlgorithmId) {
-	var request EachAlgorithmUpdateRequestObject
-
-	request.AlgorithmId = algorithmId
-
-	var body EachAlgorithmUpdateJSONRequestBody
+	var body KoyoCreateJSONRequestBody
 	if err := ctx.ShouldBindJSON(&body); err != nil {
 		ctx.Status(http.StatusBadRequest)
 		ctx.Error(err)
@@ -1575,10 +1748,10 @@ func (sh *strictHandler) EachAlgorithmUpdate(ctx *gin.Context, algorithmId Algor
 	request.Body = &body
 
 	handler := func(ctx *gin.Context, request interface{}) (interface{}, error) {
-		return sh.ssi.EachAlgorithmUpdate(ctx, request.(EachAlgorithmUpdateRequestObject))
+		return sh.ssi.KoyoCreate(ctx, request.(KoyoCreateRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "EachAlgorithmUpdate")
+		handler = middleware(handler, "KoyoCreate")
 	}
 
 	response, err := handler(ctx, request)
@@ -1586,8 +1759,8 @@ func (sh *strictHandler) EachAlgorithmUpdate(ctx *gin.Context, algorithmId Algor
 	if err != nil {
 		ctx.Error(err)
 		ctx.Status(http.StatusInternalServerError)
-	} else if validResponse, ok := response.(EachAlgorithmUpdateResponseObject); ok {
-		if err := validResponse.VisitEachAlgorithmUpdateResponse(ctx.Writer); err != nil {
+	} else if validResponse, ok := response.(KoyoCreateResponseObject); ok {
+		if err := validResponse.VisitKoyoCreateResponse(ctx.Writer); err != nil {
 			ctx.Error(err)
 		}
 	} else if response != nil {
@@ -1595,18 +1768,17 @@ func (sh *strictHandler) EachAlgorithmUpdate(ctx *gin.Context, algorithmId Algor
 	}
 }
 
-// EachAlgorithmDataGet operation middleware
-func (sh *strictHandler) EachAlgorithmDataGet(ctx *gin.Context, algorithmId AlgorithmAlgorithmId, params EachAlgorithmDataGetParams) {
-	var request EachAlgorithmDataGetRequestObject
+// KoyoDelete operation middleware
+func (sh *strictHandler) KoyoDelete(ctx *gin.Context, koyoId KoyoKoyoId) {
+	var request KoyoDeleteRequestObject
 
-	request.AlgorithmId = algorithmId
-	request.Params = params
+	request.KoyoId = koyoId
 
 	handler := func(ctx *gin.Context, request interface{}) (interface{}, error) {
-		return sh.ssi.EachAlgorithmDataGet(ctx, request.(EachAlgorithmDataGetRequestObject))
+		return sh.ssi.KoyoDelete(ctx, request.(KoyoDeleteRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "EachAlgorithmDataGet")
+		handler = middleware(handler, "KoyoDelete")
 	}
 
 	response, err := handler(ctx, request)
@@ -1614,8 +1786,8 @@ func (sh *strictHandler) EachAlgorithmDataGet(ctx *gin.Context, algorithmId Algo
 	if err != nil {
 		ctx.Error(err)
 		ctx.Status(http.StatusInternalServerError)
-	} else if validResponse, ok := response.(EachAlgorithmDataGetResponseObject); ok {
-		if err := validResponse.VisitEachAlgorithmDataGetResponse(ctx.Writer); err != nil {
+	} else if validResponse, ok := response.(KoyoDeleteResponseObject); ok {
+		if err := validResponse.VisitKoyoDeleteResponse(ctx.Writer); err != nil {
 			ctx.Error(err)
 		}
 	} else if response != nil {
@@ -1623,26 +1795,17 @@ func (sh *strictHandler) EachAlgorithmDataGet(ctx *gin.Context, algorithmId Algo
 	}
 }
 
-// EachAlgorithmDataUpdate operation middleware
-func (sh *strictHandler) EachAlgorithmDataUpdate(ctx *gin.Context, algorithmId AlgorithmAlgorithmId, params EachAlgorithmDataUpdateParams) {
-	var request EachAlgorithmDataUpdateRequestObject
+// KoyoRevoke operation middleware
+func (sh *strictHandler) KoyoRevoke(ctx *gin.Context, koyoId KoyoKoyoId) {
+	var request KoyoRevokeRequestObject
 
-	request.AlgorithmId = algorithmId
-	request.Params = params
-
-	var body EachAlgorithmDataUpdateJSONRequestBody
-	if err := ctx.ShouldBindJSON(&body); err != nil {
-		ctx.Status(http.StatusBadRequest)
-		ctx.Error(err)
-		return
-	}
-	request.Body = &body
+	request.KoyoId = koyoId
 
 	handler := func(ctx *gin.Context, request interface{}) (interface{}, error) {
-		return sh.ssi.EachAlgorithmDataUpdate(ctx, request.(EachAlgorithmDataUpdateRequestObject))
+		return sh.ssi.KoyoRevoke(ctx, request.(KoyoRevokeRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "EachAlgorithmDataUpdate")
+		handler = middleware(handler, "KoyoRevoke")
 	}
 
 	response, err := handler(ctx, request)
@@ -1650,8 +1813,8 @@ func (sh *strictHandler) EachAlgorithmDataUpdate(ctx *gin.Context, algorithmId A
 	if err != nil {
 		ctx.Error(err)
 		ctx.Status(http.StatusInternalServerError)
-	} else if validResponse, ok := response.(EachAlgorithmDataUpdateResponseObject); ok {
-		if err := validResponse.VisitEachAlgorithmDataUpdateResponse(ctx.Writer); err != nil {
+	} else if validResponse, ok := response.(KoyoRevokeResponseObject); ok {
+		if err := validResponse.VisitKoyoRevokeResponse(ctx.Writer); err != nil {
 			ctx.Error(err)
 		}
 	} else if response != nil {
@@ -1686,17 +1849,17 @@ func (sh *strictHandler) ExtInfoList(ctx *gin.Context, params ExtInfoListParams)
 	}
 }
 
-// HogeGet operation middleware
-func (sh *strictHandler) HogeGet(ctx *gin.Context, params HogeGetParams) {
-	var request HogeGetRequestObject
+// ExampleInfoGet operation middleware
+func (sh *strictHandler) ExampleInfoGet(ctx *gin.Context, params ExampleInfoGetParams) {
+	var request ExampleInfoGetRequestObject
 
 	request.Params = params
 
 	handler := func(ctx *gin.Context, request interface{}) (interface{}, error) {
-		return sh.ssi.HogeGet(ctx, request.(HogeGetRequestObject))
+		return sh.ssi.ExampleInfoGet(ctx, request.(ExampleInfoGetRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "HogeGet")
+		handler = middleware(handler, "ExampleInfoGet")
 	}
 
 	response, err := handler(ctx, request)
@@ -1704,8 +1867,8 @@ func (sh *strictHandler) HogeGet(ctx *gin.Context, params HogeGetParams) {
 	if err != nil {
 		ctx.Error(err)
 		ctx.Status(http.StatusInternalServerError)
-	} else if validResponse, ok := response.(HogeGetResponseObject); ok {
-		if err := validResponse.VisitHogeGetResponse(ctx.Writer); err != nil {
+	} else if validResponse, ok := response.(ExampleInfoGetResponseObject); ok {
+		if err := validResponse.VisitExampleInfoGetResponse(ctx.Writer); err != nil {
 			ctx.Error(err)
 		}
 	} else if response != nil {
@@ -1713,17 +1876,50 @@ func (sh *strictHandler) HogeGet(ctx *gin.Context, params HogeGetParams) {
 	}
 }
 
-// EachExtInfoGet operation middleware
-func (sh *strictHandler) EachExtInfoGet(ctx *gin.Context, extinfoId ExtInfoExtInfoId) {
-	var request EachExtInfoGetRequestObject
+// ExampleInfoPost operation middleware
+func (sh *strictHandler) ExampleInfoPost(ctx *gin.Context) {
+	var request ExampleInfoPostRequestObject
+
+	var body ExampleInfoPostJSONRequestBody
+	if err := ctx.ShouldBindJSON(&body); err != nil {
+		ctx.Status(http.StatusBadRequest)
+		ctx.Error(err)
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx *gin.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.ExampleInfoPost(ctx, request.(ExampleInfoPostRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ExampleInfoPost")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		ctx.Error(err)
+		ctx.Status(http.StatusInternalServerError)
+	} else if validResponse, ok := response.(ExampleInfoPostResponseObject); ok {
+		if err := validResponse.VisitExampleInfoPostResponse(ctx.Writer); err != nil {
+			ctx.Error(err)
+		}
+	} else if response != nil {
+		ctx.Error(fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ExtInfoGet operation middleware
+func (sh *strictHandler) ExtInfoGet(ctx *gin.Context, extinfoId ExtInfoExtInfoId) {
+	var request ExtInfoGetRequestObject
 
 	request.ExtinfoId = extinfoId
 
 	handler := func(ctx *gin.Context, request interface{}) (interface{}, error) {
-		return sh.ssi.EachExtInfoGet(ctx, request.(EachExtInfoGetRequestObject))
+		return sh.ssi.ExtInfoGet(ctx, request.(ExtInfoGetRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "EachExtInfoGet")
+		handler = middleware(handler, "ExtInfoGet")
 	}
 
 	response, err := handler(ctx, request)
@@ -1731,8 +1927,8 @@ func (sh *strictHandler) EachExtInfoGet(ctx *gin.Context, extinfoId ExtInfoExtIn
 	if err != nil {
 		ctx.Error(err)
 		ctx.Status(http.StatusInternalServerError)
-	} else if validResponse, ok := response.(EachExtInfoGetResponseObject); ok {
-		if err := validResponse.VisitEachExtInfoGetResponse(ctx.Writer); err != nil {
+	} else if validResponse, ok := response.(ExtInfoGetResponseObject); ok {
+		if err := validResponse.VisitExtInfoGetResponse(ctx.Writer); err != nil {
 			ctx.Error(err)
 		}
 	} else if response != nil {
@@ -1740,15 +1936,17 @@ func (sh *strictHandler) EachExtInfoGet(ctx *gin.Context, extinfoId ExtInfoExtIn
 	}
 }
 
-// ClientsGetClient operation middleware
-func (sh *strictHandler) ClientsGetClient(ctx *gin.Context) {
-	var request ClientsGetClientRequestObject
+// KoyoList operation middleware
+func (sh *strictHandler) KoyoList(ctx *gin.Context, params KoyoListParams) {
+	var request KoyoListRequestObject
+
+	request.Params = params
 
 	handler := func(ctx *gin.Context, request interface{}) (interface{}, error) {
-		return sh.ssi.ClientsGetClient(ctx, request.(ClientsGetClientRequestObject))
+		return sh.ssi.KoyoList(ctx, request.(KoyoListRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "ClientsGetClient")
+		handler = middleware(handler, "KoyoList")
 	}
 
 	response, err := handler(ctx, request)
@@ -1756,8 +1954,105 @@ func (sh *strictHandler) ClientsGetClient(ctx *gin.Context) {
 	if err != nil {
 		ctx.Error(err)
 		ctx.Status(http.StatusInternalServerError)
-	} else if validResponse, ok := response.(ClientsGetClientResponseObject); ok {
-		if err := validResponse.VisitClientsGetClientResponse(ctx.Writer); err != nil {
+	} else if validResponse, ok := response.(KoyoListResponseObject); ok {
+		if err := validResponse.VisitKoyoListResponse(ctx.Writer); err != nil {
+			ctx.Error(err)
+		}
+	} else if response != nil {
+		ctx.Error(fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// EachKoyoGet operation middleware
+func (sh *strictHandler) EachKoyoGet(ctx *gin.Context, koyoId KoyoKoyoId) {
+	var request EachKoyoGetRequestObject
+
+	request.KoyoId = koyoId
+
+	handler := func(ctx *gin.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.EachKoyoGet(ctx, request.(EachKoyoGetRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "EachKoyoGet")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		ctx.Error(err)
+		ctx.Status(http.StatusInternalServerError)
+	} else if validResponse, ok := response.(EachKoyoGetResponseObject); ok {
+		if err := validResponse.VisitEachKoyoGetResponse(ctx.Writer); err != nil {
+			ctx.Error(err)
+		}
+	} else if response != nil {
+		ctx.Error(fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// EachKoyoUpdate operation middleware
+func (sh *strictHandler) EachKoyoUpdate(ctx *gin.Context, koyoId KoyoKoyoId) {
+	var request EachKoyoUpdateRequestObject
+
+	request.KoyoId = koyoId
+
+	var body EachKoyoUpdateJSONRequestBody
+	if err := ctx.ShouldBindJSON(&body); err != nil {
+		ctx.Status(http.StatusBadRequest)
+		ctx.Error(err)
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx *gin.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.EachKoyoUpdate(ctx, request.(EachKoyoUpdateRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "EachKoyoUpdate")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		ctx.Error(err)
+		ctx.Status(http.StatusInternalServerError)
+	} else if validResponse, ok := response.(EachKoyoUpdateResponseObject); ok {
+		if err := validResponse.VisitEachKoyoUpdateResponse(ctx.Writer); err != nil {
+			ctx.Error(err)
+		}
+	} else if response != nil {
+		ctx.Error(fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// EachKoyoDataNew operation middleware
+func (sh *strictHandler) EachKoyoDataNew(ctx *gin.Context, koyoId KoyoKoyoId) {
+	var request EachKoyoDataNewRequestObject
+
+	request.KoyoId = koyoId
+
+	var body EachKoyoDataNewJSONRequestBody
+	if err := ctx.ShouldBindJSON(&body); err != nil {
+		ctx.Status(http.StatusBadRequest)
+		ctx.Error(err)
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx *gin.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.EachKoyoDataNew(ctx, request.(EachKoyoDataNewRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "EachKoyoDataNew")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		ctx.Error(err)
+		ctx.Status(http.StatusInternalServerError)
+	} else if validResponse, ok := response.(EachKoyoDataNewResponseObject); ok {
+		if err := validResponse.VisitEachKoyoDataNewResponse(ctx.Writer); err != nil {
 			ctx.Error(err)
 		}
 	} else if response != nil {
@@ -1793,7 +2088,7 @@ func (sh *strictHandler) DataList(ctx *gin.Context, params DataListParams) {
 }
 
 // EachDataGet operation middleware
-func (sh *strictHandler) EachDataGet(ctx *gin.Context, altorithmId AlgorithmAlgorithmId, params EachDataGetParams) {
+func (sh *strictHandler) EachDataGet(ctx *gin.Context, altorithmId KoyoKoyoId, params EachDataGetParams) {
 	var request EachDataGetRequestObject
 
 	request.AltorithmId = altorithmId

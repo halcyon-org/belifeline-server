@@ -14,7 +14,7 @@ func NewServer() Server {
 	return Server{}
 }
 
-type HogeGet200JSONResponseContentType = string
+type ExampleInfoGet200JSONResponseContentType = string
 
 // (GET /status)
 func (Server) StatusGet(ctx *gin.Context) {

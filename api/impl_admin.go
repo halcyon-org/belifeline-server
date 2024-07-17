@@ -6,15 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// (POST /admin/algorithm)
-func (Server) AlgorithmCreate(ctx *gin.Context) {
-	// TODO: Implement the functionality for creating an algorithm
-	ctx.JSON(http.StatusNotImplemented, nil)
-}
-
-// (DELETE /admin/algorithm/{algorithm_id})
-func (Server) AlgorithmDelete(ctx *gin.Context, algorithmId AlgorithmAlgorithmId) {
-	// TODO: Implement the functionality for deleting an algorithm by ID
+// (GET /admin/client)
+func (Server) ClientList(ctx *gin.Context, params ClientListParams) {
+	// TODO: Implement the functionality for listing clients
 	ctx.JSON(http.StatusNotImplemented, nil)
 }
 
@@ -24,9 +18,15 @@ func (Server) ClientCreate(ctx *gin.Context) {
 	ctx.JSON(http.StatusNotImplemented, nil)
 }
 
+// (PUT /admin/client)
+func (Server) ClientRevoke(ctx *gin.Context, params ClientRevokeParams) {
+	// TODO: Implement the functionality for revoking a client
+	ctx.JSON(http.StatusNotImplemented, nil)
+}
+
 // (POST /admin/client/{client_id})
 func (Server) ClientDelete(ctx *gin.Context, clientId ProviderClientId) {
-	// TODO: Implement the functionality for deleting a client by ID
+	// TODO: Implement the functionality for deleting a client
 	ctx.JSON(http.StatusNotImplemented, nil)
 }
 
@@ -38,6 +38,30 @@ func (Server) ExtInfoCreate(ctx *gin.Context) {
 
 // (DELETE /admin/extinfo/{extinfo_id})
 func (Server) ExtInfoDelete(ctx *gin.Context, extinfoId ExtInfoExtInfoId) {
-	// TODO: Implement the functionality for deleting extinfo by ID
+	// TODO: Implement the functionality for deleting extinfo
+	ctx.JSON(http.StatusNotImplemented, nil)
+}
+
+// (PUT /admin/extinfo/{extinfo_id})
+func (Server) ExtInfoRevoke(ctx *gin.Context, extinfoId ExtInfoExtInfoId) {
+	// TODO: Implement the functionality for revoking extinfo
+	ctx.JSON(http.StatusNotImplemented, nil)
+}
+
+// (POST /admin/koyo)
+func (Server) KoyoCreate(ctx *gin.Context) {
+	// TODO: Implement the functionality for creating koyo information
+	ctx.JSON(http.StatusNotImplemented, nil)
+}
+
+// (DELETE /admin/koyo/{koyo_id})
+func (Server) KoyoDelete(ctx *gin.Context, koyoId KoyoKoyoId) {
+	// TODO: Implement the functionality for deleting koyo information
+	ctx.JSON(http.StatusNotImplemented, nil)
+}
+
+// (PUT /admin/koyo/{koyo_id})
+func (Server) KoyoRevoke(ctx *gin.Context, koyoId KoyoKoyoId) {
+	// TODO: Implement the functionality for revoking koyo api key
 	ctx.JSON(http.StatusNotImplemented, nil)
 }
