@@ -2,16 +2,31 @@ syntax = "proto3";
 
 package belifeline.v1;
 
+import "belifeline/v1/api.proto";
+import "belifeline/v1/models/types.proto";
+import "belifeline/v1/models/koyo.proto";
+import "belifeline/v1/models/provider.proto";
+import "belifeline/v1/models/extinfo.proto";
+
 option go_package = "github.com/halcyon-org/kizuna/gen/belifeline/v1;mainv1";
 
-message GreetRequest {
-  string name = 1;
-}
+// Service Definitions
+service BeLifelineService {
+  rpc ClientCreate(ClientCreateRequest) returns (belifeline.v1.models.ClientData) {}
+  rpc ClientList(ListRequest) returns (stream belifeline.v1.models.ClientData) {}
+  rpc ClientDelete(ClientIdentifier) returns (ClientIdentifier) {}
+  rpc ClientRevoke(ClientIdentifier) returns (RevokeResponse) {}
 
-message GreetResponse {
-  string greeting = 1;
-}
+  rpc ExtInfoCreate(ExternalInformationCreate) returns (belifeline.v1.models.ExternalInformation) {}
+  rpc ExtInfoList(ListRequest) returns (stream belifeline.v1.models.ExternalInformation) {}
+  rpc ExtInfoDelete(ExtInfoIdentifier) returns (ExtInfoIdentifier) {}
 
-service GreetService {
-  rpc Greet(GreetRequest) returns (GreetResponse) {}
+  rpc KoyoCreate(KoyoInformationCreate) returns (belifeline.v1.models.KoyoInformation) {}
+  rpc KoyoList(ListRequest) returns (stream belifeline.v1.models.KoyoInformation) {}
+  rpc KoyoDelete(KoyoIdentifier) returns (KoyoIdentifier) {}
+  rpc KoyoRevoke(ApiKeyRevokeRequest) returns (RevokeResponse) {}
+
+  rpc Status(Empty) returns (StatusResponse) {}
+
+  // Define additional endpoints as appropriate
 }
