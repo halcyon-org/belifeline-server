@@ -6,13 +6,11 @@ import "belifeline/v1/models/types.proto";
 
 option go_package = "github.com/halcyon-org/kizuna/gen/belifeline/v1;mainv1";
 
-
 // ExtInfo Messages
 message ExampleInfoExampleData {
   MultiPolygon area = 1;
   bytes image = 2;
 }
-
 
 message ExternalInformation {
   UUID external_id = 1;

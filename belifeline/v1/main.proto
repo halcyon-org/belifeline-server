@@ -3,10 +3,10 @@ syntax = "proto3";
 package belifeline.v1;
 
 import "belifeline/v1/api.proto";
-import "belifeline/v1/models/types.proto";
+import "belifeline/v1/models/extinfo.proto";
 import "belifeline/v1/models/koyo.proto";
 import "belifeline/v1/models/provider.proto";
-import "belifeline/v1/models/extinfo.proto";
+import "belifeline/v1/models/types.proto";
 
 option go_package = "github.com/halcyon-org/kizuna/gen/belifeline/v1;mainv1";
 
