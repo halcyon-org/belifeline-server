@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package belifeline.v1.models;
+package belifeline.models.v1;
 
-import "belifeline/v1/models/types.proto";
+import "belifeline/models/v1/types.proto";
 
 option go_package = "github.com/halcyon-org/kizuna/gen/belifeline/v1;mainv1";
 

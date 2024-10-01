@@ -2,37 +2,37 @@ syntax = "proto3";
 
 package belifeline.v1;
 
-import "belifeline/v1/models/koyo.proto";
-import "belifeline/v1/models/types.proto";
+import "belifeline/models/v1/koyo.proto";
+import "belifeline/models/v1/types.proto";
 
 option go_package = "github.com/halcyon-org/kizuna/gen/belifeline/v1;mainv1";
 
 message KoyoInformationCreate {
   string koyo_name = 1;
   string koyo_description = 2;
-  repeated belifeline.v1.models.UUID need_external = 3;
+  repeated belifeline.models.v1.UUID need_external = 3;
   map<string, string> koyo_params = 4;
   repeated float koyo_scales = 5;
-  belifeline.v1.models.Version version = 6;
-  repeated belifeline.v1.models.Version version_history = 7;
+  belifeline.models.v1.Version version = 6;
+  repeated belifeline.models.v1.Version version_history = 7;
   string license = 8;
   repeated string ext_licenses = 9;
-  belifeline.v1.models.DataType data_type = 10;
+  belifeline.models.v1.DataType data_type = 10;
 }
 
 message KoyoInformationCreateOrUpdate {
-  belifeline.v1.models.UUID koyo_id = 1;
+  belifeline.models.v1.UUID koyo_id = 1;
   string koyo_name = 2;
   string koyo_description = 3;
-  repeated belifeline.v1.models.UUID need_external = 4;
+  repeated belifeline.models.v1.UUID need_external = 4;
   map<string, string> koyo_params = 5;
   repeated float koyo_scales = 6;
-  repeated belifeline.v1.models.UUID koyo_data_ids = 7;
-  belifeline.v1.models.Version version = 8;
-  repeated belifeline.v1.models.Version version_history = 9;
+  repeated belifeline.models.v1.UUID koyo_data_ids = 7;
+  belifeline.models.v1.Version version = 8;
+  repeated belifeline.models.v1.Version version_history = 9;
   string license = 10;
   repeated string ext_licenses = 11;
-  belifeline.v1.models.DataType data_type = 12;
+  belifeline.models.v1.DataType data_type = 12;
 }
 
 message ExternalInformationCreate {
@@ -60,25 +60,25 @@ message ListRequest {
 }
 
 message ClientIdentifier {
-  belifeline.v1.models.UUID client_id = 1;
+  belifeline.models.v1.UUID client_id = 1;
 }
 
 message ExtInfoIdentifier {
-  belifeline.v1.models.UUID extinfo_id = 1;
+  belifeline.models.v1.UUID extinfo_id = 1;
 }
 
 message KoyoIdentifier {
-  belifeline.v1.models.UUID koyo_id = 1;
+  belifeline.models.v1.UUID koyo_id = 1;
 }
 
 message ApiKeyRevokeRequest {
-  belifeline.v1.models.UUID koyo_id = 1;
-  belifeline.v1.models.ApiKey api_key = 2;
+  belifeline.models.v1.UUID koyo_id = 1;
+  belifeline.models.v1.ApiKey api_key = 2;
 }
 
 message RevokeResponse {
-  belifeline.v1.models.UUID koyo_id = 1;
-  belifeline.v1.models.ApiKey api_key = 2;
+  belifeline.models.v1.UUID koyo_id = 1;
+  belifeline.models.v1.ApiKey api_key = 2;
 }
 
 message Empty {}
