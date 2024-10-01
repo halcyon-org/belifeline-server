@@ -63,9 +63,9 @@ const (
 	// BeLifelineServiceKoyoDeleteProcedure is the fully-qualified name of the BeLifelineService's
 	// KoyoDelete RPC.
 	BeLifelineServiceKoyoDeleteProcedure = "/belifeline.v1.BeLifelineService/KoyoDelete"
-	// BeLifelineServiceKoyoRevokeProcedure is the fully-qualified name of the BeLifelineService's
-	// KoyoRevoke RPC.
-	BeLifelineServiceKoyoRevokeProcedure = "/belifeline.v1.BeLifelineService/KoyoRevoke"
+	// BeLifelineServiceKoyoApiRevokeProcedure is the fully-qualified name of the BeLifelineService's
+	// KoyoApiRevoke RPC.
+	BeLifelineServiceKoyoApiRevokeProcedure = "/belifeline.v1.BeLifelineService/KoyoApiRevoke"
 	// BeLifelineServiceStatusProcedure is the fully-qualified name of the BeLifelineService's Status
 	// RPC.
 	BeLifelineServiceStatusProcedure = "/belifeline.v1.BeLifelineService/Status"
@@ -84,24 +84,24 @@ var (
 	beLifelineServiceKoyoCreateMethodDescriptor    = beLifelineServiceServiceDescriptor.Methods().ByName("KoyoCreate")
 	beLifelineServiceKoyoListMethodDescriptor      = beLifelineServiceServiceDescriptor.Methods().ByName("KoyoList")
 	beLifelineServiceKoyoDeleteMethodDescriptor    = beLifelineServiceServiceDescriptor.Methods().ByName("KoyoDelete")
-	beLifelineServiceKoyoRevokeMethodDescriptor    = beLifelineServiceServiceDescriptor.Methods().ByName("KoyoRevoke")
+	beLifelineServiceKoyoApiRevokeMethodDescriptor = beLifelineServiceServiceDescriptor.Methods().ByName("KoyoApiRevoke")
 	beLifelineServiceStatusMethodDescriptor        = beLifelineServiceServiceDescriptor.Methods().ByName("Status")
 )
 
 // BeLifelineServiceClient is a client for the belifeline.v1.BeLifelineService service.
 type BeLifelineServiceClient interface {
-	ClientCreate(context.Context, *connect.Request[v1.ClientCreateRequest]) (*connect.Response[v1.ClientData], error)
-	ClientList(context.Context, *connect.Request[v1.ListRequest]) (*connect.ServerStreamForClient[v1.ClientData], error)
-	ClientDelete(context.Context, *connect.Request[v1.ClientIdentifier]) (*connect.Response[v1.ClientIdentifier], error)
-	ClientRevoke(context.Context, *connect.Request[v1.ClientIdentifier]) (*connect.Response[v1.RevokeResponse], error)
-	ExtInfoCreate(context.Context, *connect.Request[v1.ExternalInformationCreate]) (*connect.Response[v1.ExternalInformation], error)
-	ExtInfoList(context.Context, *connect.Request[v1.ListRequest]) (*connect.ServerStreamForClient[v1.ExternalInformation], error)
-	ExtInfoDelete(context.Context, *connect.Request[v1.ExtInfoIdentifier]) (*connect.Response[v1.ExtInfoIdentifier], error)
-	KoyoCreate(context.Context, *connect.Request[v1.KoyoInformationCreate]) (*connect.Response[v1.KoyoInformation], error)
-	KoyoList(context.Context, *connect.Request[v1.ListRequest]) (*connect.ServerStreamForClient[v1.KoyoInformation], error)
-	KoyoDelete(context.Context, *connect.Request[v1.KoyoIdentifier]) (*connect.Response[v1.KoyoIdentifier], error)
-	KoyoRevoke(context.Context, *connect.Request[v1.ApiKeyRevokeRequest]) (*connect.Response[v1.RevokeResponse], error)
-	Status(context.Context, *connect.Request[v1.Empty]) (*connect.Response[v1.StatusResponse], error)
+	ClientCreate(context.Context, *connect.Request[v1.ClientCreateRequest]) (*connect.Response[v1.ClientCreateResponse], error)
+	ClientList(context.Context, *connect.Request[v1.ClientListRequest]) (*connect.ServerStreamForClient[v1.ClientListResponse], error)
+	ClientDelete(context.Context, *connect.Request[v1.ClientDeleteRequest]) (*connect.Response[v1.ClientDeleteResponse], error)
+	ClientRevoke(context.Context, *connect.Request[v1.ClientRevokeRequest]) (*connect.Response[v1.ClientRevokeResponse], error)
+	ExtInfoCreate(context.Context, *connect.Request[v1.ExtInfoCreateRequest]) (*connect.Response[v1.ExtInfoCreateResponse], error)
+	ExtInfoList(context.Context, *connect.Request[v1.ExtInfoListRequest]) (*connect.ServerStreamForClient[v1.ExtInfoListResponse], error)
+	ExtInfoDelete(context.Context, *connect.Request[v1.ExtInfoDeleteRequest]) (*connect.Response[v1.ExtInfoDeleteResponse], error)
+	KoyoCreate(context.Context, *connect.Request[v1.KoyoCreateRequest]) (*connect.Response[v1.KoyoCreateResponse], error)
+	KoyoList(context.Context, *connect.Request[v1.KoyoListRequest]) (*connect.ServerStreamForClient[v1.KoyoListResponse], error)
+	KoyoDelete(context.Context, *connect.Request[v1.KoyoDeleteRequest]) (*connect.Response[v1.KoyoDeleteResponse], error)
+	KoyoApiRevoke(context.Context, *connect.Request[v1.KoyoApiRevokeRequest]) (*connect.Response[v1.KoyoApiRevokeResponse], error)
+	Status(context.Context, *connect.Request[v1.StatusRequest]) (*connect.Response[v1.StatusResponse], error)
 }
 
 // NewBeLifelineServiceClient constructs a client for the belifeline.v1.BeLifelineService service.
@@ -114,73 +114,73 @@ type BeLifelineServiceClient interface {
 func NewBeLifelineServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) BeLifelineServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &beLifelineServiceClient{
-		clientCreate: connect.NewClient[v1.ClientCreateRequest, v1.ClientData](
+		clientCreate: connect.NewClient[v1.ClientCreateRequest, v1.ClientCreateResponse](
 			httpClient,
 			baseURL+BeLifelineServiceClientCreateProcedure,
 			connect.WithSchema(beLifelineServiceClientCreateMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		clientList: connect.NewClient[v1.ListRequest, v1.ClientData](
+		clientList: connect.NewClient[v1.ClientListRequest, v1.ClientListResponse](
 			httpClient,
 			baseURL+BeLifelineServiceClientListProcedure,
 			connect.WithSchema(beLifelineServiceClientListMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		clientDelete: connect.NewClient[v1.ClientIdentifier, v1.ClientIdentifier](
+		clientDelete: connect.NewClient[v1.ClientDeleteRequest, v1.ClientDeleteResponse](
 			httpClient,
 			baseURL+BeLifelineServiceClientDeleteProcedure,
 			connect.WithSchema(beLifelineServiceClientDeleteMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		clientRevoke: connect.NewClient[v1.ClientIdentifier, v1.RevokeResponse](
+		clientRevoke: connect.NewClient[v1.ClientRevokeRequest, v1.ClientRevokeResponse](
 			httpClient,
 			baseURL+BeLifelineServiceClientRevokeProcedure,
 			connect.WithSchema(beLifelineServiceClientRevokeMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		extInfoCreate: connect.NewClient[v1.ExternalInformationCreate, v1.ExternalInformation](
+		extInfoCreate: connect.NewClient[v1.ExtInfoCreateRequest, v1.ExtInfoCreateResponse](
 			httpClient,
 			baseURL+BeLifelineServiceExtInfoCreateProcedure,
 			connect.WithSchema(beLifelineServiceExtInfoCreateMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		extInfoList: connect.NewClient[v1.ListRequest, v1.ExternalInformation](
+		extInfoList: connect.NewClient[v1.ExtInfoListRequest, v1.ExtInfoListResponse](
 			httpClient,
 			baseURL+BeLifelineServiceExtInfoListProcedure,
 			connect.WithSchema(beLifelineServiceExtInfoListMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		extInfoDelete: connect.NewClient[v1.ExtInfoIdentifier, v1.ExtInfoIdentifier](
+		extInfoDelete: connect.NewClient[v1.ExtInfoDeleteRequest, v1.ExtInfoDeleteResponse](
 			httpClient,
 			baseURL+BeLifelineServiceExtInfoDeleteProcedure,
 			connect.WithSchema(beLifelineServiceExtInfoDeleteMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		koyoCreate: connect.NewClient[v1.KoyoInformationCreate, v1.KoyoInformation](
+		koyoCreate: connect.NewClient[v1.KoyoCreateRequest, v1.KoyoCreateResponse](
 			httpClient,
 			baseURL+BeLifelineServiceKoyoCreateProcedure,
 			connect.WithSchema(beLifelineServiceKoyoCreateMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		koyoList: connect.NewClient[v1.ListRequest, v1.KoyoInformation](
+		koyoList: connect.NewClient[v1.KoyoListRequest, v1.KoyoListResponse](
 			httpClient,
 			baseURL+BeLifelineServiceKoyoListProcedure,
 			connect.WithSchema(beLifelineServiceKoyoListMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		koyoDelete: connect.NewClient[v1.KoyoIdentifier, v1.KoyoIdentifier](
+		koyoDelete: connect.NewClient[v1.KoyoDeleteRequest, v1.KoyoDeleteResponse](
 			httpClient,
 			baseURL+BeLifelineServiceKoyoDeleteProcedure,
 			connect.WithSchema(beLifelineServiceKoyoDeleteMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		koyoRevoke: connect.NewClient[v1.ApiKeyRevokeRequest, v1.RevokeResponse](
+		koyoApiRevoke: connect.NewClient[v1.KoyoApiRevokeRequest, v1.KoyoApiRevokeResponse](
 			httpClient,
-			baseURL+BeLifelineServiceKoyoRevokeProcedure,
-			connect.WithSchema(beLifelineServiceKoyoRevokeMethodDescriptor),
+			baseURL+BeLifelineServiceKoyoApiRevokeProcedure,
+			connect.WithSchema(beLifelineServiceKoyoApiRevokeMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		status: connect.NewClient[v1.Empty, v1.StatusResponse](
+		status: connect.NewClient[v1.StatusRequest, v1.StatusResponse](
 			httpClient,
 			baseURL+BeLifelineServiceStatusProcedure,
 			connect.WithSchema(beLifelineServiceStatusMethodDescriptor),
@@ -191,94 +191,94 @@ func NewBeLifelineServiceClient(httpClient connect.HTTPClient, baseURL string, o
 
 // beLifelineServiceClient implements BeLifelineServiceClient.
 type beLifelineServiceClient struct {
-	clientCreate  *connect.Client[v1.ClientCreateRequest, v1.ClientData]
-	clientList    *connect.Client[v1.ListRequest, v1.ClientData]
-	clientDelete  *connect.Client[v1.ClientIdentifier, v1.ClientIdentifier]
-	clientRevoke  *connect.Client[v1.ClientIdentifier, v1.RevokeResponse]
-	extInfoCreate *connect.Client[v1.ExternalInformationCreate, v1.ExternalInformation]
-	extInfoList   *connect.Client[v1.ListRequest, v1.ExternalInformation]
-	extInfoDelete *connect.Client[v1.ExtInfoIdentifier, v1.ExtInfoIdentifier]
-	koyoCreate    *connect.Client[v1.KoyoInformationCreate, v1.KoyoInformation]
-	koyoList      *connect.Client[v1.ListRequest, v1.KoyoInformation]
-	koyoDelete    *connect.Client[v1.KoyoIdentifier, v1.KoyoIdentifier]
-	koyoRevoke    *connect.Client[v1.ApiKeyRevokeRequest, v1.RevokeResponse]
-	status        *connect.Client[v1.Empty, v1.StatusResponse]
+	clientCreate  *connect.Client[v1.ClientCreateRequest, v1.ClientCreateResponse]
+	clientList    *connect.Client[v1.ClientListRequest, v1.ClientListResponse]
+	clientDelete  *connect.Client[v1.ClientDeleteRequest, v1.ClientDeleteResponse]
+	clientRevoke  *connect.Client[v1.ClientRevokeRequest, v1.ClientRevokeResponse]
+	extInfoCreate *connect.Client[v1.ExtInfoCreateRequest, v1.ExtInfoCreateResponse]
+	extInfoList   *connect.Client[v1.ExtInfoListRequest, v1.ExtInfoListResponse]
+	extInfoDelete *connect.Client[v1.ExtInfoDeleteRequest, v1.ExtInfoDeleteResponse]
+	koyoCreate    *connect.Client[v1.KoyoCreateRequest, v1.KoyoCreateResponse]
+	koyoList      *connect.Client[v1.KoyoListRequest, v1.KoyoListResponse]
+	koyoDelete    *connect.Client[v1.KoyoDeleteRequest, v1.KoyoDeleteResponse]
+	koyoApiRevoke *connect.Client[v1.KoyoApiRevokeRequest, v1.KoyoApiRevokeResponse]
+	status        *connect.Client[v1.StatusRequest, v1.StatusResponse]
 }
 
 // ClientCreate calls belifeline.v1.BeLifelineService.ClientCreate.
-func (c *beLifelineServiceClient) ClientCreate(ctx context.Context, req *connect.Request[v1.ClientCreateRequest]) (*connect.Response[v1.ClientData], error) {
+func (c *beLifelineServiceClient) ClientCreate(ctx context.Context, req *connect.Request[v1.ClientCreateRequest]) (*connect.Response[v1.ClientCreateResponse], error) {
 	return c.clientCreate.CallUnary(ctx, req)
 }
 
 // ClientList calls belifeline.v1.BeLifelineService.ClientList.
-func (c *beLifelineServiceClient) ClientList(ctx context.Context, req *connect.Request[v1.ListRequest]) (*connect.ServerStreamForClient[v1.ClientData], error) {
+func (c *beLifelineServiceClient) ClientList(ctx context.Context, req *connect.Request[v1.ClientListRequest]) (*connect.ServerStreamForClient[v1.ClientListResponse], error) {
 	return c.clientList.CallServerStream(ctx, req)
 }
 
 // ClientDelete calls belifeline.v1.BeLifelineService.ClientDelete.
-func (c *beLifelineServiceClient) ClientDelete(ctx context.Context, req *connect.Request[v1.ClientIdentifier]) (*connect.Response[v1.ClientIdentifier], error) {
+func (c *beLifelineServiceClient) ClientDelete(ctx context.Context, req *connect.Request[v1.ClientDeleteRequest]) (*connect.Response[v1.ClientDeleteResponse], error) {
 	return c.clientDelete.CallUnary(ctx, req)
 }
 
 // ClientRevoke calls belifeline.v1.BeLifelineService.ClientRevoke.
-func (c *beLifelineServiceClient) ClientRevoke(ctx context.Context, req *connect.Request[v1.ClientIdentifier]) (*connect.Response[v1.RevokeResponse], error) {
+func (c *beLifelineServiceClient) ClientRevoke(ctx context.Context, req *connect.Request[v1.ClientRevokeRequest]) (*connect.Response[v1.ClientRevokeResponse], error) {
 	return c.clientRevoke.CallUnary(ctx, req)
 }
 
 // ExtInfoCreate calls belifeline.v1.BeLifelineService.ExtInfoCreate.
-func (c *beLifelineServiceClient) ExtInfoCreate(ctx context.Context, req *connect.Request[v1.ExternalInformationCreate]) (*connect.Response[v1.ExternalInformation], error) {
+func (c *beLifelineServiceClient) ExtInfoCreate(ctx context.Context, req *connect.Request[v1.ExtInfoCreateRequest]) (*connect.Response[v1.ExtInfoCreateResponse], error) {
 	return c.extInfoCreate.CallUnary(ctx, req)
 }
 
 // ExtInfoList calls belifeline.v1.BeLifelineService.ExtInfoList.
-func (c *beLifelineServiceClient) ExtInfoList(ctx context.Context, req *connect.Request[v1.ListRequest]) (*connect.ServerStreamForClient[v1.ExternalInformation], error) {
+func (c *beLifelineServiceClient) ExtInfoList(ctx context.Context, req *connect.Request[v1.ExtInfoListRequest]) (*connect.ServerStreamForClient[v1.ExtInfoListResponse], error) {
 	return c.extInfoList.CallServerStream(ctx, req)
 }
 
 // ExtInfoDelete calls belifeline.v1.BeLifelineService.ExtInfoDelete.
-func (c *beLifelineServiceClient) ExtInfoDelete(ctx context.Context, req *connect.Request[v1.ExtInfoIdentifier]) (*connect.Response[v1.ExtInfoIdentifier], error) {
+func (c *beLifelineServiceClient) ExtInfoDelete(ctx context.Context, req *connect.Request[v1.ExtInfoDeleteRequest]) (*connect.Response[v1.ExtInfoDeleteResponse], error) {
 	return c.extInfoDelete.CallUnary(ctx, req)
 }
 
 // KoyoCreate calls belifeline.v1.BeLifelineService.KoyoCreate.
-func (c *beLifelineServiceClient) KoyoCreate(ctx context.Context, req *connect.Request[v1.KoyoInformationCreate]) (*connect.Response[v1.KoyoInformation], error) {
+func (c *beLifelineServiceClient) KoyoCreate(ctx context.Context, req *connect.Request[v1.KoyoCreateRequest]) (*connect.Response[v1.KoyoCreateResponse], error) {
 	return c.koyoCreate.CallUnary(ctx, req)
 }
 
 // KoyoList calls belifeline.v1.BeLifelineService.KoyoList.
-func (c *beLifelineServiceClient) KoyoList(ctx context.Context, req *connect.Request[v1.ListRequest]) (*connect.ServerStreamForClient[v1.KoyoInformation], error) {
+func (c *beLifelineServiceClient) KoyoList(ctx context.Context, req *connect.Request[v1.KoyoListRequest]) (*connect.ServerStreamForClient[v1.KoyoListResponse], error) {
 	return c.koyoList.CallServerStream(ctx, req)
 }
 
 // KoyoDelete calls belifeline.v1.BeLifelineService.KoyoDelete.
-func (c *beLifelineServiceClient) KoyoDelete(ctx context.Context, req *connect.Request[v1.KoyoIdentifier]) (*connect.Response[v1.KoyoIdentifier], error) {
+func (c *beLifelineServiceClient) KoyoDelete(ctx context.Context, req *connect.Request[v1.KoyoDeleteRequest]) (*connect.Response[v1.KoyoDeleteResponse], error) {
 	return c.koyoDelete.CallUnary(ctx, req)
 }
 
-// KoyoRevoke calls belifeline.v1.BeLifelineService.KoyoRevoke.
-func (c *beLifelineServiceClient) KoyoRevoke(ctx context.Context, req *connect.Request[v1.ApiKeyRevokeRequest]) (*connect.Response[v1.RevokeResponse], error) {
-	return c.koyoRevoke.CallUnary(ctx, req)
+// KoyoApiRevoke calls belifeline.v1.BeLifelineService.KoyoApiRevoke.
+func (c *beLifelineServiceClient) KoyoApiRevoke(ctx context.Context, req *connect.Request[v1.KoyoApiRevokeRequest]) (*connect.Response[v1.KoyoApiRevokeResponse], error) {
+	return c.koyoApiRevoke.CallUnary(ctx, req)
 }
 
 // Status calls belifeline.v1.BeLifelineService.Status.
-func (c *beLifelineServiceClient) Status(ctx context.Context, req *connect.Request[v1.Empty]) (*connect.Response[v1.StatusResponse], error) {
+func (c *beLifelineServiceClient) Status(ctx context.Context, req *connect.Request[v1.StatusRequest]) (*connect.Response[v1.StatusResponse], error) {
 	return c.status.CallUnary(ctx, req)
 }
 
 // BeLifelineServiceHandler is an implementation of the belifeline.v1.BeLifelineService service.
 type BeLifelineServiceHandler interface {
-	ClientCreate(context.Context, *connect.Request[v1.ClientCreateRequest]) (*connect.Response[v1.ClientData], error)
-	ClientList(context.Context, *connect.Request[v1.ListRequest], *connect.ServerStream[v1.ClientData]) error
-	ClientDelete(context.Context, *connect.Request[v1.ClientIdentifier]) (*connect.Response[v1.ClientIdentifier], error)
-	ClientRevoke(context.Context, *connect.Request[v1.ClientIdentifier]) (*connect.Response[v1.RevokeResponse], error)
-	ExtInfoCreate(context.Context, *connect.Request[v1.ExternalInformationCreate]) (*connect.Response[v1.ExternalInformation], error)
-	ExtInfoList(context.Context, *connect.Request[v1.ListRequest], *connect.ServerStream[v1.ExternalInformation]) error
-	ExtInfoDelete(context.Context, *connect.Request[v1.ExtInfoIdentifier]) (*connect.Response[v1.ExtInfoIdentifier], error)
-	KoyoCreate(context.Context, *connect.Request[v1.KoyoInformationCreate]) (*connect.Response[v1.KoyoInformation], error)
-	KoyoList(context.Context, *connect.Request[v1.ListRequest], *connect.ServerStream[v1.KoyoInformation]) error
-	KoyoDelete(context.Context, *connect.Request[v1.KoyoIdentifier]) (*connect.Response[v1.KoyoIdentifier], error)
-	KoyoRevoke(context.Context, *connect.Request[v1.ApiKeyRevokeRequest]) (*connect.Response[v1.RevokeResponse], error)
-	Status(context.Context, *connect.Request[v1.Empty]) (*connect.Response[v1.StatusResponse], error)
+	ClientCreate(context.Context, *connect.Request[v1.ClientCreateRequest]) (*connect.Response[v1.ClientCreateResponse], error)
+	ClientList(context.Context, *connect.Request[v1.ClientListRequest], *connect.ServerStream[v1.ClientListResponse]) error
+	ClientDelete(context.Context, *connect.Request[v1.ClientDeleteRequest]) (*connect.Response[v1.ClientDeleteResponse], error)
+	ClientRevoke(context.Context, *connect.Request[v1.ClientRevokeRequest]) (*connect.Response[v1.ClientRevokeResponse], error)
+	ExtInfoCreate(context.Context, *connect.Request[v1.ExtInfoCreateRequest]) (*connect.Response[v1.ExtInfoCreateResponse], error)
+	ExtInfoList(context.Context, *connect.Request[v1.ExtInfoListRequest], *connect.ServerStream[v1.ExtInfoListResponse]) error
+	ExtInfoDelete(context.Context, *connect.Request[v1.ExtInfoDeleteRequest]) (*connect.Response[v1.ExtInfoDeleteResponse], error)
+	KoyoCreate(context.Context, *connect.Request[v1.KoyoCreateRequest]) (*connect.Response[v1.KoyoCreateResponse], error)
+	KoyoList(context.Context, *connect.Request[v1.KoyoListRequest], *connect.ServerStream[v1.KoyoListResponse]) error
+	KoyoDelete(context.Context, *connect.Request[v1.KoyoDeleteRequest]) (*connect.Response[v1.KoyoDeleteResponse], error)
+	KoyoApiRevoke(context.Context, *connect.Request[v1.KoyoApiRevokeRequest]) (*connect.Response[v1.KoyoApiRevokeResponse], error)
+	Status(context.Context, *connect.Request[v1.StatusRequest]) (*connect.Response[v1.StatusResponse], error)
 }
 
 // NewBeLifelineServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -347,10 +347,10 @@ func NewBeLifelineServiceHandler(svc BeLifelineServiceHandler, opts ...connect.H
 		connect.WithSchema(beLifelineServiceKoyoDeleteMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
-	beLifelineServiceKoyoRevokeHandler := connect.NewUnaryHandler(
-		BeLifelineServiceKoyoRevokeProcedure,
-		svc.KoyoRevoke,
-		connect.WithSchema(beLifelineServiceKoyoRevokeMethodDescriptor),
+	beLifelineServiceKoyoApiRevokeHandler := connect.NewUnaryHandler(
+		BeLifelineServiceKoyoApiRevokeProcedure,
+		svc.KoyoApiRevoke,
+		connect.WithSchema(beLifelineServiceKoyoApiRevokeMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
 	beLifelineServiceStatusHandler := connect.NewUnaryHandler(
@@ -381,8 +381,8 @@ func NewBeLifelineServiceHandler(svc BeLifelineServiceHandler, opts ...connect.H
 			beLifelineServiceKoyoListHandler.ServeHTTP(w, r)
 		case BeLifelineServiceKoyoDeleteProcedure:
 			beLifelineServiceKoyoDeleteHandler.ServeHTTP(w, r)
-		case BeLifelineServiceKoyoRevokeProcedure:
-			beLifelineServiceKoyoRevokeHandler.ServeHTTP(w, r)
+		case BeLifelineServiceKoyoApiRevokeProcedure:
+			beLifelineServiceKoyoApiRevokeHandler.ServeHTTP(w, r)
 		case BeLifelineServiceStatusProcedure:
 			beLifelineServiceStatusHandler.ServeHTTP(w, r)
 		default:
@@ -394,50 +394,50 @@ func NewBeLifelineServiceHandler(svc BeLifelineServiceHandler, opts ...connect.H
 // UnimplementedBeLifelineServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedBeLifelineServiceHandler struct{}
 
-func (UnimplementedBeLifelineServiceHandler) ClientCreate(context.Context, *connect.Request[v1.ClientCreateRequest]) (*connect.Response[v1.ClientData], error) {
+func (UnimplementedBeLifelineServiceHandler) ClientCreate(context.Context, *connect.Request[v1.ClientCreateRequest]) (*connect.Response[v1.ClientCreateResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.ClientCreate is not implemented"))
 }
 
-func (UnimplementedBeLifelineServiceHandler) ClientList(context.Context, *connect.Request[v1.ListRequest], *connect.ServerStream[v1.ClientData]) error {
+func (UnimplementedBeLifelineServiceHandler) ClientList(context.Context, *connect.Request[v1.ClientListRequest], *connect.ServerStream[v1.ClientListResponse]) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.ClientList is not implemented"))
 }
 
-func (UnimplementedBeLifelineServiceHandler) ClientDelete(context.Context, *connect.Request[v1.ClientIdentifier]) (*connect.Response[v1.ClientIdentifier], error) {
+func (UnimplementedBeLifelineServiceHandler) ClientDelete(context.Context, *connect.Request[v1.ClientDeleteRequest]) (*connect.Response[v1.ClientDeleteResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.ClientDelete is not implemented"))
 }
 
-func (UnimplementedBeLifelineServiceHandler) ClientRevoke(context.Context, *connect.Request[v1.ClientIdentifier]) (*connect.Response[v1.RevokeResponse], error) {
+func (UnimplementedBeLifelineServiceHandler) ClientRevoke(context.Context, *connect.Request[v1.ClientRevokeRequest]) (*connect.Response[v1.ClientRevokeResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.ClientRevoke is not implemented"))
 }
 
-func (UnimplementedBeLifelineServiceHandler) ExtInfoCreate(context.Context, *connect.Request[v1.ExternalInformationCreate]) (*connect.Response[v1.ExternalInformation], error) {
+func (UnimplementedBeLifelineServiceHandler) ExtInfoCreate(context.Context, *connect.Request[v1.ExtInfoCreateRequest]) (*connect.Response[v1.ExtInfoCreateResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.ExtInfoCreate is not implemented"))
 }
 
-func (UnimplementedBeLifelineServiceHandler) ExtInfoList(context.Context, *connect.Request[v1.ListRequest], *connect.ServerStream[v1.ExternalInformation]) error {
+func (UnimplementedBeLifelineServiceHandler) ExtInfoList(context.Context, *connect.Request[v1.ExtInfoListRequest], *connect.ServerStream[v1.ExtInfoListResponse]) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.ExtInfoList is not implemented"))
 }
 
-func (UnimplementedBeLifelineServiceHandler) ExtInfoDelete(context.Context, *connect.Request[v1.ExtInfoIdentifier]) (*connect.Response[v1.ExtInfoIdentifier], error) {
+func (UnimplementedBeLifelineServiceHandler) ExtInfoDelete(context.Context, *connect.Request[v1.ExtInfoDeleteRequest]) (*connect.Response[v1.ExtInfoDeleteResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.ExtInfoDelete is not implemented"))
 }
 
-func (UnimplementedBeLifelineServiceHandler) KoyoCreate(context.Context, *connect.Request[v1.KoyoInformationCreate]) (*connect.Response[v1.KoyoInformation], error) {
+func (UnimplementedBeLifelineServiceHandler) KoyoCreate(context.Context, *connect.Request[v1.KoyoCreateRequest]) (*connect.Response[v1.KoyoCreateResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.KoyoCreate is not implemented"))
 }
 
-func (UnimplementedBeLifelineServiceHandler) KoyoList(context.Context, *connect.Request[v1.ListRequest], *connect.ServerStream[v1.KoyoInformation]) error {
+func (UnimplementedBeLifelineServiceHandler) KoyoList(context.Context, *connect.Request[v1.KoyoListRequest], *connect.ServerStream[v1.KoyoListResponse]) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.KoyoList is not implemented"))
 }
 
-func (UnimplementedBeLifelineServiceHandler) KoyoDelete(context.Context, *connect.Request[v1.KoyoIdentifier]) (*connect.Response[v1.KoyoIdentifier], error) {
+func (UnimplementedBeLifelineServiceHandler) KoyoDelete(context.Context, *connect.Request[v1.KoyoDeleteRequest]) (*connect.Response[v1.KoyoDeleteResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.KoyoDelete is not implemented"))
 }
 
-func (UnimplementedBeLifelineServiceHandler) KoyoRevoke(context.Context, *connect.Request[v1.ApiKeyRevokeRequest]) (*connect.Response[v1.RevokeResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.KoyoRevoke is not implemented"))
+func (UnimplementedBeLifelineServiceHandler) KoyoApiRevoke(context.Context, *connect.Request[v1.KoyoApiRevokeRequest]) (*connect.Response[v1.KoyoApiRevokeResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.KoyoApiRevoke is not implemented"))
 }
 
-func (UnimplementedBeLifelineServiceHandler) Status(context.Context, *connect.Request[v1.Empty]) (*connect.Response[v1.StatusResponse], error) {
+func (UnimplementedBeLifelineServiceHandler) Status(context.Context, *connect.Request[v1.StatusRequest]) (*connect.Response[v1.StatusResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.Status is not implemented"))
 }
