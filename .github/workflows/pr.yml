@@ -14,9 +14,11 @@ jobs:
     - name: Get the list of commit messages
       run: |
         EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-        echo "COMMIT_LOGS<<$EOF" >> "$GITHUB_ENV"
-        git log --format="* %s" origin/${{ github.event.pull_request.base.ref }}..HEAD~1 --reverse >> "$GITHUB_ENV"
-        echo "$EOF" >> "$GITHUB_ENV"
+        {
+          echo "commitlogs<<$EOF"
+          git log --format="* %s" origin/${{ github.event.pull_request.base.ref }}..HEAD~1 --reverse
+          echo "$EOF"
+        } >> "$GITHUB_ENV"
     - name: Set the output
       uses: actions/github-script@v7
       id: set-result
@@ -33,7 +35,7 @@ jobs:
 
           // Check if "--- commit logs ---" exists
           const marker = "--- commit logs ---";
-          const commitLogs = process.env.COMMIT_LOGS || "Default commit logs";
+          const commitLogs = process.env.commitlogs || "";
 
           let newDescription;
           const markerIndex = description.indexOf(marker);
