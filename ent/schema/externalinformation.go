@@ -23,7 +23,6 @@ func (ExternalInformation) Fields() []ent.Field {
 		field.String("license_description"),
 		field.Time("first_entry_at").Default(time.Now).Immutable(),
 		field.Time("last_updated_at").Default(time.Now).UpdateDefault(time.Now),
-		// TODO: repeated string updated_history
 	}
 }
 
