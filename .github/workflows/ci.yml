@@ -64,7 +64,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-golang
       - name: Run go build
-        run: go build -v ./cmd/rapi/main.go
+        run: go build -v ./cmd/kizuna/main.go
 
   golang-vet-check:
     runs-on: ubuntu-latest
