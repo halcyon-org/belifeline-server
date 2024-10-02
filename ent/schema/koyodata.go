@@ -19,7 +19,7 @@ func (KoyoData) Fields() []ent.Field {
 		field.String("id").GoType(pulid.ID("")).Unique().Immutable().DefaultFunc(func() pulid.ID { return pulid.MustNew("US") }),
 		field.String("koyo_id").GoType(pulid.ID("")).Unique(),
 		field.Float("scale"),
-		// TODO: map<string, string> koyo_params
+		field.JSON("params", map[string]string{}),
 		field.String("version").NotEmpty(),
 		field.Time("entry_at").Default(time.Now).Immutable(),
 		field.Time("target_at").Immutable(),

@@ -19,11 +19,10 @@ func (KoyoInformation) Fields() []ent.Field {
 		field.String("name").NotEmpty(),
 		field.String("description"),
 		// TODO: repeated ULID need_external
-		// TODO: map<string, string> koyo_params
-		// TODO: repeated float koyo_scales
+		field.JSON("params", map[string]string{}),
+		field.JSON("scales", []float64{}),
 		// TODO: repeated ULID koyo_data_ids
 		field.String("version").NotEmpty(),
-		// TODO: repeated Version version_history
 		field.String("license").NotEmpty(),
 		// TODO: repeated string ext_licenses
 		field.Enum("data_type").Values("unspecified", "image", "csv", "json"),
