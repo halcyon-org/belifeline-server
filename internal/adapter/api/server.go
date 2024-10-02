@@ -9,6 +9,6 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *BeLifelineServer) Status(ctx context.Context, req *connect.Request[mainv1.StatusRequest]) (*connect.Response[mainv1.StatusResponse], error) {
-	return nil, status.Error(codes.Unimplemented, "method Status not implemented")
+func (s *BeLifelineServer) Health(ctx context.Context, req *connect.Request[mainv1.HealthRequest]) (*connect.Response[mainv1.HealthResponse], error) {
+	return nil, status.Error(codes.Unimplemented, "method Health not implemented")
 }

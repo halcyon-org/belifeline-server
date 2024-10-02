@@ -66,9 +66,9 @@ const (
 	// BeLifelineServiceKoyoApiRevokeProcedure is the fully-qualified name of the BeLifelineService's
 	// KoyoApiRevoke RPC.
 	BeLifelineServiceKoyoApiRevokeProcedure = "/belifeline.v1.BeLifelineService/KoyoApiRevoke"
-	// BeLifelineServiceStatusProcedure is the fully-qualified name of the BeLifelineService's Status
+	// BeLifelineServiceHealthProcedure is the fully-qualified name of the BeLifelineService's Health
 	// RPC.
-	BeLifelineServiceStatusProcedure = "/belifeline.v1.BeLifelineService/Status"
+	BeLifelineServiceHealthProcedure = "/belifeline.v1.BeLifelineService/Health"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
@@ -85,7 +85,7 @@ var (
 	beLifelineServiceKoyoListMethodDescriptor      = beLifelineServiceServiceDescriptor.Methods().ByName("KoyoList")
 	beLifelineServiceKoyoDeleteMethodDescriptor    = beLifelineServiceServiceDescriptor.Methods().ByName("KoyoDelete")
 	beLifelineServiceKoyoApiRevokeMethodDescriptor = beLifelineServiceServiceDescriptor.Methods().ByName("KoyoApiRevoke")
-	beLifelineServiceStatusMethodDescriptor        = beLifelineServiceServiceDescriptor.Methods().ByName("Status")
+	beLifelineServiceHealthMethodDescriptor        = beLifelineServiceServiceDescriptor.Methods().ByName("Health")
 )
 
 // BeLifelineServiceClient is a client for the belifeline.v1.BeLifelineService service.
@@ -101,7 +101,7 @@ type BeLifelineServiceClient interface {
 	KoyoList(context.Context, *connect.Request[v1.KoyoListRequest]) (*connect.ServerStreamForClient[v1.KoyoListResponse], error)
 	KoyoDelete(context.Context, *connect.Request[v1.KoyoDeleteRequest]) (*connect.Response[v1.KoyoDeleteResponse], error)
 	KoyoApiRevoke(context.Context, *connect.Request[v1.KoyoApiRevokeRequest]) (*connect.Response[v1.KoyoApiRevokeResponse], error)
-	Status(context.Context, *connect.Request[v1.StatusRequest]) (*connect.Response[v1.StatusResponse], error)
+	Health(context.Context, *connect.Request[v1.HealthRequest]) (*connect.Response[v1.HealthResponse], error)
 }
 
 // NewBeLifelineServiceClient constructs a client for the belifeline.v1.BeLifelineService service.
@@ -180,10 +180,10 @@ func NewBeLifelineServiceClient(httpClient connect.HTTPClient, baseURL string, o
 			connect.WithSchema(beLifelineServiceKoyoApiRevokeMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		status: connect.NewClient[v1.StatusRequest, v1.StatusResponse](
+		health: connect.NewClient[v1.HealthRequest, v1.HealthResponse](
 			httpClient,
-			baseURL+BeLifelineServiceStatusProcedure,
-			connect.WithSchema(beLifelineServiceStatusMethodDescriptor),
+			baseURL+BeLifelineServiceHealthProcedure,
+			connect.WithSchema(beLifelineServiceHealthMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -202,7 +202,7 @@ type beLifelineServiceClient struct {
 	koyoList      *connect.Client[v1.KoyoListRequest, v1.KoyoListResponse]
 	koyoDelete    *connect.Client[v1.KoyoDeleteRequest, v1.KoyoDeleteResponse]
 	koyoApiRevoke *connect.Client[v1.KoyoApiRevokeRequest, v1.KoyoApiRevokeResponse]
-	status        *connect.Client[v1.StatusRequest, v1.StatusResponse]
+	health        *connect.Client[v1.HealthRequest, v1.HealthResponse]
 }
 
 // ClientCreate calls belifeline.v1.BeLifelineService.ClientCreate.
@@ -260,9 +260,9 @@ func (c *beLifelineServiceClient) KoyoApiRevoke(ctx context.Context, req *connec
 	return c.koyoApiRevoke.CallUnary(ctx, req)
 }
 
-// Status calls belifeline.v1.BeLifelineService.Status.
-func (c *beLifelineServiceClient) Status(ctx context.Context, req *connect.Request[v1.StatusRequest]) (*connect.Response[v1.StatusResponse], error) {
-	return c.status.CallUnary(ctx, req)
+// Health calls belifeline.v1.BeLifelineService.Health.
+func (c *beLifelineServiceClient) Health(ctx context.Context, req *connect.Request[v1.HealthRequest]) (*connect.Response[v1.HealthResponse], error) {
+	return c.health.CallUnary(ctx, req)
 }
 
 // BeLifelineServiceHandler is an implementation of the belifeline.v1.BeLifelineService service.
@@ -278,7 +278,7 @@ type BeLifelineServiceHandler interface {
 	KoyoList(context.Context, *connect.Request[v1.KoyoListRequest], *connect.ServerStream[v1.KoyoListResponse]) error
 	KoyoDelete(context.Context, *connect.Request[v1.KoyoDeleteRequest]) (*connect.Response[v1.KoyoDeleteResponse], error)
 	KoyoApiRevoke(context.Context, *connect.Request[v1.KoyoApiRevokeRequest]) (*connect.Response[v1.KoyoApiRevokeResponse], error)
-	Status(context.Context, *connect.Request[v1.StatusRequest]) (*connect.Response[v1.StatusResponse], error)
+	Health(context.Context, *connect.Request[v1.HealthRequest]) (*connect.Response[v1.HealthResponse], error)
 }
 
 // NewBeLifelineServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -353,10 +353,10 @@ func NewBeLifelineServiceHandler(svc BeLifelineServiceHandler, opts ...connect.H
 		connect.WithSchema(beLifelineServiceKoyoApiRevokeMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
-	beLifelineServiceStatusHandler := connect.NewUnaryHandler(
-		BeLifelineServiceStatusProcedure,
-		svc.Status,
-		connect.WithSchema(beLifelineServiceStatusMethodDescriptor),
+	beLifelineServiceHealthHandler := connect.NewUnaryHandler(
+		BeLifelineServiceHealthProcedure,
+		svc.Health,
+		connect.WithSchema(beLifelineServiceHealthMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
 	return "/belifeline.v1.BeLifelineService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -383,8 +383,8 @@ func NewBeLifelineServiceHandler(svc BeLifelineServiceHandler, opts ...connect.H
 			beLifelineServiceKoyoDeleteHandler.ServeHTTP(w, r)
 		case BeLifelineServiceKoyoApiRevokeProcedure:
 			beLifelineServiceKoyoApiRevokeHandler.ServeHTTP(w, r)
-		case BeLifelineServiceStatusProcedure:
-			beLifelineServiceStatusHandler.ServeHTTP(w, r)
+		case BeLifelineServiceHealthProcedure:
+			beLifelineServiceHealthHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -438,6 +438,6 @@ func (UnimplementedBeLifelineServiceHandler) KoyoApiRevoke(context.Context, *con
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.KoyoApiRevoke is not implemented"))
 }
 
-func (UnimplementedBeLifelineServiceHandler) Status(context.Context, *connect.Request[v1.StatusRequest]) (*connect.Response[v1.StatusResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.Status is not implemented"))
+func (UnimplementedBeLifelineServiceHandler) Health(context.Context, *connect.Request[v1.HealthRequest]) (*connect.Response[v1.HealthResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.Health is not implemented"))
 }
