@@ -7,6 +7,7 @@
 package mainv1
 
 import (
+	v1 "github.com/halcyon-org/kizuna/gen/belifeline/models/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -77,14 +78,14 @@ type KoyoCreateRequest struct {
 
 	KoyoName        string            `protobuf:"bytes,1,opt,name=koyo_name,json=koyoName,proto3" json:"koyo_name,omitempty"`
 	KoyoDescription string            `protobuf:"bytes,2,opt,name=koyo_description,json=koyoDescription,proto3" json:"koyo_description,omitempty"`
-	NeedExternal    []*UUID           `protobuf:"bytes,3,rep,name=need_external,json=needExternal,proto3" json:"need_external,omitempty"`
+	NeedExternal    []*v1.ULID        `protobuf:"bytes,3,rep,name=need_external,json=needExternal,proto3" json:"need_external,omitempty"`
 	KoyoParams      map[string]string `protobuf:"bytes,4,rep,name=koyo_params,json=koyoParams,proto3" json:"koyo_params,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	KoyoScales      []float32         `protobuf:"fixed32,5,rep,packed,name=koyo_scales,json=koyoScales,proto3" json:"koyo_scales,omitempty"`
-	Version         *Version          `protobuf:"bytes,6,opt,name=version,proto3" json:"version,omitempty"`
-	VersionHistory  []*Version        `protobuf:"bytes,7,rep,name=version_history,json=versionHistory,proto3" json:"version_history,omitempty"`
+	Version         *v1.Version       `protobuf:"bytes,6,opt,name=version,proto3" json:"version,omitempty"`
+	VersionHistory  []*v1.Version     `protobuf:"bytes,7,rep,name=version_history,json=versionHistory,proto3" json:"version_history,omitempty"`
 	License         string            `protobuf:"bytes,8,opt,name=license,proto3" json:"license,omitempty"`
 	ExtLicenses     []string          `protobuf:"bytes,9,rep,name=ext_licenses,json=extLicenses,proto3" json:"ext_licenses,omitempty"`
-	DataType        DataType          `protobuf:"varint,10,opt,name=data_type,json=dataType,proto3,enum=belifeline.models.v1.DataType" json:"data_type,omitempty"`
+	DataType        v1.DataType       `protobuf:"varint,10,opt,name=data_type,json=dataType,proto3,enum=belifeline.models.v1.DataType" json:"data_type,omitempty"`
 }
 
 func (x *KoyoCreateRequest) Reset() {
@@ -133,7 +134,7 @@ func (x *KoyoCreateRequest) GetKoyoDescription() string {
 	return ""
 }
 
-func (x *KoyoCreateRequest) GetNeedExternal() []*UUID {
+func (x *KoyoCreateRequest) GetNeedExternal() []*v1.ULID {
 	if x != nil {
 		return x.NeedExternal
 	}
@@ -154,14 +155,14 @@ func (x *KoyoCreateRequest) GetKoyoScales() []float32 {
 	return nil
 }
 
-func (x *KoyoCreateRequest) GetVersion() *Version {
+func (x *KoyoCreateRequest) GetVersion() *v1.Version {
 	if x != nil {
 		return x.Version
 	}
 	return nil
 }
 
-func (x *KoyoCreateRequest) GetVersionHistory() []*Version {
+func (x *KoyoCreateRequest) GetVersionHistory() []*v1.Version {
 	if x != nil {
 		return x.VersionHistory
 	}
@@ -182,11 +183,11 @@ func (x *KoyoCreateRequest) GetExtLicenses() []string {
 	return nil
 }
 
-func (x *KoyoCreateRequest) GetDataType() DataType {
+func (x *KoyoCreateRequest) GetDataType() v1.DataType {
 	if x != nil {
 		return x.DataType
 	}
-	return DataType_DATA_TYPE_UNSPECIFIED
+	return v1.DataType(0)
 }
 
 type KoyoCreateResponse struct {
@@ -194,7 +195,7 @@ type KoyoCreateResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	KoyoInfomation *KoyoInformation `protobuf:"bytes,1,opt,name=koyo_infomation,json=koyoInfomation,proto3" json:"koyo_infomation,omitempty"`
+	KoyoInfomation *v1.KoyoInformation `protobuf:"bytes,1,opt,name=koyo_infomation,json=koyoInfomation,proto3" json:"koyo_infomation,omitempty"`
 }
 
 func (x *KoyoCreateResponse) Reset() {
@@ -229,7 +230,7 @@ func (*KoyoCreateResponse) Descriptor() ([]byte, []int) {
 	return file_belifeline_v1_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *KoyoCreateResponse) GetKoyoInfomation() *KoyoInformation {
+func (x *KoyoCreateResponse) GetKoyoInfomation() *v1.KoyoInformation {
 	if x != nil {
 		return x.KoyoInfomation
 	}
@@ -241,18 +242,18 @@ type KoyoInformationCreateOrUpdate struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	KoyoId          *UUID             `protobuf:"bytes,1,opt,name=koyo_id,json=koyoId,proto3" json:"koyo_id,omitempty"`
+	KoyoId          *v1.ULID          `protobuf:"bytes,1,opt,name=koyo_id,json=koyoId,proto3" json:"koyo_id,omitempty"`
 	KoyoName        string            `protobuf:"bytes,2,opt,name=koyo_name,json=koyoName,proto3" json:"koyo_name,omitempty"`
 	KoyoDescription string            `protobuf:"bytes,3,opt,name=koyo_description,json=koyoDescription,proto3" json:"koyo_description,omitempty"`
-	NeedExternal    []*UUID           `protobuf:"bytes,4,rep,name=need_external,json=needExternal,proto3" json:"need_external,omitempty"`
+	NeedExternal    []*v1.ULID        `protobuf:"bytes,4,rep,name=need_external,json=needExternal,proto3" json:"need_external,omitempty"`
 	KoyoParams      map[string]string `protobuf:"bytes,5,rep,name=koyo_params,json=koyoParams,proto3" json:"koyo_params,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	KoyoScales      []float32         `protobuf:"fixed32,6,rep,packed,name=koyo_scales,json=koyoScales,proto3" json:"koyo_scales,omitempty"`
-	KoyoDataIds     []*UUID           `protobuf:"bytes,7,rep,name=koyo_data_ids,json=koyoDataIds,proto3" json:"koyo_data_ids,omitempty"`
-	Version         *Version          `protobuf:"bytes,8,opt,name=version,proto3" json:"version,omitempty"`
-	VersionHistory  []*Version        `protobuf:"bytes,9,rep,name=version_history,json=versionHistory,proto3" json:"version_history,omitempty"`
+	KoyoDataIds     []*v1.ULID        `protobuf:"bytes,7,rep,name=koyo_data_ids,json=koyoDataIds,proto3" json:"koyo_data_ids,omitempty"`
+	Version         *v1.Version       `protobuf:"bytes,8,opt,name=version,proto3" json:"version,omitempty"`
+	VersionHistory  []*v1.Version     `protobuf:"bytes,9,rep,name=version_history,json=versionHistory,proto3" json:"version_history,omitempty"`
 	License         string            `protobuf:"bytes,10,opt,name=license,proto3" json:"license,omitempty"`
 	ExtLicenses     []string          `protobuf:"bytes,11,rep,name=ext_licenses,json=extLicenses,proto3" json:"ext_licenses,omitempty"`
-	DataType        DataType          `protobuf:"varint,12,opt,name=data_type,json=dataType,proto3,enum=belifeline.models.v1.DataType" json:"data_type,omitempty"`
+	DataType        v1.DataType       `protobuf:"varint,12,opt,name=data_type,json=dataType,proto3,enum=belifeline.models.v1.DataType" json:"data_type,omitempty"`
 }
 
 func (x *KoyoInformationCreateOrUpdate) Reset() {
@@ -287,7 +288,7 @@ func (*KoyoInformationCreateOrUpdate) Descriptor() ([]byte, []int) {
 	return file_belifeline_v1_api_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *KoyoInformationCreateOrUpdate) GetKoyoId() *UUID {
+func (x *KoyoInformationCreateOrUpdate) GetKoyoId() *v1.ULID {
 	if x != nil {
 		return x.KoyoId
 	}
@@ -308,7 +309,7 @@ func (x *KoyoInformationCreateOrUpdate) GetKoyoDescription() string {
 	return ""
 }
 
-func (x *KoyoInformationCreateOrUpdate) GetNeedExternal() []*UUID {
+func (x *KoyoInformationCreateOrUpdate) GetNeedExternal() []*v1.ULID {
 	if x != nil {
 		return x.NeedExternal
 	}
@@ -329,21 +330,21 @@ func (x *KoyoInformationCreateOrUpdate) GetKoyoScales() []float32 {
 	return nil
 }
 
-func (x *KoyoInformationCreateOrUpdate) GetKoyoDataIds() []*UUID {
+func (x *KoyoInformationCreateOrUpdate) GetKoyoDataIds() []*v1.ULID {
 	if x != nil {
 		return x.KoyoDataIds
 	}
 	return nil
 }
 
-func (x *KoyoInformationCreateOrUpdate) GetVersion() *Version {
+func (x *KoyoInformationCreateOrUpdate) GetVersion() *v1.Version {
 	if x != nil {
 		return x.Version
 	}
 	return nil
 }
 
-func (x *KoyoInformationCreateOrUpdate) GetVersionHistory() []*Version {
+func (x *KoyoInformationCreateOrUpdate) GetVersionHistory() []*v1.Version {
 	if x != nil {
 		return x.VersionHistory
 	}
@@ -364,11 +365,11 @@ func (x *KoyoInformationCreateOrUpdate) GetExtLicenses() []string {
 	return nil
 }
 
-func (x *KoyoInformationCreateOrUpdate) GetDataType() DataType {
+func (x *KoyoInformationCreateOrUpdate) GetDataType() v1.DataType {
 	if x != nil {
 		return x.DataType
 	}
-	return DataType_DATA_TYPE_UNSPECIFIED
+	return v1.DataType(0)
 }
 
 type ExtInfoCreateRequest struct {
@@ -471,7 +472,7 @@ type ExtInfoCreateResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ExternalInformation *ExternalInformation `protobuf:"bytes,1,opt,name=external_information,json=externalInformation,proto3" json:"external_information,omitempty"`
+	ExternalInformation *v1.ExternalInformation `protobuf:"bytes,1,opt,name=external_information,json=externalInformation,proto3" json:"external_information,omitempty"`
 }
 
 func (x *ExtInfoCreateResponse) Reset() {
@@ -506,7 +507,7 @@ func (*ExtInfoCreateResponse) Descriptor() ([]byte, []int) {
 	return file_belifeline_v1_api_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *ExtInfoCreateResponse) GetExternalInformation() *ExternalInformation {
+func (x *ExtInfoCreateResponse) GetExternalInformation() *v1.ExternalInformation {
 	if x != nil {
 		return x.ExternalInformation
 	}
@@ -565,7 +566,7 @@ type ClientCreateResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ClientData *ClientData `protobuf:"bytes,1,opt,name=client_data,json=clientData,proto3" json:"client_data,omitempty"`
+	ClientData *v1.ClientData `protobuf:"bytes,1,opt,name=client_data,json=clientData,proto3" json:"client_data,omitempty"`
 }
 
 func (x *ClientCreateResponse) Reset() {
@@ -600,7 +601,7 @@ func (*ClientCreateResponse) Descriptor() ([]byte, []int) {
 	return file_belifeline_v1_api_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *ClientCreateResponse) GetClientData() *ClientData {
+func (x *ClientCreateResponse) GetClientData() *v1.ClientData {
 	if x != nil {
 		return x.ClientData
 	}
@@ -659,7 +660,7 @@ type ClientListResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ClientData *ClientData `protobuf:"bytes,1,opt,name=client_data,json=clientData,proto3" json:"client_data,omitempty"`
+	ClientData *v1.ClientData `protobuf:"bytes,1,opt,name=client_data,json=clientData,proto3" json:"client_data,omitempty"`
 }
 
 func (x *ClientListResponse) Reset() {
@@ -694,7 +695,7 @@ func (*ClientListResponse) Descriptor() ([]byte, []int) {
 	return file_belifeline_v1_api_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *ClientListResponse) GetClientData() *ClientData {
+func (x *ClientListResponse) GetClientData() *v1.ClientData {
 	if x != nil {
 		return x.ClientData
 	}
@@ -753,7 +754,7 @@ type ExtInfoListResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ExternalInformation *ExternalInformation `protobuf:"bytes,1,opt,name=external_information,json=externalInformation,proto3" json:"external_information,omitempty"`
+	ExternalInformation *v1.ExternalInformation `protobuf:"bytes,1,opt,name=external_information,json=externalInformation,proto3" json:"external_information,omitempty"`
 }
 
 func (x *ExtInfoListResponse) Reset() {
@@ -788,7 +789,7 @@ func (*ExtInfoListResponse) Descriptor() ([]byte, []int) {
 	return file_belifeline_v1_api_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *ExtInfoListResponse) GetExternalInformation() *ExternalInformation {
+func (x *ExtInfoListResponse) GetExternalInformation() *v1.ExternalInformation {
 	if x != nil {
 		return x.ExternalInformation
 	}
@@ -847,7 +848,7 @@ type ClientDeleteRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ClientId *UUID `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
+	ClientId *v1.ULID `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
 }
 
 func (x *ClientDeleteRequest) Reset() {
@@ -882,7 +883,7 @@ func (*ClientDeleteRequest) Descriptor() ([]byte, []int) {
 	return file_belifeline_v1_api_proto_rawDescGZIP(), []int{12}
 }
 
-func (x *ClientDeleteRequest) GetClientId() *UUID {
+func (x *ClientDeleteRequest) GetClientId() *v1.ULID {
 	if x != nil {
 		return x.ClientId
 	}
@@ -894,7 +895,7 @@ type ClientDeleteResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ClientId *UUID `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
+	ClientId *v1.ULID `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
 }
 
 func (x *ClientDeleteResponse) Reset() {
@@ -929,7 +930,7 @@ func (*ClientDeleteResponse) Descriptor() ([]byte, []int) {
 	return file_belifeline_v1_api_proto_rawDescGZIP(), []int{13}
 }
 
-func (x *ClientDeleteResponse) GetClientId() *UUID {
+func (x *ClientDeleteResponse) GetClientId() *v1.ULID {
 	if x != nil {
 		return x.ClientId
 	}
@@ -941,7 +942,7 @@ type ClientRevokeRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ClientId *UUID `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
+	ClientId *v1.ULID `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
 }
 
 func (x *ClientRevokeRequest) Reset() {
@@ -976,7 +977,7 @@ func (*ClientRevokeRequest) Descriptor() ([]byte, []int) {
 	return file_belifeline_v1_api_proto_rawDescGZIP(), []int{14}
 }
 
-func (x *ClientRevokeRequest) GetClientId() *UUID {
+func (x *ClientRevokeRequest) GetClientId() *v1.ULID {
 	if x != nil {
 		return x.ClientId
 	}
@@ -988,7 +989,7 @@ type ExtInfoDeleteRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ExtinfoId *UUID `protobuf:"bytes,1,opt,name=extinfo_id,json=extinfoId,proto3" json:"extinfo_id,omitempty"`
+	ExtinfoId *v1.ULID `protobuf:"bytes,1,opt,name=extinfo_id,json=extinfoId,proto3" json:"extinfo_id,omitempty"`
 }
 
 func (x *ExtInfoDeleteRequest) Reset() {
@@ -1023,7 +1024,7 @@ func (*ExtInfoDeleteRequest) Descriptor() ([]byte, []int) {
 	return file_belifeline_v1_api_proto_rawDescGZIP(), []int{15}
 }
 
-func (x *ExtInfoDeleteRequest) GetExtinfoId() *UUID {
+func (x *ExtInfoDeleteRequest) GetExtinfoId() *v1.ULID {
 	if x != nil {
 		return x.ExtinfoId
 	}
@@ -1035,7 +1036,7 @@ type ExtInfoDeleteResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ExtinfoId *UUID `protobuf:"bytes,1,opt,name=extinfo_id,json=extinfoId,proto3" json:"extinfo_id,omitempty"`
+	ExtinfoId *v1.ULID `protobuf:"bytes,1,opt,name=extinfo_id,json=extinfoId,proto3" json:"extinfo_id,omitempty"`
 }
 
 func (x *ExtInfoDeleteResponse) Reset() {
@@ -1070,7 +1071,7 @@ func (*ExtInfoDeleteResponse) Descriptor() ([]byte, []int) {
 	return file_belifeline_v1_api_proto_rawDescGZIP(), []int{16}
 }
 
-func (x *ExtInfoDeleteResponse) GetExtinfoId() *UUID {
+func (x *ExtInfoDeleteResponse) GetExtinfoId() *v1.ULID {
 	if x != nil {
 		return x.ExtinfoId
 	}
@@ -1082,7 +1083,7 @@ type KoyoDeleteRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	KoyoId *UUID `protobuf:"bytes,1,opt,name=koyo_id,json=koyoId,proto3" json:"koyo_id,omitempty"`
+	KoyoId *v1.ULID `protobuf:"bytes,1,opt,name=koyo_id,json=koyoId,proto3" json:"koyo_id,omitempty"`
 }
 
 func (x *KoyoDeleteRequest) Reset() {
@@ -1117,7 +1118,7 @@ func (*KoyoDeleteRequest) Descriptor() ([]byte, []int) {
 	return file_belifeline_v1_api_proto_rawDescGZIP(), []int{17}
 }
 
-func (x *KoyoDeleteRequest) GetKoyoId() *UUID {
+func (x *KoyoDeleteRequest) GetKoyoId() *v1.ULID {
 	if x != nil {
 		return x.KoyoId
 	}
@@ -1129,7 +1130,7 @@ type KoyoDeleteResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	KoyoId *UUID `protobuf:"bytes,1,opt,name=koyo_id,json=koyoId,proto3" json:"koyo_id,omitempty"`
+	KoyoId *v1.ULID `protobuf:"bytes,1,opt,name=koyo_id,json=koyoId,proto3" json:"koyo_id,omitempty"`
 }
 
 func (x *KoyoDeleteResponse) Reset() {
@@ -1164,7 +1165,7 @@ func (*KoyoDeleteResponse) Descriptor() ([]byte, []int) {
 	return file_belifeline_v1_api_proto_rawDescGZIP(), []int{18}
 }
 
-func (x *KoyoDeleteResponse) GetKoyoId() *UUID {
+func (x *KoyoDeleteResponse) GetKoyoId() *v1.ULID {
 	if x != nil {
 		return x.KoyoId
 	}
@@ -1176,8 +1177,8 @@ type KoyoApiRevokeRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	KoyoId *UUID   `protobuf:"bytes,1,opt,name=koyo_id,json=koyoId,proto3" json:"koyo_id,omitempty"`
-	ApiKey *ApiKey `protobuf:"bytes,2,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"`
+	KoyoId *v1.ULID   `protobuf:"bytes,1,opt,name=koyo_id,json=koyoId,proto3" json:"koyo_id,omitempty"`
+	ApiKey *v1.ApiKey `protobuf:"bytes,2,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"`
 }
 
 func (x *KoyoApiRevokeRequest) Reset() {
@@ -1212,14 +1213,14 @@ func (*KoyoApiRevokeRequest) Descriptor() ([]byte, []int) {
 	return file_belifeline_v1_api_proto_rawDescGZIP(), []int{19}
 }
 
-func (x *KoyoApiRevokeRequest) GetKoyoId() *UUID {
+func (x *KoyoApiRevokeRequest) GetKoyoId() *v1.ULID {
 	if x != nil {
 		return x.KoyoId
 	}
 	return nil
 }
 
-func (x *KoyoApiRevokeRequest) GetApiKey() *ApiKey {
+func (x *KoyoApiRevokeRequest) GetApiKey() *v1.ApiKey {
 	if x != nil {
 		return x.ApiKey
 	}
@@ -1231,8 +1232,8 @@ type KoyoApiRevokeResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	KoyoId *UUID   `protobuf:"bytes,1,opt,name=koyo_id,json=koyoId,proto3" json:"koyo_id,omitempty"`
-	ApiKey *ApiKey `protobuf:"bytes,2,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"`
+	KoyoId *v1.ULID   `protobuf:"bytes,1,opt,name=koyo_id,json=koyoId,proto3" json:"koyo_id,omitempty"`
+	ApiKey *v1.ApiKey `protobuf:"bytes,2,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"`
 }
 
 func (x *KoyoApiRevokeResponse) Reset() {
@@ -1267,14 +1268,14 @@ func (*KoyoApiRevokeResponse) Descriptor() ([]byte, []int) {
 	return file_belifeline_v1_api_proto_rawDescGZIP(), []int{20}
 }
 
-func (x *KoyoApiRevokeResponse) GetKoyoId() *UUID {
+func (x *KoyoApiRevokeResponse) GetKoyoId() *v1.ULID {
 	if x != nil {
 		return x.KoyoId
 	}
 	return nil
 }
 
-func (x *KoyoApiRevokeResponse) GetApiKey() *ApiKey {
+func (x *KoyoApiRevokeResponse) GetApiKey() *v1.ApiKey {
 	if x != nil {
 		return x.ApiKey
 	}
@@ -1286,8 +1287,8 @@ type ClientRevokeResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ClientId *UUID   `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
-	ApiKey   *ApiKey `protobuf:"bytes,2,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"`
+	ClientId *v1.ULID   `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
+	ApiKey   *v1.ApiKey `protobuf:"bytes,2,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"`
 }
 
 func (x *ClientRevokeResponse) Reset() {
@@ -1322,14 +1323,14 @@ func (*ClientRevokeResponse) Descriptor() ([]byte, []int) {
 	return file_belifeline_v1_api_proto_rawDescGZIP(), []int{21}
 }
 
-func (x *ClientRevokeResponse) GetClientId() *UUID {
+func (x *ClientRevokeResponse) GetClientId() *v1.ULID {
 	if x != nil {
 		return x.ClientId
 	}
 	return nil
 }
 
-func (x *ClientRevokeResponse) GetApiKey() *ApiKey {
+func (x *ClientRevokeResponse) GetApiKey() *v1.ApiKey {
 	if x != nil {
 		return x.ApiKey
 	}
@@ -1341,7 +1342,7 @@ type KoyoListResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	KoyoInfomation *KoyoInformation `protobuf:"bytes,1,opt,name=koyo_infomation,json=koyoInfomation,proto3" json:"koyo_infomation,omitempty"`
+	KoyoInfomation *v1.KoyoInformation `protobuf:"bytes,1,opt,name=koyo_infomation,json=koyoInfomation,proto3" json:"koyo_infomation,omitempty"`
 }
 
 func (x *KoyoListResponse) Reset() {
@@ -1376,7 +1377,7 @@ func (*KoyoListResponse) Descriptor() ([]byte, []int) {
 	return file_belifeline_v1_api_proto_rawDescGZIP(), []int{22}
 }
 
-func (x *KoyoListResponse) GetKoyoInfomation() *KoyoInformation {
+func (x *KoyoListResponse) GetKoyoInfomation() *v1.KoyoInformation {
 	if x != nil {
 		return x.KoyoInfomation
 	}
@@ -1493,7 +1494,7 @@ var file_belifeline_v1_api_proto_rawDesc = []byte{
 	0x69, 0x6f, 0x6e, 0x12, 0x3f, 0x0a, 0x0d, 0x6e, 0x65, 0x65, 0x64, 0x5f, 0x65, 0x78, 0x74, 0x65,
 	0x72, 0x6e, 0x61, 0x6c, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x62, 0x65, 0x6c,
 	0x69, 0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x73, 0x2e, 0x76,
-	0x31, 0x2e, 0x55, 0x55, 0x49, 0x44, 0x52, 0x0c, 0x6e, 0x65, 0x65, 0x64, 0x45, 0x78, 0x74, 0x65,
+	0x31, 0x2e, 0x55, 0x4c, 0x49, 0x44, 0x52, 0x0c, 0x6e, 0x65, 0x65, 0x64, 0x45, 0x78, 0x74, 0x65,
 	0x72, 0x6e, 0x61, 0x6c, 0x12, 0x51, 0x0a, 0x0b, 0x6b, 0x6f, 0x79, 0x6f, 0x5f, 0x70, 0x61, 0x72,
 	0x61, 0x6d, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x30, 0x2e, 0x62, 0x65, 0x6c, 0x69,
 	0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x4b, 0x6f, 0x79, 0x6f, 0x43, 0x72,
@@ -1532,7 +1533,7 @@ var file_belifeline_v1_api_proto_rawDesc = []byte{
 	0x74, 0x65, 0x4f, 0x72, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x12, 0x33, 0x0a, 0x07, 0x6b, 0x6f,
 	0x79, 0x6f, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x62, 0x65,
 	0x6c, 0x69, 0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x73, 0x2e,
-	0x76, 0x31, 0x2e, 0x55, 0x55, 0x49, 0x44, 0x52, 0x06, 0x6b, 0x6f, 0x79, 0x6f, 0x49, 0x64, 0x12,
+	0x76, 0x31, 0x2e, 0x55, 0x4c, 0x49, 0x44, 0x52, 0x06, 0x6b, 0x6f, 0x79, 0x6f, 0x49, 0x64, 0x12,
 	0x1b, 0x0a, 0x09, 0x6b, 0x6f, 0x79, 0x6f, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x08, 0x6b, 0x6f, 0x79, 0x6f, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x29, 0x0a, 0x10,
 	0x6b, 0x6f, 0x79, 0x6f, 0x5f, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e,
@@ -1540,7 +1541,7 @@ var file_belifeline_v1_api_proto_rawDesc = []byte{
 	0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x3f, 0x0a, 0x0d, 0x6e, 0x65, 0x65, 0x64, 0x5f,
 	0x65, 0x78, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1a,
 	0x2e, 0x62, 0x65, 0x6c, 0x69, 0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x6d, 0x6f, 0x64, 0x65,
-	0x6c, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x55, 0x49, 0x44, 0x52, 0x0c, 0x6e, 0x65, 0x65, 0x64,
+	0x6c, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x4c, 0x49, 0x44, 0x52, 0x0c, 0x6e, 0x65, 0x65, 0x64,
 	0x45, 0x78, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x12, 0x5d, 0x0a, 0x0b, 0x6b, 0x6f, 0x79, 0x6f,
 	0x5f, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x3c, 0x2e,
 	0x62, 0x65, 0x6c, 0x69, 0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x4b, 0x6f,
@@ -1552,7 +1553,7 @@ var file_belifeline_v1_api_proto_rawDesc = []byte{
 	0x79, 0x6f, 0x53, 0x63, 0x61, 0x6c, 0x65, 0x73, 0x12, 0x3e, 0x0a, 0x0d, 0x6b, 0x6f, 0x79, 0x6f,
 	0x5f, 0x64, 0x61, 0x74, 0x61, 0x5f, 0x69, 0x64, 0x73, 0x18, 0x07, 0x20, 0x03, 0x28, 0x0b, 0x32,
 	0x1a, 0x2e, 0x62, 0x65, 0x6c, 0x69, 0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x6d, 0x6f, 0x64,
-	0x65, 0x6c, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x55, 0x49, 0x44, 0x52, 0x0b, 0x6b, 0x6f, 0x79,
+	0x65, 0x6c, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x4c, 0x49, 0x44, 0x52, 0x0b, 0x6b, 0x6f, 0x79,
 	0x6f, 0x44, 0x61, 0x74, 0x61, 0x49, 0x64, 0x73, 0x12, 0x37, 0x0a, 0x07, 0x76, 0x65, 0x72, 0x73,
 	0x69, 0x6f, 0x6e, 0x18, 0x08, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x62, 0x65, 0x6c, 0x69,
 	0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x73, 0x2e, 0x76, 0x31,
@@ -1637,42 +1638,42 @@ var file_belifeline_v1_api_proto_rawDesc = []byte{
 	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x37, 0x0a, 0x09, 0x63, 0x6c, 0x69, 0x65, 0x6e,
 	0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x62, 0x65, 0x6c,
 	0x69, 0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x73, 0x2e, 0x76,
-	0x31, 0x2e, 0x55, 0x55, 0x49, 0x44, 0x52, 0x08, 0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x49, 0x64,
+	0x31, 0x2e, 0x55, 0x4c, 0x49, 0x44, 0x52, 0x08, 0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x49, 0x64,
 	0x22, 0x4f, 0x0a, 0x14, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65,
 	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x37, 0x0a, 0x09, 0x63, 0x6c, 0x69, 0x65,
 	0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x62, 0x65,
 	0x6c, 0x69, 0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x73, 0x2e,
-	0x76, 0x31, 0x2e, 0x55, 0x55, 0x49, 0x44, 0x52, 0x08, 0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x49,
+	0x76, 0x31, 0x2e, 0x55, 0x4c, 0x49, 0x44, 0x52, 0x08, 0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x49,
 	0x64, 0x22, 0x4e, 0x0a, 0x13, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x76, 0x6f, 0x6b,
 	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x37, 0x0a, 0x09, 0x63, 0x6c, 0x69, 0x65,
 	0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x62, 0x65,
 	0x6c, 0x69, 0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x73, 0x2e,
-	0x76, 0x31, 0x2e, 0x55, 0x55, 0x49, 0x44, 0x52, 0x08, 0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x49,
+	0x76, 0x31, 0x2e, 0x55, 0x4c, 0x49, 0x44, 0x52, 0x08, 0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x49,
 	0x64, 0x22, 0x51, 0x0a, 0x14, 0x45, 0x78, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x44, 0x65, 0x6c, 0x65,
 	0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x39, 0x0a, 0x0a, 0x65, 0x78, 0x74,
 	0x69, 0x6e, 0x66, 0x6f, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e,
 	0x62, 0x65, 0x6c, 0x69, 0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c,
-	0x73, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x55, 0x49, 0x44, 0x52, 0x09, 0x65, 0x78, 0x74, 0x69, 0x6e,
+	0x73, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x4c, 0x49, 0x44, 0x52, 0x09, 0x65, 0x78, 0x74, 0x69, 0x6e,
 	0x66, 0x6f, 0x49, 0x64, 0x22, 0x52, 0x0a, 0x15, 0x45, 0x78, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x44,
 	0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x39, 0x0a,
 	0x0a, 0x65, 0x78, 0x74, 0x69, 0x6e, 0x66, 0x6f, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
 	0x0b, 0x32, 0x1a, 0x2e, 0x62, 0x65, 0x6c, 0x69, 0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x6d,
-	0x6f, 0x64, 0x65, 0x6c, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x55, 0x49, 0x44, 0x52, 0x09, 0x65,
+	0x6f, 0x64, 0x65, 0x6c, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x4c, 0x49, 0x44, 0x52, 0x09, 0x65,
 	0x78, 0x74, 0x69, 0x6e, 0x66, 0x6f, 0x49, 0x64, 0x22, 0x48, 0x0a, 0x11, 0x4b, 0x6f, 0x79, 0x6f,
 	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x33, 0x0a,
 	0x07, 0x6b, 0x6f, 0x79, 0x6f, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a,
 	0x2e, 0x62, 0x65, 0x6c, 0x69, 0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x6d, 0x6f, 0x64, 0x65,
-	0x6c, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x55, 0x49, 0x44, 0x52, 0x06, 0x6b, 0x6f, 0x79, 0x6f,
+	0x6c, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x4c, 0x49, 0x44, 0x52, 0x06, 0x6b, 0x6f, 0x79, 0x6f,
 	0x49, 0x64, 0x22, 0x49, 0x0a, 0x12, 0x4b, 0x6f, 0x79, 0x6f, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65,
 	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x33, 0x0a, 0x07, 0x6b, 0x6f, 0x79, 0x6f,
 	0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x62, 0x65, 0x6c, 0x69,
 	0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x73, 0x2e, 0x76, 0x31,
-	0x2e, 0x55, 0x55, 0x49, 0x44, 0x52, 0x06, 0x6b, 0x6f, 0x79, 0x6f, 0x49, 0x64, 0x22, 0x82, 0x01,
+	0x2e, 0x55, 0x4c, 0x49, 0x44, 0x52, 0x06, 0x6b, 0x6f, 0x79, 0x6f, 0x49, 0x64, 0x22, 0x82, 0x01,
 	0x0a, 0x14, 0x4b, 0x6f, 0x79, 0x6f, 0x41, 0x70, 0x69, 0x52, 0x65, 0x76, 0x6f, 0x6b, 0x65, 0x52,
 	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x33, 0x0a, 0x07, 0x6b, 0x6f, 0x79, 0x6f, 0x5f, 0x69,
 	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x62, 0x65, 0x6c, 0x69, 0x66, 0x65,
 	0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x55,
-	0x55, 0x49, 0x44, 0x52, 0x06, 0x6b, 0x6f, 0x79, 0x6f, 0x49, 0x64, 0x12, 0x35, 0x0a, 0x07, 0x61,
+	0x4c, 0x49, 0x44, 0x52, 0x06, 0x6b, 0x6f, 0x79, 0x6f, 0x49, 0x64, 0x12, 0x35, 0x0a, 0x07, 0x61,
 	0x70, 0x69, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x62,
 	0x65, 0x6c, 0x69, 0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x73,
 	0x2e, 0x76, 0x31, 0x2e, 0x41, 0x70, 0x69, 0x4b, 0x65, 0x79, 0x52, 0x06, 0x61, 0x70, 0x69, 0x4b,
@@ -1680,7 +1681,7 @@ var file_belifeline_v1_api_proto_rawDesc = []byte{
 	0x76, 0x6f, 0x6b, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x33, 0x0a, 0x07,
 	0x6b, 0x6f, 0x79, 0x6f, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e,
 	0x62, 0x65, 0x6c, 0x69, 0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c,
-	0x73, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x55, 0x49, 0x44, 0x52, 0x06, 0x6b, 0x6f, 0x79, 0x6f, 0x49,
+	0x73, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x4c, 0x49, 0x44, 0x52, 0x06, 0x6b, 0x6f, 0x79, 0x6f, 0x49,
 	0x64, 0x12, 0x35, 0x0a, 0x07, 0x61, 0x70, 0x69, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01,
 	0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x62, 0x65, 0x6c, 0x69, 0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e,
 	0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x70, 0x69, 0x4b, 0x65, 0x79,
@@ -1688,7 +1689,7 @@ var file_belifeline_v1_api_proto_rawDesc = []byte{
 	0x65, 0x6e, 0x74, 0x52, 0x65, 0x76, 0x6f, 0x6b, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
 	0x65, 0x12, 0x37, 0x0a, 0x09, 0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01,
 	0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x62, 0x65, 0x6c, 0x69, 0x66, 0x65, 0x6c, 0x69, 0x6e,
-	0x65, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x55, 0x49, 0x44,
+	0x65, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x4c, 0x49, 0x44,
 	0x52, 0x08, 0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x35, 0x0a, 0x07, 0x61, 0x70,
 	0x69, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x62, 0x65,
 	0x6c, 0x69, 0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x73, 0x2e,
@@ -1758,26 +1759,26 @@ var file_belifeline_v1_api_proto_goTypes = []any{
 	(*StatusResponse)(nil),                // 25: belifeline.v1.StatusResponse
 	nil,                                   // 26: belifeline.v1.KoyoCreateRequest.KoyoParamsEntry
 	nil,                                   // 27: belifeline.v1.KoyoInformationCreateOrUpdate.KoyoParamsEntry
-	(*UUID)(nil),                          // 28: belifeline.models.v1.UUID
-	(*Version)(nil),                       // 29: belifeline.models.v1.Version
-	(DataType)(0),                         // 30: belifeline.models.v1.DataType
-	(*KoyoInformation)(nil),               // 31: belifeline.models.v1.KoyoInformation
+	(*v1.ULID)(nil),                       // 28: belifeline.models.v1.ULID
+	(*v1.Version)(nil),                    // 29: belifeline.models.v1.Version
+	(v1.DataType)(0),                      // 30: belifeline.models.v1.DataType
+	(*v1.KoyoInformation)(nil),            // 31: belifeline.models.v1.KoyoInformation
 	(*timestamppb.Timestamp)(nil),         // 32: google.protobuf.Timestamp
-	(*ExternalInformation)(nil),           // 33: belifeline.models.v1.ExternalInformation
-	(*ClientData)(nil),                    // 34: belifeline.models.v1.ClientData
-	(*ApiKey)(nil),                        // 35: belifeline.models.v1.ApiKey
+	(*v1.ExternalInformation)(nil),        // 33: belifeline.models.v1.ExternalInformation
+	(*v1.ClientData)(nil),                 // 34: belifeline.models.v1.ClientData
+	(*v1.ApiKey)(nil),                     // 35: belifeline.models.v1.ApiKey
 }
 var file_belifeline_v1_api_proto_depIdxs = []int32{
-	28, // 0: belifeline.v1.KoyoCreateRequest.need_external:type_name -> belifeline.models.v1.UUID
+	28, // 0: belifeline.v1.KoyoCreateRequest.need_external:type_name -> belifeline.models.v1.ULID
 	26, // 1: belifeline.v1.KoyoCreateRequest.koyo_params:type_name -> belifeline.v1.KoyoCreateRequest.KoyoParamsEntry
 	29, // 2: belifeline.v1.KoyoCreateRequest.version:type_name -> belifeline.models.v1.Version
 	29, // 3: belifeline.v1.KoyoCreateRequest.version_history:type_name -> belifeline.models.v1.Version
 	30, // 4: belifeline.v1.KoyoCreateRequest.data_type:type_name -> belifeline.models.v1.DataType
 	31, // 5: belifeline.v1.KoyoCreateResponse.koyo_infomation:type_name -> belifeline.models.v1.KoyoInformation
-	28, // 6: belifeline.v1.KoyoInformationCreateOrUpdate.koyo_id:type_name -> belifeline.models.v1.UUID
-	28, // 7: belifeline.v1.KoyoInformationCreateOrUpdate.need_external:type_name -> belifeline.models.v1.UUID
+	28, // 6: belifeline.v1.KoyoInformationCreateOrUpdate.koyo_id:type_name -> belifeline.models.v1.ULID
+	28, // 7: belifeline.v1.KoyoInformationCreateOrUpdate.need_external:type_name -> belifeline.models.v1.ULID
 	27, // 8: belifeline.v1.KoyoInformationCreateOrUpdate.koyo_params:type_name -> belifeline.v1.KoyoInformationCreateOrUpdate.KoyoParamsEntry
-	28, // 9: belifeline.v1.KoyoInformationCreateOrUpdate.koyo_data_ids:type_name -> belifeline.models.v1.UUID
+	28, // 9: belifeline.v1.KoyoInformationCreateOrUpdate.koyo_data_ids:type_name -> belifeline.models.v1.ULID
 	29, // 10: belifeline.v1.KoyoInformationCreateOrUpdate.version:type_name -> belifeline.models.v1.Version
 	29, // 11: belifeline.v1.KoyoInformationCreateOrUpdate.version_history:type_name -> belifeline.models.v1.Version
 	30, // 12: belifeline.v1.KoyoInformationCreateOrUpdate.data_type:type_name -> belifeline.models.v1.DataType
@@ -1787,18 +1788,18 @@ var file_belifeline_v1_api_proto_depIdxs = []int32{
 	34, // 16: belifeline.v1.ClientCreateResponse.client_data:type_name -> belifeline.models.v1.ClientData
 	34, // 17: belifeline.v1.ClientListResponse.client_data:type_name -> belifeline.models.v1.ClientData
 	33, // 18: belifeline.v1.ExtInfoListResponse.external_information:type_name -> belifeline.models.v1.ExternalInformation
-	28, // 19: belifeline.v1.ClientDeleteRequest.client_id:type_name -> belifeline.models.v1.UUID
-	28, // 20: belifeline.v1.ClientDeleteResponse.client_id:type_name -> belifeline.models.v1.UUID
-	28, // 21: belifeline.v1.ClientRevokeRequest.client_id:type_name -> belifeline.models.v1.UUID
-	28, // 22: belifeline.v1.ExtInfoDeleteRequest.extinfo_id:type_name -> belifeline.models.v1.UUID
-	28, // 23: belifeline.v1.ExtInfoDeleteResponse.extinfo_id:type_name -> belifeline.models.v1.UUID
-	28, // 24: belifeline.v1.KoyoDeleteRequest.koyo_id:type_name -> belifeline.models.v1.UUID
-	28, // 25: belifeline.v1.KoyoDeleteResponse.koyo_id:type_name -> belifeline.models.v1.UUID
-	28, // 26: belifeline.v1.KoyoApiRevokeRequest.koyo_id:type_name -> belifeline.models.v1.UUID
+	28, // 19: belifeline.v1.ClientDeleteRequest.client_id:type_name -> belifeline.models.v1.ULID
+	28, // 20: belifeline.v1.ClientDeleteResponse.client_id:type_name -> belifeline.models.v1.ULID
+	28, // 21: belifeline.v1.ClientRevokeRequest.client_id:type_name -> belifeline.models.v1.ULID
+	28, // 22: belifeline.v1.ExtInfoDeleteRequest.extinfo_id:type_name -> belifeline.models.v1.ULID
+	28, // 23: belifeline.v1.ExtInfoDeleteResponse.extinfo_id:type_name -> belifeline.models.v1.ULID
+	28, // 24: belifeline.v1.KoyoDeleteRequest.koyo_id:type_name -> belifeline.models.v1.ULID
+	28, // 25: belifeline.v1.KoyoDeleteResponse.koyo_id:type_name -> belifeline.models.v1.ULID
+	28, // 26: belifeline.v1.KoyoApiRevokeRequest.koyo_id:type_name -> belifeline.models.v1.ULID
 	35, // 27: belifeline.v1.KoyoApiRevokeRequest.api_key:type_name -> belifeline.models.v1.ApiKey
-	28, // 28: belifeline.v1.KoyoApiRevokeResponse.koyo_id:type_name -> belifeline.models.v1.UUID
+	28, // 28: belifeline.v1.KoyoApiRevokeResponse.koyo_id:type_name -> belifeline.models.v1.ULID
 	35, // 29: belifeline.v1.KoyoApiRevokeResponse.api_key:type_name -> belifeline.models.v1.ApiKey
-	28, // 30: belifeline.v1.ClientRevokeResponse.client_id:type_name -> belifeline.models.v1.UUID
+	28, // 30: belifeline.v1.ClientRevokeResponse.client_id:type_name -> belifeline.models.v1.ULID
 	35, // 31: belifeline.v1.ClientRevokeResponse.api_key:type_name -> belifeline.models.v1.ApiKey
 	31, // 32: belifeline.v1.KoyoListResponse.koyo_infomation:type_name -> belifeline.models.v1.KoyoInformation
 	33, // [33:33] is the sub-list for method output_type
@@ -1813,10 +1814,6 @@ func file_belifeline_v1_api_proto_init() {
 	if File_belifeline_v1_api_proto != nil {
 		return
 	}
-	file_belifeline_models_v1_extinfo_proto_init()
-	file_belifeline_models_v1_koyo_proto_init()
-	file_belifeline_models_v1_provider_proto_init()
-	file_belifeline_models_v1_types_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_belifeline_v1_api_proto_msgTypes[0].Exporter = func(v any, i int) any {
 			switch v := v.(*KoyoCreateRequest); i {
