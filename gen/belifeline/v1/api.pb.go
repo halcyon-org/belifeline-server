@@ -1384,14 +1384,14 @@ func (x *KoyoListResponse) GetKoyoInfomation() *v1.KoyoInformation {
 	return nil
 }
 
-type StatusRequest struct {
+type HealthRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 }
 
-func (x *StatusRequest) Reset() {
-	*x = StatusRequest{}
+func (x *HealthRequest) Reset() {
+	*x = HealthRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_belifeline_v1_api_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1399,13 +1399,13 @@ func (x *StatusRequest) Reset() {
 	}
 }
 
-func (x *StatusRequest) String() string {
+func (x *HealthRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*StatusRequest) ProtoMessage() {}
+func (*HealthRequest) ProtoMessage() {}
 
-func (x *StatusRequest) ProtoReflect() protoreflect.Message {
+func (x *HealthRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_belifeline_v1_api_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1417,12 +1417,12 @@ func (x *StatusRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use StatusRequest.ProtoReflect.Descriptor instead.
-func (*StatusRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use HealthRequest.ProtoReflect.Descriptor instead.
+func (*HealthRequest) Descriptor() ([]byte, []int) {
 	return file_belifeline_v1_api_proto_rawDescGZIP(), []int{23}
 }
 
-type StatusResponse struct {
+type HealthResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -1430,8 +1430,8 @@ type StatusResponse struct {
 	Status string `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
 }
 
-func (x *StatusResponse) Reset() {
-	*x = StatusResponse{}
+func (x *HealthResponse) Reset() {
+	*x = HealthResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_belifeline_v1_api_proto_msgTypes[24]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1439,13 +1439,13 @@ func (x *StatusResponse) Reset() {
 	}
 }
 
-func (x *StatusResponse) String() string {
+func (x *HealthResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*StatusResponse) ProtoMessage() {}
+func (*HealthResponse) ProtoMessage() {}
 
-func (x *StatusResponse) ProtoReflect() protoreflect.Message {
+func (x *HealthResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_belifeline_v1_api_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1457,12 +1457,12 @@ func (x *StatusResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use StatusResponse.ProtoReflect.Descriptor instead.
-func (*StatusResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use HealthResponse.ProtoReflect.Descriptor instead.
+func (*HealthResponse) Descriptor() ([]byte, []int) {
 	return file_belifeline_v1_api_proto_rawDescGZIP(), []int{24}
 }
 
-func (x *StatusResponse) GetStatus() string {
+func (x *HealthResponse) GetStatus() string {
 	if x != nil {
 		return x.Status
 	}
@@ -1700,8 +1700,8 @@ var file_belifeline_v1_api_proto_rawDesc = []byte{
 	0x2e, 0x62, 0x65, 0x6c, 0x69, 0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x6d, 0x6f, 0x64, 0x65,
 	0x6c, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x4b, 0x6f, 0x79, 0x6f, 0x49, 0x6e, 0x66, 0x6f, 0x72, 0x6d,
 	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x0e, 0x6b, 0x6f, 0x79, 0x6f, 0x49, 0x6e, 0x66, 0x6f, 0x6d,
-	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x0f, 0x0a, 0x0d, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x28, 0x0a, 0x0e, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x0f, 0x0a, 0x0d, 0x48, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x28, 0x0a, 0x0e, 0x48, 0x65, 0x61, 0x6c, 0x74, 0x68,
 	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74,
 	0x75, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73,
 	0x2a, 0x5b, 0x0a, 0x0b, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x54, 0x79, 0x70, 0x65, 0x12,
@@ -1755,8 +1755,8 @@ var file_belifeline_v1_api_proto_goTypes = []any{
 	(*KoyoApiRevokeResponse)(nil),         // 21: belifeline.v1.KoyoApiRevokeResponse
 	(*ClientRevokeResponse)(nil),          // 22: belifeline.v1.ClientRevokeResponse
 	(*KoyoListResponse)(nil),              // 23: belifeline.v1.KoyoListResponse
-	(*StatusRequest)(nil),                 // 24: belifeline.v1.StatusRequest
-	(*StatusResponse)(nil),                // 25: belifeline.v1.StatusResponse
+	(*HealthRequest)(nil),                 // 24: belifeline.v1.HealthRequest
+	(*HealthResponse)(nil),                // 25: belifeline.v1.HealthResponse
 	nil,                                   // 26: belifeline.v1.KoyoCreateRequest.KoyoParamsEntry
 	nil,                                   // 27: belifeline.v1.KoyoInformationCreateOrUpdate.KoyoParamsEntry
 	(*v1.ULID)(nil),                       // 28: belifeline.models.v1.ULID
@@ -2092,7 +2092,7 @@ func file_belifeline_v1_api_proto_init() {
 			}
 		}
 		file_belifeline_v1_api_proto_msgTypes[23].Exporter = func(v any, i int) any {
-			switch v := v.(*StatusRequest); i {
+			switch v := v.(*HealthRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2104,7 +2104,7 @@ func file_belifeline_v1_api_proto_init() {
 			}
 		}
 		file_belifeline_v1_api_proto_msgTypes[24].Exporter = func(v any, i int) any {
-			switch v := v.(*StatusResponse); i {
+			switch v := v.(*HealthResponse); i {
 			case 0:
 				return &v.state
 			case 1:

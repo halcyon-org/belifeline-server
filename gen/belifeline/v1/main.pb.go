@@ -89,10 +89,10 @@ var file_belifeline_v1_main_proto_rawDesc = []byte{
 	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x24, 0x2e, 0x62, 0x65, 0x6c, 0x69, 0x66, 0x65,
 	0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x4b, 0x6f, 0x79, 0x6f, 0x41, 0x70, 0x69, 0x52,
 	0x65, 0x76, 0x6f, 0x6b, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12,
-	0x47, 0x0a, 0x06, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x1c, 0x2e, 0x62, 0x65, 0x6c, 0x69,
-	0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73,
+	0x47, 0x0a, 0x06, 0x48, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x12, 0x1c, 0x2e, 0x62, 0x65, 0x6c, 0x69,
+	0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x48, 0x65, 0x61, 0x6c, 0x74, 0x68,
 	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x62, 0x65, 0x6c, 0x69, 0x66, 0x65,
-	0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x65,
+	0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x48, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x52, 0x65,
 	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x38, 0x5a, 0x36, 0x67, 0x69, 0x74, 0x68,
 	0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x68, 0x61, 0x6c, 0x63, 0x79, 0x6f, 0x6e, 0x2d, 0x6f,
 	0x72, 0x67, 0x2f, 0x6b, 0x69, 0x7a, 0x75, 0x6e, 0x61, 0x2f, 0x67, 0x65, 0x6e, 0x2f, 0x62, 0x65,
@@ -112,7 +112,7 @@ var file_belifeline_v1_main_proto_goTypes = []any{
 	(*KoyoListRequest)(nil),       // 8: belifeline.v1.KoyoListRequest
 	(*KoyoDeleteRequest)(nil),     // 9: belifeline.v1.KoyoDeleteRequest
 	(*KoyoApiRevokeRequest)(nil),  // 10: belifeline.v1.KoyoApiRevokeRequest
-	(*StatusRequest)(nil),         // 11: belifeline.v1.StatusRequest
+	(*HealthRequest)(nil),         // 11: belifeline.v1.HealthRequest
 	(*ClientCreateResponse)(nil),  // 12: belifeline.v1.ClientCreateResponse
 	(*ClientListResponse)(nil),    // 13: belifeline.v1.ClientListResponse
 	(*ClientDeleteResponse)(nil),  // 14: belifeline.v1.ClientDeleteResponse
@@ -124,7 +124,7 @@ var file_belifeline_v1_main_proto_goTypes = []any{
 	(*KoyoListResponse)(nil),      // 20: belifeline.v1.KoyoListResponse
 	(*KoyoDeleteResponse)(nil),    // 21: belifeline.v1.KoyoDeleteResponse
 	(*KoyoApiRevokeResponse)(nil), // 22: belifeline.v1.KoyoApiRevokeResponse
-	(*StatusResponse)(nil),        // 23: belifeline.v1.StatusResponse
+	(*HealthResponse)(nil),        // 23: belifeline.v1.HealthResponse
 }
 var file_belifeline_v1_main_proto_depIdxs = []int32{
 	0,  // 0: belifeline.v1.BeLifelineService.ClientCreate:input_type -> belifeline.v1.ClientCreateRequest
@@ -138,7 +138,7 @@ var file_belifeline_v1_main_proto_depIdxs = []int32{
 	8,  // 8: belifeline.v1.BeLifelineService.KoyoList:input_type -> belifeline.v1.KoyoListRequest
 	9,  // 9: belifeline.v1.BeLifelineService.KoyoDelete:input_type -> belifeline.v1.KoyoDeleteRequest
 	10, // 10: belifeline.v1.BeLifelineService.KoyoApiRevoke:input_type -> belifeline.v1.KoyoApiRevokeRequest
-	11, // 11: belifeline.v1.BeLifelineService.Status:input_type -> belifeline.v1.StatusRequest
+	11, // 11: belifeline.v1.BeLifelineService.Health:input_type -> belifeline.v1.HealthRequest
 	12, // 12: belifeline.v1.BeLifelineService.ClientCreate:output_type -> belifeline.v1.ClientCreateResponse
 	13, // 13: belifeline.v1.BeLifelineService.ClientList:output_type -> belifeline.v1.ClientListResponse
 	14, // 14: belifeline.v1.BeLifelineService.ClientDelete:output_type -> belifeline.v1.ClientDeleteResponse
@@ -150,7 +150,7 @@ var file_belifeline_v1_main_proto_depIdxs = []int32{
 	20, // 20: belifeline.v1.BeLifelineService.KoyoList:output_type -> belifeline.v1.KoyoListResponse
 	21, // 21: belifeline.v1.BeLifelineService.KoyoDelete:output_type -> belifeline.v1.KoyoDeleteResponse
 	22, // 22: belifeline.v1.BeLifelineService.KoyoApiRevoke:output_type -> belifeline.v1.KoyoApiRevokeResponse
-	23, // 23: belifeline.v1.BeLifelineService.Status:output_type -> belifeline.v1.StatusResponse
+	23, // 23: belifeline.v1.BeLifelineService.Health:output_type -> belifeline.v1.HealthResponse
 	12, // [12:24] is the sub-list for method output_type
 	0,  // [0:12] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
