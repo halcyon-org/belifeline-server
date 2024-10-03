@@ -6,6 +6,7 @@ require (
 	connectrpc.com/connect v1.17.0
 	entgo.io/ent v0.14.1
 	github.com/bufbuild/buf v1.43.0
+	github.com/bufbuild/connect-go v1.10.0
 	github.com/google/wire v0.6.0
 	github.com/joho/godotenv v1.5.1
 	github.com/oklog/ulid/v2 v2.1.0
