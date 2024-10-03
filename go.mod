@@ -4,7 +4,10 @@ go 1.23.1
 
 require google.golang.org/grpc v1.67.1
 
-require github.com/joho/godotenv v1.5.1 // indirect
+require (
+	github.com/google/wire v0.6.0 // indirect
+	github.com/joho/godotenv v1.5.1 // indirect
+)
 
 require (
 	connectrpc.com/connect v1.17.0 // indirect
