@@ -75,3 +75,33 @@ Requires: init
 ```bash
 go generate ./...
 ```
+
+### up
+
+Up the development environment.
+
+Requires: init
+
+```bash
+docker compose up -d
+```
+
+### down
+
+Down the development environment.
+
+Requires: init
+
+```bash
+docker compose down
+```
+
+### run
+
+Run the development environment.
+
+Requires: init, up
+
+```bash
+go run cmd/kizuna/main.go
+```
