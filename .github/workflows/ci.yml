@@ -95,6 +95,7 @@ jobs:
         with:
           push: false
           context: .
+          file: docker/kizuna/Dockerfile
 
   golang-build-check:
     runs-on: ubuntu-latest
