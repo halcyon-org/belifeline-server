@@ -1,4 +1,4 @@
 package main
 
-//go:generate buf generate
-//go:generate wire gen internal/di/wire.go
+//go:generate go run github.com/bufbuild/buf/cmd/buf generate
+//go:generate go run github.com/google/wire/cmd/wire gen internal/di/wire.go
