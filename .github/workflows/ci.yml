@@ -13,11 +13,15 @@ jobs:
       - yaml-lint
       - shell-lint
       - action-lint
+      - dotenv-lint
+      - dockerfile-lint
+      - docker-build-check
       - golang-build-check
       - golang-vet-check
       - golang-fmt-check
       - golang-test-comment-check
       - golang-test-check
+      - golang-generate-check
     steps:
       - name: All status check
         run: echo "All status check passed"
@@ -56,6 +60,42 @@ jobs:
         with:
           level: warning
           fail_on_error: true
+
+  dotenv-lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dotenv-linter/action-dotenv-linter@9c9a09ba60235ae0b92b2e2ed8f4268ac76d075f # 2.23.0
+        with:
+          dotenv_linter_flags: --skip UnorderedKey
+          fail_on_error: true
+
+  dockerfile-lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dockerfile lint
+        uses: reviewdog/action-hadolint@v1.46.0
+        with:
+          fail_on_error: true
+
+  docker-build-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: false
+          context: .
+          file: docker/kizuna/Dockerfile
 
   golang-build-check:
     runs-on: ubuntu-latest
@@ -96,6 +136,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-golang
+      - uses: ./.github/actions/setup-db
       - name: Run go test
         id: golang-test
         run: |
@@ -140,6 +181,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-golang
+      - uses: ./.github/actions/setup-db
       - name: Set up gotestfmt
         uses: gotesttools/gotestfmt-action@8b4478c7019be847373babde9300210e7de34bfb # v2.5.0
         with:
@@ -160,3 +202,20 @@ jobs:
       - name: Error check
         if: ${{ steps.golang-test.outcome != 'success' }}
         run: exit 1
+
+  golang-generate-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: ./.github/actions/setup-golang
+      - name: Run go generate
+        run: go generate ./...
+      - name: Check diff
+        run: |
+          if [[ $(git status --porcelain) ]]; then
+            git diff
+            exit 1
+          fi
