@@ -211,7 +211,6 @@ jobs:
         with:
           submodules: recursive
       - uses: ./.github/actions/setup-golang
-      - uses: ./.github/actions/setup-db
       - name: Run go generate
         run: go generate ./...
       - name: Check diff
