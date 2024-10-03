@@ -67,6 +67,31 @@ jobs:
           dotenv_linter_flags: --skip UnorderedKey
           fail_on_error: true
 
+  dockerfile-lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dockerfile lint
+        uses: reviewdog/action-hadolint@v1.46.0
+        with:
+          fail_on_error: true
+
+  docker-build-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: false
+          context: .
+
   golang-build-check:
     runs-on: ubuntu-latest
     timeout-minutes: 10
