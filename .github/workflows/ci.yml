@@ -13,11 +13,15 @@ jobs:
       - yaml-lint
       - shell-lint
       - action-lint
+      - dotenv-lint
+      - dockerfile-lint
+      - docker-build-check
       - golang-build-check
       - golang-vet-check
       - golang-fmt-check
       - golang-test-comment-check
       - golang-test-check
+      - golang-generate-check
     steps:
       - name: All status check
         run: echo "All status check passed"
