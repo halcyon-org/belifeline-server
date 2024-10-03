@@ -1,0 +1,18 @@
+name: Setup DB container
+description: Setup DB container
+
+runs:
+  using: composite
+  steps:
+    - name: Make .env file
+      shell: bash
+      run: |
+        if [ ! -f .env ]; then
+          cp .env.example .env
+        fi
+    - uses: docker/setup-buildx-action@v3
+    - name: Start DB container
+      shell: bash
+      run: |
+        docker compose build db db-side
+        docker compose up -d --no-build db db-side
