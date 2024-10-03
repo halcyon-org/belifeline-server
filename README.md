@@ -4,6 +4,7 @@
 
 > [!NOTE]
 > You can use `xc`(<https://xcfile.dev/>) to run the commands
+>
 > See <https://xcfile.dev/getting-started/#installation> for installation instructions
 
 ### init
@@ -13,7 +14,9 @@ Init development environment.
 Run: once
 
 ```bash
-echo "init"
+if [ ! -f .env ]; then
+  cp .env.example .env
+fi
 ```
 
 ### check
