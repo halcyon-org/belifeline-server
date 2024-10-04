@@ -9,6 +9,18 @@ import (
 	"github.com/halcyon-org/kizuna/ent"
 )
 
+// The AdminUserFunc type is an adapter to allow the use of ordinary
+// function as AdminUser mutator.
+type AdminUserFunc func(context.Context, *ent.AdminUserMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f AdminUserFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.AdminUserMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.AdminUserMutation", m)
+}
+
 // The ClientDataFunc type is an adapter to allow the use of ordinary
 // function as ClientData mutator.
 type ClientDataFunc func(context.Context, *ent.ClientDataMutation) (ent.Value, error)

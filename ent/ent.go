@@ -12,6 +12,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+	"github.com/halcyon-org/kizuna/ent/adminuser"
 	"github.com/halcyon-org/kizuna/ent/clientdata"
 	"github.com/halcyon-org/kizuna/ent/externalinformation"
 	"github.com/halcyon-org/kizuna/ent/koyodata"
@@ -76,6 +77,7 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
+			adminuser.Table:           adminuser.ValidColumn,
 			clientdata.Table:          clientdata.ValidColumn,
 			externalinformation.Table: externalinformation.ValidColumn,
 			koyodata.Table:            koyodata.ValidColumn,
