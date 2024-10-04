@@ -16,3 +16,8 @@ runs:
       run: |
         docker compose build db db-side
         docker compose up -d --no-build db db-side
+    - uses: ./.github/actions/setup-golang
+    - name: Migration
+      shell: bash
+      run: |
+        go run cmd/migration/main.go
