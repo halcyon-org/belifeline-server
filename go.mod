@@ -1,6 +1,6 @@
 module github.com/halcyon-org/kizuna
 
-go 1.23.1
+go 1.23.2
 
 require (
 	connectrpc.com/connect v1.17.0
