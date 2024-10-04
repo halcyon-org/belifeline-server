@@ -16,6 +16,7 @@ import (
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+	"github.com/halcyon-org/kizuna/ent/clientdata"
 	"github.com/halcyon-org/kizuna/ent/externalinformation"
 	"github.com/halcyon-org/kizuna/ent/koyodata"
 	"github.com/halcyon-org/kizuna/ent/koyoinformation"
@@ -26,6 +27,8 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
+	// ClientData is the client for interacting with the ClientData builders.
+	ClientData *ClientDataClient
 	// ExternalInformation is the client for interacting with the ExternalInformation builders.
 	ExternalInformation *ExternalInformationClient
 	// KoyoData is the client for interacting with the KoyoData builders.
@@ -43,6 +46,7 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
+	c.ClientData = NewClientDataClient(c.config)
 	c.ExternalInformation = NewExternalInformationClient(c.config)
 	c.KoyoData = NewKoyoDataClient(c.config)
 	c.KoyoInformation = NewKoyoInformationClient(c.config)
@@ -138,6 +142,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	return &Tx{
 		ctx:                 ctx,
 		config:              cfg,
+		ClientData:          NewClientDataClient(cfg),
 		ExternalInformation: NewExternalInformationClient(cfg),
 		KoyoData:            NewKoyoDataClient(cfg),
 		KoyoInformation:     NewKoyoInformationClient(cfg),
@@ -160,6 +165,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	return &Tx{
 		ctx:                 ctx,
 		config:              cfg,
+		ClientData:          NewClientDataClient(cfg),
 		ExternalInformation: NewExternalInformationClient(cfg),
 		KoyoData:            NewKoyoDataClient(cfg),
 		KoyoInformation:     NewKoyoInformationClient(cfg),
@@ -169,7 +175,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		ExternalInformation.
+//		ClientData.
 //		Query().
 //		Count(ctx)
 func (c *Client) Debug() *Client {
@@ -191,6 +197,7 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
+	c.ClientData.Use(hooks...)
 	c.ExternalInformation.Use(hooks...)
 	c.KoyoData.Use(hooks...)
 	c.KoyoInformation.Use(hooks...)
@@ -199,6 +206,7 @@ func (c *Client) Use(hooks ...Hook) {
 // Intercept adds the query interceptors to all the entity clients.
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
+	c.ClientData.Intercept(interceptors...)
 	c.ExternalInformation.Intercept(interceptors...)
 	c.KoyoData.Intercept(interceptors...)
 	c.KoyoInformation.Intercept(interceptors...)
@@ -207,6 +215,8 @@ func (c *Client) Intercept(interceptors ...Interceptor) {
 // Mutate implements the ent.Mutator interface.
 func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
+	case *ClientDataMutation:
+		return c.ClientData.mutate(ctx, m)
 	case *ExternalInformationMutation:
 		return c.ExternalInformation.mutate(ctx, m)
 	case *KoyoDataMutation:
@@ -215,6 +225,139 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.KoyoInformation.mutate(ctx, m)
 	default:
 		return nil, fmt.Errorf("ent: unknown mutation type %T", m)
+	}
+}
+
+// ClientDataClient is a client for the ClientData schema.
+type ClientDataClient struct {
+	config
+}
+
+// NewClientDataClient returns a client for the ClientData from the given config.
+func NewClientDataClient(c config) *ClientDataClient {
+	return &ClientDataClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `clientdata.Hooks(f(g(h())))`.
+func (c *ClientDataClient) Use(hooks ...Hook) {
+	c.hooks.ClientData = append(c.hooks.ClientData, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `clientdata.Intercept(f(g(h())))`.
+func (c *ClientDataClient) Intercept(interceptors ...Interceptor) {
+	c.inters.ClientData = append(c.inters.ClientData, interceptors...)
+}
+
+// Create returns a builder for creating a ClientData entity.
+func (c *ClientDataClient) Create() *ClientDataCreate {
+	mutation := newClientDataMutation(c.config, OpCreate)
+	return &ClientDataCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of ClientData entities.
+func (c *ClientDataClient) CreateBulk(builders ...*ClientDataCreate) *ClientDataCreateBulk {
+	return &ClientDataCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *ClientDataClient) MapCreateBulk(slice any, setFunc func(*ClientDataCreate, int)) *ClientDataCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &ClientDataCreateBulk{err: fmt.Errorf("calling to ClientDataClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*ClientDataCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &ClientDataCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for ClientData.
+func (c *ClientDataClient) Update() *ClientDataUpdate {
+	mutation := newClientDataMutation(c.config, OpUpdate)
+	return &ClientDataUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ClientDataClient) UpdateOne(cd *ClientData) *ClientDataUpdateOne {
+	mutation := newClientDataMutation(c.config, OpUpdateOne, withClientData(cd))
+	return &ClientDataUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ClientDataClient) UpdateOneID(id pulid.ID) *ClientDataUpdateOne {
+	mutation := newClientDataMutation(c.config, OpUpdateOne, withClientDataID(id))
+	return &ClientDataUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for ClientData.
+func (c *ClientDataClient) Delete() *ClientDataDelete {
+	mutation := newClientDataMutation(c.config, OpDelete)
+	return &ClientDataDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *ClientDataClient) DeleteOne(cd *ClientData) *ClientDataDeleteOne {
+	return c.DeleteOneID(cd.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *ClientDataClient) DeleteOneID(id pulid.ID) *ClientDataDeleteOne {
+	builder := c.Delete().Where(clientdata.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ClientDataDeleteOne{builder}
+}
+
+// Query returns a query builder for ClientData.
+func (c *ClientDataClient) Query() *ClientDataQuery {
+	return &ClientDataQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeClientData},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a ClientData entity by its id.
+func (c *ClientDataClient) Get(ctx context.Context, id pulid.ID) (*ClientData, error) {
+	return c.Query().Where(clientdata.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ClientDataClient) GetX(ctx context.Context, id pulid.ID) *ClientData {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *ClientDataClient) Hooks() []Hook {
+	return c.hooks.ClientData
+}
+
+// Interceptors returns the client interceptors.
+func (c *ClientDataClient) Interceptors() []Interceptor {
+	return c.inters.ClientData
+}
+
+func (c *ClientDataClient) mutate(ctx context.Context, m *ClientDataMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&ClientDataCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&ClientDataUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&ClientDataUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&ClientDataDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown ClientData mutation op: %q", m.Op())
 	}
 }
 
@@ -652,9 +795,9 @@ func (c *KoyoInformationClient) mutate(ctx context.Context, m *KoyoInformationMu
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		ExternalInformation, KoyoData, KoyoInformation []ent.Hook
+		ClientData, ExternalInformation, KoyoData, KoyoInformation []ent.Hook
 	}
 	inters struct {
-		ExternalInformation, KoyoData, KoyoInformation []ent.Interceptor
+		ClientData, ExternalInformation, KoyoData, KoyoInformation []ent.Interceptor
 	}
 )

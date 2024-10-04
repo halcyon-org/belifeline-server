@@ -5,6 +5,7 @@ package ent
 import (
 	"time"
 
+	"github.com/halcyon-org/kizuna/ent/clientdata"
 	"github.com/halcyon-org/kizuna/ent/externalinformation"
 	"github.com/halcyon-org/kizuna/ent/koyodata"
 	"github.com/halcyon-org/kizuna/ent/koyoinformation"
@@ -16,6 +17,30 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
+	clientdataFields := schema.ClientData{}.Fields()
+	_ = clientdataFields
+	// clientdataDescUsername is the schema descriptor for username field.
+	clientdataDescUsername := clientdataFields[1].Descriptor()
+	// clientdata.UsernameValidator is a validator for the "username" field. It is called by the builders before save.
+	clientdata.UsernameValidator = clientdataDescUsername.Validators[0].(func(string) error)
+	// clientdataDescCreatedAt is the schema descriptor for created_at field.
+	clientdataDescCreatedAt := clientdataFields[3].Descriptor()
+	// clientdata.DefaultCreatedAt holds the default value on creation for the created_at field.
+	clientdata.DefaultCreatedAt = clientdataDescCreatedAt.Default.(func() time.Time)
+	// clientdataDescLastUsedAt is the schema descriptor for last_used_at field.
+	clientdataDescLastUsedAt := clientdataFields[4].Descriptor()
+	// clientdata.DefaultLastUsedAt holds the default value on creation for the last_used_at field.
+	clientdata.DefaultLastUsedAt = clientdataDescLastUsedAt.Default.(func() time.Time)
+	// clientdataDescLastUpdatedAt is the schema descriptor for last_updated_at field.
+	clientdataDescLastUpdatedAt := clientdataFields[5].Descriptor()
+	// clientdata.DefaultLastUpdatedAt holds the default value on creation for the last_updated_at field.
+	clientdata.DefaultLastUpdatedAt = clientdataDescLastUpdatedAt.Default.(func() time.Time)
+	// clientdata.UpdateDefaultLastUpdatedAt holds the default value on update for the last_updated_at field.
+	clientdata.UpdateDefaultLastUpdatedAt = clientdataDescLastUpdatedAt.UpdateDefault.(func() time.Time)
+	// clientdataDescID is the schema descriptor for id field.
+	clientdataDescID := clientdataFields[0].Descriptor()
+	// clientdata.DefaultID holds the default value on creation for the id field.
+	clientdata.DefaultID = clientdataDescID.Default.(func() pulid.ID)
 	externalinformationFields := schema.ExternalInformation{}.Fields()
 	_ = externalinformationFields
 	// externalinformationDescName is the schema descriptor for name field.

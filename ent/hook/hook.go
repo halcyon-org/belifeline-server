@@ -9,6 +9,18 @@ import (
 	"github.com/halcyon-org/kizuna/ent"
 )
 
+// The ClientDataFunc type is an adapter to allow the use of ordinary
+// function as ClientData mutator.
+type ClientDataFunc func(context.Context, *ent.ClientDataMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ClientDataFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.ClientDataMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ClientDataMutation", m)
+}
+
 // The ExternalInformationFunc type is an adapter to allow the use of ordinary
 // function as ExternalInformation mutator.
 type ExternalInformationFunc func(context.Context, *ent.ExternalInformationMutation) (ent.Value, error)

@@ -6,6 +6,9 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
+// ClientData is the predicate function for clientdata builders.
+type ClientData func(*sql.Selector)
+
 // ExternalInformation is the predicate function for externalinformation builders.
 type ExternalInformation func(*sql.Selector)
 
