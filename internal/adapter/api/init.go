@@ -1,9 +1,16 @@
 package api
 
-import "github.com/halcyon-org/kizuna/gen/belifeline/v1/mainv1connect"
+import (
+	"github.com/halcyon-org/kizuna/gen/belifeline/v1/mainv1connect"
+	"github.com/halcyon-org/kizuna/internal/usecase"
+)
 
-type BeLifelineServerImpl struct{}
+type BeLifelineServerImpl struct {
+	koyoInfomationUsecase usecase.KoyoInfomationUsecase
+}
 
-func NewBeLifelineServiceHandler() mainv1connect.BeLifelineServiceHandler {
-	return &BeLifelineServerImpl{}
+func NewBeLifelineServiceHandler(koyoInfomationUsecase usecase.KoyoInfomationUsecase) mainv1connect.BeLifelineServiceHandler {
+	return &BeLifelineServerImpl{
+		koyoInfomationUsecase: koyoInfomationUsecase,
+	}
 }
