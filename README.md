@@ -1,5 +1,12 @@
 # Kizuna
 
+## Dev dependencies
+
+- [Docker](https://www.docker.com/)
+- [Go](https://go.dev//)
+- [xc](https://xcfile.dev/)
+- [golangci-lint](https://golangci-lint.run/)
+
 ## Tasks
 
 > [!NOTE]
@@ -34,6 +41,16 @@ Requires: init
 
 ```bash
 go fmt ./...
+```
+
+### lint
+
+Lint golang code.
+
+Requires: init
+
+```bash
+golangci-lint run
 ```
 
 ### vet
