@@ -27,6 +27,17 @@ jobs:
       - name: All status check
         run: echo "All status check passed"
 
+  ci-req-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check all-status-check
+        run: | 
+          diff \
+            <(yq ".jobs | del(.all-status-check) | keys.[]" .github/workflows/ci.yml) \
+            <(yq ".jobs.all-status-check.needs.[]" .github/workflows/ci.yml)
+  
   yaml-lint:
     runs-on: ubuntu-latest
     timeout-minutes: 10
