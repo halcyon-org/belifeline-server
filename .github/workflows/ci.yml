@@ -130,6 +130,14 @@ jobs:
             exit 1
           fi
 
+  golang-lint-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-golang
+      - uses: golangci/golangci-lint-action@971e284b6050e8a5849b72094c50ab08da042db8 # v6.1.1
+
   golang-test-comment-check:
     runs-on: ubuntu-latest
     timeout-minutes: 10
