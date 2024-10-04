@@ -6,6 +6,7 @@
 - [Go](https://go.dev//)
 - [xc](https://xcfile.dev/)
 - [golangci-lint](https://golangci-lint.run/)
+- [sqlfluff](https://www.sqlfluff.com/)
 
 ## Tasks
 
@@ -103,6 +104,26 @@ Requires: init
 docker compose up -d
 ```
 
+### migrate
+
+Dry run the migrations.
+
+Requires: init, up
+
+```bash
+go run cmd/migration/main.go --dry | sqlfluff fix - --dialect postgres
+```
+
+### migrate:apply
+
+Apply the migrations.
+
+Requires: init, up
+
+```bash
+go run cmd/migration/main.go
+```
+
 ### down
 
 Down the development environment.
@@ -111,6 +132,16 @@ Requires: init
 
 ```bash
 docker compose down
+```
+
+### down:all
+
+Down the development environment and remove volumes.
+
+Requires: init
+
+```bash
+docker compose down -v
 ```
 
 ### run

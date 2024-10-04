@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/halcyon-org/kizuna/ent"
 	"github.com/halcyon-org/kizuna/internal/adapter/repository/config"
@@ -11,6 +13,9 @@ import (
 )
 
 func main() {
+	dry := flag.Bool("dry", false, "dry run")
+	flag.Parse()
+
 	cfg, err := config.NewConfigRepository()
 	if err != nil {
 		log.Fatalf("failed to load config: %v", err)
@@ -24,7 +29,13 @@ func main() {
 	}
 	defer client.Close()
 
-	if err := client.Schema.Create(context.Background()); err != nil {
-		log.Fatalf("failed creating schema resources: %v", err)
+	if *dry {
+		if err := client.Schema.WriteTo(context.Background(), os.Stdout); err != nil {
+			log.Fatalf("failed printing schema changes: %v", err)
+		}
+	} else {
+		if err := client.Schema.Create(context.Background()); err != nil {
+			log.Fatalf("failed creating schema resources: %v", err)
+		}
 	}
 }
