@@ -19,6 +19,7 @@ jobs:
       - golang-build-check
       - golang-vet-check
       - golang-fmt-check
+      - golang-lint-check
       - golang-test-comment-check
       - golang-test-check
       - golang-generate-check
