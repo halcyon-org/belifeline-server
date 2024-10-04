@@ -17,6 +17,16 @@ type configRepositoryImpl struct {
 type Config struct {
 	Port       int
 	ListenAddr string `split_words:"true"`
+
+	Postgres PostgresConfig
+}
+
+type PostgresConfig struct {
+	DB       string
+	Host     string
+	User     string
+	Password string
+	Port     int
 }
 
 func NewConfigRepository() (ConfigRepository, error) {
@@ -31,8 +41,19 @@ func (c *configRepositoryImpl) LoadConfig() error {
 		return err
 	}
 
+	psqlConfig := PostgresConfig{}
+	err = envconfig.Process("postgres", &psqlConfig)
+	if err != nil {
+		return err
+	}
+
 	err = envconfig.Process("kizuna", &c.config)
-	return err
+	if err != nil {
+		return err
+	}
+
+	c.config.Postgres = psqlConfig
+	return nil
 }
 
 func (c *configRepositoryImpl) GetConfig() Config {
