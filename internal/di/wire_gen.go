@@ -11,16 +11,25 @@ import (
 	"github.com/halcyon-org/kizuna/internal/adapter/api"
 	"github.com/halcyon-org/kizuna/internal/adapter/controller"
 	"github.com/halcyon-org/kizuna/internal/adapter/repository/config"
+	ent2 "github.com/halcyon-org/kizuna/internal/adapter/repository/ent"
+	"github.com/halcyon-org/kizuna/internal/infrastructure/ent"
+	"github.com/halcyon-org/kizuna/internal/usecase"
 )
 
 // Injectors from wire.go:
 
 func InitializeControllerSet() (*ControllersSet, error) {
-	beLifelineServiceHandler := api.NewBeLifelineServiceHandler()
 	configRepository, err := config.NewConfigRepository()
 	if err != nil {
 		return nil, err
 	}
+	client, err := ent.InitDB(configRepository)
+	if err != nil {
+		return nil, err
+	}
+	koyoInfomationRepository := ent2.NewKoyoInfomationRepository(client)
+	koyoInfomationUsecase := usecase.NewKoyoInfomationUsecase(koyoInfomationRepository)
+	beLifelineServiceHandler := api.NewBeLifelineServiceHandler(koyoInfomationUsecase)
 	beLifelineController := controller.NewBeLifelineController(beLifelineServiceHandler, configRepository)
 	controllersSet := &ControllersSet{
 		BeLifelineController: beLifelineController,
@@ -31,11 +40,17 @@ func InitializeControllerSet() (*ControllersSet, error) {
 // wire.go:
 
 // Adapter
-var repositorySet = wire.NewSet(config.NewConfigRepository)
+var repositorySet = wire.NewSet(config.NewConfigRepository, ent2.NewKoyoInfomationRepository)
 
 var adapterSet = wire.NewSet(api.NewBeLifelineServiceHandler)
 
 var controllerSet = wire.NewSet(controller.NewBeLifelineController)
+
+// Infrastructure
+var infrastructureSet = wire.NewSet(ent.InitDB)
+
+// Usecase
+var usecaseSet = wire.NewSet(usecase.NewKoyoInfomationUsecase)
 
 type ControllersSet struct {
 	BeLifelineController controller.BeLifelineController

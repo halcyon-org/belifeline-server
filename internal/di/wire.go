@@ -8,11 +8,15 @@ import (
 	"github.com/halcyon-org/kizuna/internal/adapter/api"
 	"github.com/halcyon-org/kizuna/internal/adapter/controller"
 	"github.com/halcyon-org/kizuna/internal/adapter/repository/config"
+	repoent "github.com/halcyon-org/kizuna/internal/adapter/repository/ent"
+	infraent "github.com/halcyon-org/kizuna/internal/infrastructure/ent"
+	"github.com/halcyon-org/kizuna/internal/usecase"
 )
 
 // Adapter
 var repositorySet = wire.NewSet(
 	config.NewConfigRepository,
+	repoent.NewKoyoInfomationRepository,
 )
 
 var adapterSet = wire.NewSet(
@@ -24,10 +28,14 @@ var controllerSet = wire.NewSet(
 )
 
 // Infrastructure
-// var infrastructureSet = wire.NewSet()
+var infrastructureSet = wire.NewSet(
+	infraent.InitDB,
+)
 
 // Usecase
-// var usecaseSet = wire.NewSet()
+var usecaseSet = wire.NewSet(
+	usecase.NewKoyoInfomationUsecase,
+)
 
 type ControllersSet struct {
 	BeLifelineController controller.BeLifelineController
@@ -38,6 +46,8 @@ func InitializeControllerSet() (*ControllersSet, error) {
 		repositorySet,
 		adapterSet,
 		controllerSet,
+		infrastructureSet,
+		usecaseSet,
 		wire.Struct(new(ControllersSet), "*"),
 	)
 	return nil, nil
