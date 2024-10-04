@@ -19,10 +19,10 @@ type Config struct {
 	ListenAddr string `split_words:"true"`
 }
 
-func NewConfigRepository() ConfigRepository {
+func NewConfigRepository() (ConfigRepository, error) {
 	c := &configRepositoryImpl{}
-	c.LoadConfig()
-	return c
+	err := c.LoadConfig()
+	return c, err
 }
 
 func (c *configRepositoryImpl) LoadConfig() error {

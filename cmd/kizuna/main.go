@@ -8,5 +8,8 @@ func main() {
 		panic(err)
 	}
 
-	controllers.BeLifelineController.Serve()
+	err = controllers.BeLifelineController.Serve()
+	if err != nil {
+		panic(err)
+	}
 }

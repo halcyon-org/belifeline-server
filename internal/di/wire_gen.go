@@ -17,7 +17,10 @@ import (
 
 func InitializeControllerSet() (*ControllersSet, error) {
 	beLifelineServiceHandler := api.NewBeLifelineServiceHandler()
-	configRepository := config.NewConfigRepository()
+	configRepository, err := config.NewConfigRepository()
+	if err != nil {
+		return nil, err
+	}
 	beLifelineController := controller.NewBeLifelineController(beLifelineServiceHandler, configRepository)
 	controllersSet := &ControllersSet{
 		BeLifelineController: beLifelineController,
