@@ -8,6 +8,36 @@ import (
 )
 
 var (
+	// AdminUsersColumns holds the columns for the "admin_users" table.
+	AdminUsersColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "api_key", Type: field.TypeString},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "last_used_at", Type: field.TypeTime},
+		{Name: "last_updated_at", Type: field.TypeTime},
+	}
+	// AdminUsersTable holds the schema information for the "admin_users" table.
+	AdminUsersTable = &schema.Table{
+		Name:       "admin_users",
+		Columns:    AdminUsersColumns,
+		PrimaryKey: []*schema.Column{AdminUsersColumns[0]},
+	}
+	// ClientDataColumns holds the columns for the "client_data" table.
+	ClientDataColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "username", Type: field.TypeString},
+		{Name: "api_key", Type: field.TypeString},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "last_used_at", Type: field.TypeTime},
+		{Name: "last_updated_at", Type: field.TypeTime},
+	}
+	// ClientDataTable holds the schema information for the "client_data" table.
+	ClientDataTable = &schema.Table{
+		Name:       "client_data",
+		Columns:    ClientDataColumns,
+		PrimaryKey: []*schema.Column{ClientDataColumns[0]},
+	}
 	// ExternalInformationsColumns holds the columns for the "external_informations" table.
 	ExternalInformationsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeString, Unique: true},
@@ -80,6 +110,8 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		AdminUsersTable,
+		ClientDataTable,
 		ExternalInformationsTable,
 		KoyoDataTable,
 		KoyoInformationsTable,

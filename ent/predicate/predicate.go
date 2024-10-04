@@ -6,6 +6,12 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
+// AdminUser is the predicate function for adminuser builders.
+type AdminUser func(*sql.Selector)
+
+// ClientData is the predicate function for clientdata builders.
+type ClientData func(*sql.Selector)
+
 // ExternalInformation is the predicate function for externalinformation builders.
 type ExternalInformation func(*sql.Selector)
 
