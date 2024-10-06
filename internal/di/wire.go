@@ -16,6 +16,8 @@ import (
 // Adapter
 var repositorySet = wire.NewSet(
 	config.NewConfigRepository,
+	repoent.NewAdminUserRepository,
+	repoent.NewClientDataRepository,
 	repoent.NewKoyoInfomationRepository,
 )
 
@@ -34,6 +36,7 @@ var infrastructureSet = wire.NewSet(
 
 // Usecase
 var usecaseSet = wire.NewSet(
+	usecase.NewAuthUsecase,
 	usecase.NewKoyoInfomationUsecase,
 )
 

@@ -40,7 +40,7 @@ func InitializeControllerSet() (*ControllersSet, error) {
 // wire.go:
 
 // Adapter
-var repositorySet = wire.NewSet(config.NewConfigRepository, ent2.NewKoyoInfomationRepository)
+var repositorySet = wire.NewSet(config.NewConfigRepository, ent2.NewAdminUserRepository, ent2.NewClientDataRepository, ent2.NewKoyoInfomationRepository)
 
 var adapterSet = wire.NewSet(api.NewBeLifelineServiceHandler)
 
@@ -50,7 +50,7 @@ var controllerSet = wire.NewSet(controller.NewBeLifelineController)
 var infrastructureSet = wire.NewSet(ent.InitDB)
 
 // Usecase
-var usecaseSet = wire.NewSet(usecase.NewKoyoInfomationUsecase)
+var usecaseSet = wire.NewSet(usecase.NewAuthUsecase, usecase.NewKoyoInfomationUsecase)
 
 type ControllersSet struct {
 	BeLifelineController controller.BeLifelineController
