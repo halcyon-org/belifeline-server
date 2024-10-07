@@ -6,7 +6,7 @@ services:
     volumes:
       - db-store:/var/lib/pgsql/data
     ports:
-      - "55432:5432"
+      - "${POSTGRES_PORT}:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER"]
       timeout: 5s
@@ -17,7 +17,7 @@ services:
   db-side:
     image: alpine:3.20
     container_name: db-side
-    command: ["sh", "-c", "while true; do echo 'Hello, world!'; sleep 1; done"]
+    command: ["sh", "-c", "echo 'Wake up db-side'"]
     depends_on:
       db:
         condition: service_healthy

@@ -10,6 +10,7 @@ import (
 	"github.com/google/wire"
 	"github.com/halcyon-org/kizuna/internal/adapter/api"
 	"github.com/halcyon-org/kizuna/internal/adapter/controller"
+	"github.com/halcyon-org/kizuna/internal/adapter/interceptor"
 	"github.com/halcyon-org/kizuna/internal/adapter/repository/config"
 	ent2 "github.com/halcyon-org/kizuna/internal/adapter/repository/ent"
 	"github.com/halcyon-org/kizuna/internal/infrastructure/ent"
@@ -29,8 +30,11 @@ func InitializeControllerSet() (*ControllersSet, error) {
 	}
 	koyoInfomationRepository := ent2.NewKoyoInfomationRepository(client)
 	koyoInfomationUsecase := usecase.NewKoyoInfomationUsecase(koyoInfomationRepository)
-	beLifelineServiceHandler := api.NewBeLifelineServiceHandler(koyoInfomationUsecase)
-	beLifelineController := controller.NewBeLifelineController(beLifelineServiceHandler, configRepository)
+	adminUserRepository := ent2.NewAdminUserRepository(client)
+	authUsecase := usecase.NewAuthUsecase(adminUserRepository)
+	beLifelineServiceHandler := api.NewBeLifelineServiceHandler(koyoInfomationUsecase, authUsecase)
+	authInterceptorAdapter := interceptor.NewAuthInterceptorAdapter(authUsecase)
+	beLifelineController := controller.NewBeLifelineController(beLifelineServiceHandler, authInterceptorAdapter, configRepository)
 	controllersSet := &ControllersSet{
 		BeLifelineController: beLifelineController,
 	}
@@ -40,9 +44,9 @@ func InitializeControllerSet() (*ControllersSet, error) {
 // wire.go:
 
 // Adapter
-var repositorySet = wire.NewSet(config.NewConfigRepository, ent2.NewKoyoInfomationRepository)
+var repositorySet = wire.NewSet(config.NewConfigRepository, ent2.NewAdminUserRepository, ent2.NewClientDataRepository, ent2.NewKoyoInfomationRepository)
 
-var adapterSet = wire.NewSet(api.NewBeLifelineServiceHandler)
+var adapterSet = wire.NewSet(api.NewBeLifelineServiceHandler, interceptor.NewAuthInterceptorAdapter)
 
 var controllerSet = wire.NewSet(controller.NewBeLifelineController)
 
@@ -50,7 +54,7 @@ var controllerSet = wire.NewSet(controller.NewBeLifelineController)
 var infrastructureSet = wire.NewSet(ent.InitDB)
 
 // Usecase
-var usecaseSet = wire.NewSet(usecase.NewKoyoInfomationUsecase)
+var usecaseSet = wire.NewSet(usecase.NewAuthUsecase, usecase.NewKoyoInfomationUsecase)
 
 type ControllersSet struct {
 	BeLifelineController controller.BeLifelineController

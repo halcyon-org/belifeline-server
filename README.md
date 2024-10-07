@@ -31,7 +31,7 @@ fi
 
 Check golang code.
 
-Requires: init, fmt, vet, test
+Requires: init, fmt, vet, lint, test
 RunDeps: async
 
 ### fmt
@@ -148,8 +148,18 @@ docker compose down -v
 
 Run the development environment.
 
-Requires: init, up
+Requires: init, up, migrate:apply
 
 ```bash
 go run cmd/kizuna/main.go
+```
+
+### cli
+
+Run the cli.
+
+Requires: init, up, migrate:apply
+
+```bash
+echo "RUN: go run cmd/kizuna-cli/main.go"
 ```
