@@ -19,7 +19,7 @@ var repositorySet = wire.NewSet(
 	config.NewConfigRepository,
 	repoent.NewAdminUserRepository,
 	repoent.NewClientDataRepository,
-	repoent.NewKoyoInfomationRepository,
+	repoent.NewKoyoInformationRepository,
 )
 
 var adapterSet = wire.NewSet(
@@ -39,7 +39,7 @@ var infrastructureSet = wire.NewSet(
 // Usecase
 var usecaseSet = wire.NewSet(
 	usecase.NewAuthUsecase,
-	usecase.NewKoyoInfomationUsecase,
+	usecase.NewKoyoInformationUsecase,
 	usecase.NewClientDataUsecase,
 )
 

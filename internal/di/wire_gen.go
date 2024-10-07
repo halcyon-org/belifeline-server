@@ -28,13 +28,13 @@ func InitializeControllerSet() (*ControllersSet, error) {
 	if err != nil {
 		return nil, err
 	}
-	koyoInfomationRepository := ent2.NewKoyoInfomationRepository(client)
-	koyoInfomationUsecase := usecase.NewKoyoInfomationUsecase(koyoInfomationRepository)
+	koyoInformationRepository := ent2.NewKoyoInformationRepository(client)
+	koyoInformationUsecase := usecase.NewKoyoInformationUsecase(koyoInformationRepository)
 	clientDataRepository := ent2.NewClientDataRepository(client)
 	clientDataUsecase := usecase.NewClientDataUsecase(clientDataRepository)
 	adminUserRepository := ent2.NewAdminUserRepository(client)
 	authUsecase := usecase.NewAuthUsecase(adminUserRepository)
-	beLifelineServiceHandler := api.NewBeLifelineServiceHandler(koyoInfomationUsecase, clientDataUsecase, authUsecase)
+	beLifelineServiceHandler := api.NewBeLifelineServiceHandler(koyoInformationUsecase, clientDataUsecase, authUsecase)
 	authInterceptorAdapter := interceptor.NewAuthInterceptorAdapter(authUsecase)
 	beLifelineController := controller.NewBeLifelineController(beLifelineServiceHandler, authInterceptorAdapter, configRepository)
 	controllersSet := &ControllersSet{
@@ -46,7 +46,7 @@ func InitializeControllerSet() (*ControllersSet, error) {
 // wire.go:
 
 // Adapter
-var repositorySet = wire.NewSet(config.NewConfigRepository, ent2.NewAdminUserRepository, ent2.NewClientDataRepository, ent2.NewKoyoInfomationRepository)
+var repositorySet = wire.NewSet(config.NewConfigRepository, ent2.NewAdminUserRepository, ent2.NewClientDataRepository, ent2.NewKoyoInformationRepository)
 
 var adapterSet = wire.NewSet(api.NewBeLifelineServiceHandler, interceptor.NewAuthInterceptorAdapter)
 
@@ -56,7 +56,7 @@ var controllerSet = wire.NewSet(controller.NewBeLifelineController)
 var infrastructureSet = wire.NewSet(ent.InitDB)
 
 // Usecase
-var usecaseSet = wire.NewSet(usecase.NewAuthUsecase, usecase.NewKoyoInfomationUsecase, usecase.NewClientDataUsecase)
+var usecaseSet = wire.NewSet(usecase.NewAuthUsecase, usecase.NewKoyoInformationUsecase, usecase.NewClientDataUsecase)
 
 type ControllersSet struct {
 	BeLifelineController controller.BeLifelineController

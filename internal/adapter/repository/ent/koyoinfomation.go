@@ -2,15 +2,15 @@ package ent
 
 import "github.com/halcyon-org/kizuna/ent"
 
-type KoyoInfomationRepository interface {
+type KoyoInformationRepository interface {
 }
 
-type koyoInfomationRepositoryImpl struct {
+type koyoInformationRepositoryImpl struct {
 	DB *ent.Client
 }
 
-func NewKoyoInfomationRepository(db *ent.Client) KoyoInfomationRepository {
-	return &koyoInfomationRepositoryImpl{
+func NewKoyoInformationRepository(db *ent.Client) KoyoInformationRepository {
+	return &koyoInformationRepositoryImpl{
 		DB: db,
 	}
 }
