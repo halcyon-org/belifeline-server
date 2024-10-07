@@ -34,7 +34,10 @@ func main() {
 	var name string
 
 	fmt.Print("name: ")
-	fmt.Scanln(&name)
+	_, err = fmt.Scanln(&name)
+	if err != nil {
+		log.Fatalf("failed to read name: %v", err)
+	}
 
 	user, err := AddAdminUser(client, name)
 	if err != nil {

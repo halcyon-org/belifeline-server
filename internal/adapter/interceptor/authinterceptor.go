@@ -33,8 +33,11 @@ var authTypeByMethod = map[string][]int{
 }
 
 const AuthAPIKeyHeader = "X-API-Key"
+
+type AuthHeaderType string
+
 const (
-	AdminUserKey = "admin_user"
+	AdminUserKey AuthHeaderType = "admin_user"
 )
 
 type AuthInterceptorAdapter interface {
