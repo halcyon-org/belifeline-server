@@ -33,7 +33,7 @@ func InitializeControllerSet() (*ControllersSet, error) {
 	adminUserRepository := ent2.NewAdminUserRepository(client)
 	authUsecase := usecase.NewAuthUsecase(adminUserRepository)
 	beLifelineServiceHandler := api.NewBeLifelineServiceHandler(koyoInfomationUsecase, authUsecase)
-	authInterceptorAdapter := interceptor.NewAuthInterceptorAdapter()
+	authInterceptorAdapter := interceptor.NewAuthInterceptorAdapter(authUsecase)
 	beLifelineController := controller.NewBeLifelineController(beLifelineServiceHandler, authInterceptorAdapter, configRepository)
 	controllersSet := &ControllersSet{
 		BeLifelineController: beLifelineController,
