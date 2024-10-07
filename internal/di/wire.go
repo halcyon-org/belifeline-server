@@ -7,6 +7,7 @@ import (
 	"github.com/google/wire"
 	"github.com/halcyon-org/kizuna/internal/adapter/api"
 	"github.com/halcyon-org/kizuna/internal/adapter/controller"
+	"github.com/halcyon-org/kizuna/internal/adapter/interceptor"
 	"github.com/halcyon-org/kizuna/internal/adapter/repository/config"
 	repoent "github.com/halcyon-org/kizuna/internal/adapter/repository/ent"
 	infraent "github.com/halcyon-org/kizuna/internal/infrastructure/ent"
@@ -23,6 +24,7 @@ var repositorySet = wire.NewSet(
 
 var adapterSet = wire.NewSet(
 	api.NewBeLifelineServiceHandler,
+	interceptor.NewAuthInterceptorAdapter,
 )
 
 var controllerSet = wire.NewSet(
