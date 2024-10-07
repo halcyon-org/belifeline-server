@@ -5,6 +5,7 @@ import (
 
 	"github.com/halcyon-org/kizuna/ent"
 	"github.com/halcyon-org/kizuna/internal/adapter/repository/config"
+	_ "github.com/lib/pq"
 )
 
 func InitDB(cfg config.ConfigRepository) (*ent.Client, error) {
@@ -15,6 +16,5 @@ func InitDB(cfg config.ConfigRepository) (*ent.Client, error) {
 		return nil, err
 	}
 
-	defer client.Close()
 	return client, nil
 }
