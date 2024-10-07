@@ -7,12 +7,14 @@ import (
 
 type BeLifelineServerImpl struct {
 	koyoInformationUsecase usecase.KoyoInformationUsecase
+	clientDataUsecase      usecase.ClientDataUsecase
 	authUsecase            usecase.AuthUsecase
 }
 
-func NewBeLifelineServiceHandler(koyoInformationUsecase usecase.KoyoInformationUsecase, authUsecase usecase.AuthUsecase) mainv1connect.BeLifelineServiceHandler {
+func NewBeLifelineServiceHandler(koyoInformationUsecase usecase.KoyoInformationUsecase, clientDataUsecase usecase.ClientDataUsecase, authUsecase usecase.AuthUsecase) mainv1connect.BeLifelineServiceHandler {
 	return &BeLifelineServerImpl{
 		koyoInformationUsecase: koyoInformationUsecase,
+		clientDataUsecase:      clientDataUsecase,
 		authUsecase:            authUsecase,
 	}
 }
