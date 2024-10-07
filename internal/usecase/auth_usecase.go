@@ -22,12 +22,12 @@ func NewAuthUsecase(adminUserRepository ent.AdminUserRepository) AuthUsecase {
 	}
 }
 
-var ErrorAuthentificationFailed = errors.New("Authentification failed")
+var ErrorAuthenticationFailed = errors.New("Authentication failed")
 
 func (u *authUsecaseImpl) AuthAdminUser(ctx context.Context, apiKey string) (*domain.AdminUser, error) {
 	user, err := u.adminUserRepository.GetAdminUserByAPIKey(ctx, apiKey)
 	if err != nil {
-		return nil, ErrorAuthentificationFailed
+		return nil, ErrorAuthenticationFailed
 	}
 	adminUser := domain.ToDomainAdminUser(*user)
 	return &adminUser, nil
