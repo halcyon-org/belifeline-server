@@ -31,7 +31,7 @@ fi
 
 Check golang code.
 
-Requires: init, fmt, vet, test
+Requires: init, fmt, vet, lint, test
 RunDeps: async
 
 ### fmt
