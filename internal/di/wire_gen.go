@@ -30,9 +30,11 @@ func InitializeControllerSet() (*ControllersSet, error) {
 	}
 	koyoInfomationRepository := ent2.NewKoyoInfomationRepository(client)
 	koyoInfomationUsecase := usecase.NewKoyoInfomationUsecase(koyoInfomationRepository)
+	clientDataRepository := ent2.NewClientDataRepository(client)
+	clientDataUsecase := usecase.NewClientDataUsecase(clientDataRepository)
 	adminUserRepository := ent2.NewAdminUserRepository(client)
 	authUsecase := usecase.NewAuthUsecase(adminUserRepository)
-	beLifelineServiceHandler := api.NewBeLifelineServiceHandler(koyoInfomationUsecase, authUsecase)
+	beLifelineServiceHandler := api.NewBeLifelineServiceHandler(koyoInfomationUsecase, clientDataUsecase, authUsecase)
 	authInterceptorAdapter := interceptor.NewAuthInterceptorAdapter(authUsecase)
 	beLifelineController := controller.NewBeLifelineController(beLifelineServiceHandler, authInterceptorAdapter, configRepository)
 	controllersSet := &ControllersSet{
@@ -54,7 +56,7 @@ var controllerSet = wire.NewSet(controller.NewBeLifelineController)
 var infrastructureSet = wire.NewSet(ent.InitDB)
 
 // Usecase
-var usecaseSet = wire.NewSet(usecase.NewAuthUsecase, usecase.NewKoyoInfomationUsecase)
+var usecaseSet = wire.NewSet(usecase.NewAuthUsecase, usecase.NewKoyoInfomationUsecase, usecase.NewClientDataUsecase)
 
 type ControllersSet struct {
 	BeLifelineController controller.BeLifelineController
