@@ -11,6 +11,7 @@ import (
 
 type ClientDataUsecase interface {
 	CreateClientData(ctx context.Context, username string) (*domain.ClientData, error)
+	ListClientData(ctx context.Context, limit int32) ([]*domain.ClientData, error)
 	DeleteClientData(ctx context.Context, client_id string) (string, error)
 }
 
@@ -32,6 +33,20 @@ func (u *clientDataUsecaseImpl) CreateClientData(ctx context.Context, username s
 
 	domainData := domain.ToDomainClientData(*data)
 	return &domainData, nil
+}
+
+func (u *clientDataUsecaseImpl) ListClientData(ctx context.Context, limit int32) ([]*domain.ClientData, error) {
+	dataList, err := u.clientDataRepository.ListClientData(ctx, limit)
+	if err != nil {
+		return nil, err
+	}
+
+	var domainDataList = make([]*domain.ClientData, len(dataList))
+	for i, data := range dataList {
+		domainData := domain.ToDomainClientData(*data)
+		domainDataList[i] = &domainData
+	}
+	return domainDataList, nil
 }
 
 func (u *clientDataUsecaseImpl) DeleteClientData(ctx context.Context, client_id string) (string, error) {
