@@ -36,7 +36,7 @@ func (u *clientDataUsecaseImpl) CreateClientData(ctx context.Context, username s
 }
 
 func (u *clientDataUsecaseImpl) ListClientData(ctx context.Context, limit int32) ([]*domain.ClientData, error) {
-	dataList, err := u.clientDataRepository.ListClientData(ctx, limit)
+	dataList, err := u.clientDataRepository.GetAllClientData(ctx, limit)
 	if err != nil {
 		return nil, err
 	}
