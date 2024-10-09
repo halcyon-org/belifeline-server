@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/halcyon-org/kizuna/ent"
+	"github.com/halcyon-org/kizuna/ent/clientdata"
 	"github.com/halcyon-org/kizuna/ent/schema/pulid"
 )
 
@@ -11,6 +12,7 @@ type ClientDataRepository interface {
 	CreateClientData(cxt context.Context, username string, apiKey string) (*ent.ClientData, error)
 	ListClientData(cxt context.Context, limit int32) ([]*ent.ClientData, error)
 	DeleteClientData(ctx context.Context, client_id pulid.ID) (*pulid.ID, error)
+	GetClientDataByAPIKey(ctx context.Context, apiKey string) (*ent.ClientData, error)
 }
 
 type clientDataRepositoryImpl struct {
@@ -50,4 +52,8 @@ func (r *clientDataRepositoryImpl) DeleteClientData(ctx context.Context, client_
 		return nil, err
 	}
 	return &client_id, nil
+}
+
+func (r *clientDataRepositoryImpl) GetClientDataByAPIKey(ctx context.Context, apiKey string) (*ent.ClientData, error) {
+	return r.DB.ClientData.Query().Where(clientdata.APIKey(apiKey)).Only(ctx)
 }
