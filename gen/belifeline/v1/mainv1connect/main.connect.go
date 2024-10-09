@@ -45,6 +45,8 @@ const (
 	ServerServiceHealthProcedure = "/belifeline.v1.ServerService/Health"
 	// AdminServiceClientSetProcedure is the fully-qualified name of the AdminService's ClientSet RPC.
 	AdminServiceClientSetProcedure = "/belifeline.v1.AdminService/ClientSet"
+	// AdminServiceClientListProcedure is the fully-qualified name of the AdminService's ClientList RPC.
+	AdminServiceClientListProcedure = "/belifeline.v1.AdminService/ClientList"
 	// AdminServiceClientDeleteProcedure is the fully-qualified name of the AdminService's ClientDelete
 	// RPC.
 	AdminServiceClientDeleteProcedure = "/belifeline.v1.AdminService/ClientDelete"
@@ -63,9 +65,6 @@ const (
 	// AdminServiceKoyoApiRevokeProcedure is the fully-qualified name of the AdminService's
 	// KoyoApiRevoke RPC.
 	AdminServiceKoyoApiRevokeProcedure = "/belifeline.v1.AdminService/KoyoApiRevoke"
-	// ProviderServiceClientListProcedure is the fully-qualified name of the ProviderService's
-	// ClientList RPC.
-	ProviderServiceClientListProcedure = "/belifeline.v1.ProviderService/ClientList"
 	// ProviderServiceExtInfoListProcedure is the fully-qualified name of the ProviderService's
 	// ExtInfoList RPC.
 	ProviderServiceExtInfoListProcedure = "/belifeline.v1.ProviderService/ExtInfoList"
@@ -91,6 +90,7 @@ var (
 	serverServiceHealthMethodDescriptor                     = serverServiceServiceDescriptor.Methods().ByName("Health")
 	adminServiceServiceDescriptor                           = v1.File_belifeline_v1_main_proto.Services().ByName("AdminService")
 	adminServiceClientSetMethodDescriptor                   = adminServiceServiceDescriptor.Methods().ByName("ClientSet")
+	adminServiceClientListMethodDescriptor                  = adminServiceServiceDescriptor.Methods().ByName("ClientList")
 	adminServiceClientDeleteMethodDescriptor                = adminServiceServiceDescriptor.Methods().ByName("ClientDelete")
 	adminServiceClientRevokeMethodDescriptor                = adminServiceServiceDescriptor.Methods().ByName("ClientRevoke")
 	adminServiceExtInfoSetMethodDescriptor                  = adminServiceServiceDescriptor.Methods().ByName("ExtInfoSet")
@@ -99,7 +99,6 @@ var (
 	adminServiceKoyoDeleteMethodDescriptor                  = adminServiceServiceDescriptor.Methods().ByName("KoyoDelete")
 	adminServiceKoyoApiRevokeMethodDescriptor               = adminServiceServiceDescriptor.Methods().ByName("KoyoApiRevoke")
 	providerServiceServiceDescriptor                        = v1.File_belifeline_v1_main_proto.Services().ByName("ProviderService")
-	providerServiceClientListMethodDescriptor               = providerServiceServiceDescriptor.Methods().ByName("ClientList")
 	providerServiceExtInfoListMethodDescriptor              = providerServiceServiceDescriptor.Methods().ByName("ExtInfoList")
 	providerServiceKoyoListMethodDescriptor                 = providerServiceServiceDescriptor.Methods().ByName("KoyoList")
 	providerServiceExtInfoGetMethodDescriptor               = providerServiceServiceDescriptor.Methods().ByName("ExtInfoGet")
@@ -181,6 +180,7 @@ func (UnimplementedServerServiceHandler) Health(context.Context, *connect.Reques
 // AdminServiceClient is a client for the belifeline.v1.AdminService service.
 type AdminServiceClient interface {
 	ClientSet(context.Context, *connect.Request[v1.ClientSetRequest]) (*connect.Response[v1.ClientSetResponse], error)
+	ClientList(context.Context, *connect.Request[v1.ClientListRequest]) (*connect.Response[v1.ClientListResponse], error)
 	ClientDelete(context.Context, *connect.Request[v1.ClientDeleteRequest]) (*connect.Response[v1.ClientDeleteResponse], error)
 	ClientRevoke(context.Context, *connect.Request[v1.ClientRevokeRequest]) (*connect.Response[v1.ClientRevokeResponse], error)
 	ExtInfoSet(context.Context, *connect.Request[v1.ExtInfoSetRequest]) (*connect.Response[v1.ExtInfoSetResponse], error)
@@ -204,6 +204,12 @@ func NewAdminServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			httpClient,
 			baseURL+AdminServiceClientSetProcedure,
 			connect.WithSchema(adminServiceClientSetMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		clientList: connect.NewClient[v1.ClientListRequest, v1.ClientListResponse](
+			httpClient,
+			baseURL+AdminServiceClientListProcedure,
+			connect.WithSchema(adminServiceClientListMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
 		clientDelete: connect.NewClient[v1.ClientDeleteRequest, v1.ClientDeleteResponse](
@@ -254,6 +260,7 @@ func NewAdminServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 // adminServiceClient implements AdminServiceClient.
 type adminServiceClient struct {
 	clientSet     *connect.Client[v1.ClientSetRequest, v1.ClientSetResponse]
+	clientList    *connect.Client[v1.ClientListRequest, v1.ClientListResponse]
 	clientDelete  *connect.Client[v1.ClientDeleteRequest, v1.ClientDeleteResponse]
 	clientRevoke  *connect.Client[v1.ClientRevokeRequest, v1.ClientRevokeResponse]
 	extInfoSet    *connect.Client[v1.ExtInfoSetRequest, v1.ExtInfoSetResponse]
@@ -266,6 +273,11 @@ type adminServiceClient struct {
 // ClientSet calls belifeline.v1.AdminService.ClientSet.
 func (c *adminServiceClient) ClientSet(ctx context.Context, req *connect.Request[v1.ClientSetRequest]) (*connect.Response[v1.ClientSetResponse], error) {
 	return c.clientSet.CallUnary(ctx, req)
+}
+
+// ClientList calls belifeline.v1.AdminService.ClientList.
+func (c *adminServiceClient) ClientList(ctx context.Context, req *connect.Request[v1.ClientListRequest]) (*connect.Response[v1.ClientListResponse], error) {
+	return c.clientList.CallUnary(ctx, req)
 }
 
 // ClientDelete calls belifeline.v1.AdminService.ClientDelete.
@@ -306,6 +318,7 @@ func (c *adminServiceClient) KoyoApiRevoke(ctx context.Context, req *connect.Req
 // AdminServiceHandler is an implementation of the belifeline.v1.AdminService service.
 type AdminServiceHandler interface {
 	ClientSet(context.Context, *connect.Request[v1.ClientSetRequest]) (*connect.Response[v1.ClientSetResponse], error)
+	ClientList(context.Context, *connect.Request[v1.ClientListRequest]) (*connect.Response[v1.ClientListResponse], error)
 	ClientDelete(context.Context, *connect.Request[v1.ClientDeleteRequest]) (*connect.Response[v1.ClientDeleteResponse], error)
 	ClientRevoke(context.Context, *connect.Request[v1.ClientRevokeRequest]) (*connect.Response[v1.ClientRevokeResponse], error)
 	ExtInfoSet(context.Context, *connect.Request[v1.ExtInfoSetRequest]) (*connect.Response[v1.ExtInfoSetResponse], error)
@@ -325,6 +338,12 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 		AdminServiceClientSetProcedure,
 		svc.ClientSet,
 		connect.WithSchema(adminServiceClientSetMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceClientListHandler := connect.NewUnaryHandler(
+		AdminServiceClientListProcedure,
+		svc.ClientList,
+		connect.WithSchema(adminServiceClientListMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
 	adminServiceClientDeleteHandler := connect.NewUnaryHandler(
@@ -373,6 +392,8 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 		switch r.URL.Path {
 		case AdminServiceClientSetProcedure:
 			adminServiceClientSetHandler.ServeHTTP(w, r)
+		case AdminServiceClientListProcedure:
+			adminServiceClientListHandler.ServeHTTP(w, r)
 		case AdminServiceClientDeleteProcedure:
 			adminServiceClientDeleteHandler.ServeHTTP(w, r)
 		case AdminServiceClientRevokeProcedure:
@@ -398,6 +419,10 @@ type UnimplementedAdminServiceHandler struct{}
 
 func (UnimplementedAdminServiceHandler) ClientSet(context.Context, *connect.Request[v1.ClientSetRequest]) (*connect.Response[v1.ClientSetResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.AdminService.ClientSet is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) ClientList(context.Context, *connect.Request[v1.ClientListRequest]) (*connect.Response[v1.ClientListResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.AdminService.ClientList is not implemented"))
 }
 
 func (UnimplementedAdminServiceHandler) ClientDelete(context.Context, *connect.Request[v1.ClientDeleteRequest]) (*connect.Response[v1.ClientDeleteResponse], error) {
@@ -430,7 +455,6 @@ func (UnimplementedAdminServiceHandler) KoyoApiRevoke(context.Context, *connect.
 
 // ProviderServiceClient is a client for the belifeline.v1.ProviderService service.
 type ProviderServiceClient interface {
-	ClientList(context.Context, *connect.Request[v1.ClientListRequest]) (*connect.ServerStreamForClient[v1.ClientListResponse], error)
 	ExtInfoList(context.Context, *connect.Request[v1.ExtInfoListRequest]) (*connect.ServerStreamForClient[v1.ExtInfoListResponse], error)
 	KoyoList(context.Context, *connect.Request[v1.KoyoListRequest]) (*connect.ServerStreamForClient[v1.KoyoListResponse], error)
 	ExtInfoGet(context.Context, *connect.Request[v1.ExtInfoGetRequest]) (*connect.Response[v1.ExtInfoGetResponse], error)
@@ -447,12 +471,6 @@ type ProviderServiceClient interface {
 func NewProviderServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ProviderServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &providerServiceClient{
-		clientList: connect.NewClient[v1.ClientListRequest, v1.ClientListResponse](
-			httpClient,
-			baseURL+ProviderServiceClientListProcedure,
-			connect.WithSchema(providerServiceClientListMethodDescriptor),
-			connect.WithClientOptions(opts...),
-		),
 		extInfoList: connect.NewClient[v1.ExtInfoListRequest, v1.ExtInfoListResponse](
 			httpClient,
 			baseURL+ProviderServiceExtInfoListProcedure,
@@ -482,16 +500,10 @@ func NewProviderServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 
 // providerServiceClient implements ProviderServiceClient.
 type providerServiceClient struct {
-	clientList  *connect.Client[v1.ClientListRequest, v1.ClientListResponse]
 	extInfoList *connect.Client[v1.ExtInfoListRequest, v1.ExtInfoListResponse]
 	koyoList    *connect.Client[v1.KoyoListRequest, v1.KoyoListResponse]
 	extInfoGet  *connect.Client[v1.ExtInfoGetRequest, v1.ExtInfoGetResponse]
 	koyoDataGet *connect.Client[v1.KoyoDataGetRequest, v1.KoyoDataGetResponse]
-}
-
-// ClientList calls belifeline.v1.ProviderService.ClientList.
-func (c *providerServiceClient) ClientList(ctx context.Context, req *connect.Request[v1.ClientListRequest]) (*connect.ServerStreamForClient[v1.ClientListResponse], error) {
-	return c.clientList.CallServerStream(ctx, req)
 }
 
 // ExtInfoList calls belifeline.v1.ProviderService.ExtInfoList.
@@ -516,7 +528,6 @@ func (c *providerServiceClient) KoyoDataGet(ctx context.Context, req *connect.Re
 
 // ProviderServiceHandler is an implementation of the belifeline.v1.ProviderService service.
 type ProviderServiceHandler interface {
-	ClientList(context.Context, *connect.Request[v1.ClientListRequest], *connect.ServerStream[v1.ClientListResponse]) error
 	ExtInfoList(context.Context, *connect.Request[v1.ExtInfoListRequest], *connect.ServerStream[v1.ExtInfoListResponse]) error
 	KoyoList(context.Context, *connect.Request[v1.KoyoListRequest], *connect.ServerStream[v1.KoyoListResponse]) error
 	ExtInfoGet(context.Context, *connect.Request[v1.ExtInfoGetRequest]) (*connect.Response[v1.ExtInfoGetResponse], error)
@@ -529,12 +540,6 @@ type ProviderServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewProviderServiceHandler(svc ProviderServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	providerServiceClientListHandler := connect.NewServerStreamHandler(
-		ProviderServiceClientListProcedure,
-		svc.ClientList,
-		connect.WithSchema(providerServiceClientListMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
-	)
 	providerServiceExtInfoListHandler := connect.NewServerStreamHandler(
 		ProviderServiceExtInfoListProcedure,
 		svc.ExtInfoList,
@@ -561,8 +566,6 @@ func NewProviderServiceHandler(svc ProviderServiceHandler, opts ...connect.Handl
 	)
 	return "/belifeline.v1.ProviderService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case ProviderServiceClientListProcedure:
-			providerServiceClientListHandler.ServeHTTP(w, r)
 		case ProviderServiceExtInfoListProcedure:
 			providerServiceExtInfoListHandler.ServeHTTP(w, r)
 		case ProviderServiceKoyoListProcedure:
@@ -579,10 +582,6 @@ func NewProviderServiceHandler(svc ProviderServiceHandler, opts ...connect.Handl
 
 // UnimplementedProviderServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedProviderServiceHandler struct{}
-
-func (UnimplementedProviderServiceHandler) ClientList(context.Context, *connect.Request[v1.ClientListRequest], *connect.ServerStream[v1.ClientListResponse]) error {
-	return connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ProviderService.ClientList is not implemented"))
-}
 
 func (UnimplementedProviderServiceHandler) ExtInfoList(context.Context, *connect.Request[v1.ExtInfoListRequest], *connect.ServerStream[v1.ExtInfoListResponse]) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ProviderService.ExtInfoList is not implemented"))
