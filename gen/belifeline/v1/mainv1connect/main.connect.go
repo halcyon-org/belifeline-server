@@ -21,8 +21,14 @@ import (
 const _ = connect.IsAtLeastVersion1_13_0
 
 const (
-	// BeLifelineServiceName is the fully-qualified name of the BeLifelineService service.
-	BeLifelineServiceName = "belifeline.v1.BeLifelineService"
+	// ServerServiceName is the fully-qualified name of the ServerService service.
+	ServerServiceName = "belifeline.v1.ServerService"
+	// ProviderServiceName is the fully-qualified name of the ProviderService service.
+	ProviderServiceName = "belifeline.v1.ProviderService"
+	// ExtInfoServiceName is the fully-qualified name of the ExtInfoService service.
+	ExtInfoServiceName = "belifeline.v1.ExtInfoService"
+	// KoyoServiceName is the fully-qualified name of the KoyoService service.
+	KoyoServiceName = "belifeline.v1.KoyoService"
 )
 
 // These constants are the fully-qualified names of the RPCs defined in this package. They're
@@ -33,411 +39,595 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// BeLifelineServiceClientCreateProcedure is the fully-qualified name of the BeLifelineService's
+	// ServerServiceHealthProcedure is the fully-qualified name of the ServerService's Health RPC.
+	ServerServiceHealthProcedure = "/belifeline.v1.ServerService/Health"
+	// ProviderServiceClientCreateProcedure is the fully-qualified name of the ProviderService's
 	// ClientCreate RPC.
-	BeLifelineServiceClientCreateProcedure = "/belifeline.v1.BeLifelineService/ClientCreate"
-	// BeLifelineServiceClientListProcedure is the fully-qualified name of the BeLifelineService's
+	ProviderServiceClientCreateProcedure = "/belifeline.v1.ProviderService/ClientCreate"
+	// ProviderServiceClientListProcedure is the fully-qualified name of the ProviderService's
 	// ClientList RPC.
-	BeLifelineServiceClientListProcedure = "/belifeline.v1.BeLifelineService/ClientList"
-	// BeLifelineServiceClientDeleteProcedure is the fully-qualified name of the BeLifelineService's
+	ProviderServiceClientListProcedure = "/belifeline.v1.ProviderService/ClientList"
+	// ProviderServiceClientDeleteProcedure is the fully-qualified name of the ProviderService's
 	// ClientDelete RPC.
-	BeLifelineServiceClientDeleteProcedure = "/belifeline.v1.BeLifelineService/ClientDelete"
-	// BeLifelineServiceClientRevokeProcedure is the fully-qualified name of the BeLifelineService's
+	ProviderServiceClientDeleteProcedure = "/belifeline.v1.ProviderService/ClientDelete"
+	// ProviderServiceClientRevokeProcedure is the fully-qualified name of the ProviderService's
 	// ClientRevoke RPC.
-	BeLifelineServiceClientRevokeProcedure = "/belifeline.v1.BeLifelineService/ClientRevoke"
-	// BeLifelineServiceExtInfoCreateProcedure is the fully-qualified name of the BeLifelineService's
+	ProviderServiceClientRevokeProcedure = "/belifeline.v1.ProviderService/ClientRevoke"
+	// ExtInfoServiceExtInfoCreateProcedure is the fully-qualified name of the ExtInfoService's
 	// ExtInfoCreate RPC.
-	BeLifelineServiceExtInfoCreateProcedure = "/belifeline.v1.BeLifelineService/ExtInfoCreate"
-	// BeLifelineServiceExtInfoListProcedure is the fully-qualified name of the BeLifelineService's
+	ExtInfoServiceExtInfoCreateProcedure = "/belifeline.v1.ExtInfoService/ExtInfoCreate"
+	// ExtInfoServiceExtInfoListProcedure is the fully-qualified name of the ExtInfoService's
 	// ExtInfoList RPC.
-	BeLifelineServiceExtInfoListProcedure = "/belifeline.v1.BeLifelineService/ExtInfoList"
-	// BeLifelineServiceExtInfoDeleteProcedure is the fully-qualified name of the BeLifelineService's
+	ExtInfoServiceExtInfoListProcedure = "/belifeline.v1.ExtInfoService/ExtInfoList"
+	// ExtInfoServiceExtInfoDeleteProcedure is the fully-qualified name of the ExtInfoService's
 	// ExtInfoDelete RPC.
-	BeLifelineServiceExtInfoDeleteProcedure = "/belifeline.v1.BeLifelineService/ExtInfoDelete"
-	// BeLifelineServiceKoyoCreateProcedure is the fully-qualified name of the BeLifelineService's
-	// KoyoCreate RPC.
-	BeLifelineServiceKoyoCreateProcedure = "/belifeline.v1.BeLifelineService/KoyoCreate"
-	// BeLifelineServiceKoyoListProcedure is the fully-qualified name of the BeLifelineService's
-	// KoyoList RPC.
-	BeLifelineServiceKoyoListProcedure = "/belifeline.v1.BeLifelineService/KoyoList"
-	// BeLifelineServiceKoyoDeleteProcedure is the fully-qualified name of the BeLifelineService's
-	// KoyoDelete RPC.
-	BeLifelineServiceKoyoDeleteProcedure = "/belifeline.v1.BeLifelineService/KoyoDelete"
-	// BeLifelineServiceKoyoApiRevokeProcedure is the fully-qualified name of the BeLifelineService's
-	// KoyoApiRevoke RPC.
-	BeLifelineServiceKoyoApiRevokeProcedure = "/belifeline.v1.BeLifelineService/KoyoApiRevoke"
-	// BeLifelineServiceHealthProcedure is the fully-qualified name of the BeLifelineService's Health
+	ExtInfoServiceExtInfoDeleteProcedure = "/belifeline.v1.ExtInfoService/ExtInfoDelete"
+	// ExtInfoServiceExtInfoUpdateNotificationProcedure is the fully-qualified name of the
+	// ExtInfoService's ExtInfoUpdateNotification RPC.
+	ExtInfoServiceExtInfoUpdateNotificationProcedure = "/belifeline.v1.ExtInfoService/ExtInfoUpdateNotification"
+	// KoyoServiceKoyoCreateProcedure is the fully-qualified name of the KoyoService's KoyoCreate RPC.
+	KoyoServiceKoyoCreateProcedure = "/belifeline.v1.KoyoService/KoyoCreate"
+	// KoyoServiceKoyoListProcedure is the fully-qualified name of the KoyoService's KoyoList RPC.
+	KoyoServiceKoyoListProcedure = "/belifeline.v1.KoyoService/KoyoList"
+	// KoyoServiceKoyoDeleteProcedure is the fully-qualified name of the KoyoService's KoyoDelete RPC.
+	KoyoServiceKoyoDeleteProcedure = "/belifeline.v1.KoyoService/KoyoDelete"
+	// KoyoServiceKoyoApiRevokeProcedure is the fully-qualified name of the KoyoService's KoyoApiRevoke
 	// RPC.
-	BeLifelineServiceHealthProcedure = "/belifeline.v1.BeLifelineService/Health"
+	KoyoServiceKoyoApiRevokeProcedure = "/belifeline.v1.KoyoService/KoyoApiRevoke"
+	// KoyoServiceKoyoDataAddProcedure is the fully-qualified name of the KoyoService's KoyoDataAdd RPC.
+	KoyoServiceKoyoDataAddProcedure = "/belifeline.v1.KoyoService/KoyoDataAdd"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
-	beLifelineServiceServiceDescriptor             = v1.File_belifeline_v1_main_proto.Services().ByName("BeLifelineService")
-	beLifelineServiceClientCreateMethodDescriptor  = beLifelineServiceServiceDescriptor.Methods().ByName("ClientCreate")
-	beLifelineServiceClientListMethodDescriptor    = beLifelineServiceServiceDescriptor.Methods().ByName("ClientList")
-	beLifelineServiceClientDeleteMethodDescriptor  = beLifelineServiceServiceDescriptor.Methods().ByName("ClientDelete")
-	beLifelineServiceClientRevokeMethodDescriptor  = beLifelineServiceServiceDescriptor.Methods().ByName("ClientRevoke")
-	beLifelineServiceExtInfoCreateMethodDescriptor = beLifelineServiceServiceDescriptor.Methods().ByName("ExtInfoCreate")
-	beLifelineServiceExtInfoListMethodDescriptor   = beLifelineServiceServiceDescriptor.Methods().ByName("ExtInfoList")
-	beLifelineServiceExtInfoDeleteMethodDescriptor = beLifelineServiceServiceDescriptor.Methods().ByName("ExtInfoDelete")
-	beLifelineServiceKoyoCreateMethodDescriptor    = beLifelineServiceServiceDescriptor.Methods().ByName("KoyoCreate")
-	beLifelineServiceKoyoListMethodDescriptor      = beLifelineServiceServiceDescriptor.Methods().ByName("KoyoList")
-	beLifelineServiceKoyoDeleteMethodDescriptor    = beLifelineServiceServiceDescriptor.Methods().ByName("KoyoDelete")
-	beLifelineServiceKoyoApiRevokeMethodDescriptor = beLifelineServiceServiceDescriptor.Methods().ByName("KoyoApiRevoke")
-	beLifelineServiceHealthMethodDescriptor        = beLifelineServiceServiceDescriptor.Methods().ByName("Health")
+	serverServiceServiceDescriptor                          = v1.File_belifeline_v1_main_proto.Services().ByName("ServerService")
+	serverServiceHealthMethodDescriptor                     = serverServiceServiceDescriptor.Methods().ByName("Health")
+	providerServiceServiceDescriptor                        = v1.File_belifeline_v1_main_proto.Services().ByName("ProviderService")
+	providerServiceClientCreateMethodDescriptor             = providerServiceServiceDescriptor.Methods().ByName("ClientCreate")
+	providerServiceClientListMethodDescriptor               = providerServiceServiceDescriptor.Methods().ByName("ClientList")
+	providerServiceClientDeleteMethodDescriptor             = providerServiceServiceDescriptor.Methods().ByName("ClientDelete")
+	providerServiceClientRevokeMethodDescriptor             = providerServiceServiceDescriptor.Methods().ByName("ClientRevoke")
+	extInfoServiceServiceDescriptor                         = v1.File_belifeline_v1_main_proto.Services().ByName("ExtInfoService")
+	extInfoServiceExtInfoCreateMethodDescriptor             = extInfoServiceServiceDescriptor.Methods().ByName("ExtInfoCreate")
+	extInfoServiceExtInfoListMethodDescriptor               = extInfoServiceServiceDescriptor.Methods().ByName("ExtInfoList")
+	extInfoServiceExtInfoDeleteMethodDescriptor             = extInfoServiceServiceDescriptor.Methods().ByName("ExtInfoDelete")
+	extInfoServiceExtInfoUpdateNotificationMethodDescriptor = extInfoServiceServiceDescriptor.Methods().ByName("ExtInfoUpdateNotification")
+	koyoServiceServiceDescriptor                            = v1.File_belifeline_v1_main_proto.Services().ByName("KoyoService")
+	koyoServiceKoyoCreateMethodDescriptor                   = koyoServiceServiceDescriptor.Methods().ByName("KoyoCreate")
+	koyoServiceKoyoListMethodDescriptor                     = koyoServiceServiceDescriptor.Methods().ByName("KoyoList")
+	koyoServiceKoyoDeleteMethodDescriptor                   = koyoServiceServiceDescriptor.Methods().ByName("KoyoDelete")
+	koyoServiceKoyoApiRevokeMethodDescriptor                = koyoServiceServiceDescriptor.Methods().ByName("KoyoApiRevoke")
+	koyoServiceKoyoDataAddMethodDescriptor                  = koyoServiceServiceDescriptor.Methods().ByName("KoyoDataAdd")
 )
 
-// BeLifelineServiceClient is a client for the belifeline.v1.BeLifelineService service.
-type BeLifelineServiceClient interface {
-	ClientCreate(context.Context, *connect.Request[v1.ClientCreateRequest]) (*connect.Response[v1.ClientCreateResponse], error)
-	ClientList(context.Context, *connect.Request[v1.ClientListRequest]) (*connect.ServerStreamForClient[v1.ClientListResponse], error)
-	ClientDelete(context.Context, *connect.Request[v1.ClientDeleteRequest]) (*connect.Response[v1.ClientDeleteResponse], error)
-	ClientRevoke(context.Context, *connect.Request[v1.ClientRevokeRequest]) (*connect.Response[v1.ClientRevokeResponse], error)
-	ExtInfoCreate(context.Context, *connect.Request[v1.ExtInfoCreateRequest]) (*connect.Response[v1.ExtInfoCreateResponse], error)
-	ExtInfoList(context.Context, *connect.Request[v1.ExtInfoListRequest]) (*connect.ServerStreamForClient[v1.ExtInfoListResponse], error)
-	ExtInfoDelete(context.Context, *connect.Request[v1.ExtInfoDeleteRequest]) (*connect.Response[v1.ExtInfoDeleteResponse], error)
-	KoyoCreate(context.Context, *connect.Request[v1.KoyoCreateRequest]) (*connect.Response[v1.KoyoCreateResponse], error)
-	KoyoList(context.Context, *connect.Request[v1.KoyoListRequest]) (*connect.ServerStreamForClient[v1.KoyoListResponse], error)
-	KoyoDelete(context.Context, *connect.Request[v1.KoyoDeleteRequest]) (*connect.Response[v1.KoyoDeleteResponse], error)
-	KoyoApiRevoke(context.Context, *connect.Request[v1.KoyoApiRevokeRequest]) (*connect.Response[v1.KoyoApiRevokeResponse], error)
+// ServerServiceClient is a client for the belifeline.v1.ServerService service.
+type ServerServiceClient interface {
 	Health(context.Context, *connect.Request[v1.HealthRequest]) (*connect.Response[v1.HealthResponse], error)
 }
 
-// NewBeLifelineServiceClient constructs a client for the belifeline.v1.BeLifelineService service.
-// By default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped
-// responses, and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
+// NewServerServiceClient constructs a client for the belifeline.v1.ServerService service. By
+// default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses,
+// and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
 // connect.WithGRPC() or connect.WithGRPCWeb() options.
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewBeLifelineServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) BeLifelineServiceClient {
+func NewServerServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ServerServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
-	return &beLifelineServiceClient{
-		clientCreate: connect.NewClient[v1.ClientCreateRequest, v1.ClientCreateResponse](
-			httpClient,
-			baseURL+BeLifelineServiceClientCreateProcedure,
-			connect.WithSchema(beLifelineServiceClientCreateMethodDescriptor),
-			connect.WithClientOptions(opts...),
-		),
-		clientList: connect.NewClient[v1.ClientListRequest, v1.ClientListResponse](
-			httpClient,
-			baseURL+BeLifelineServiceClientListProcedure,
-			connect.WithSchema(beLifelineServiceClientListMethodDescriptor),
-			connect.WithClientOptions(opts...),
-		),
-		clientDelete: connect.NewClient[v1.ClientDeleteRequest, v1.ClientDeleteResponse](
-			httpClient,
-			baseURL+BeLifelineServiceClientDeleteProcedure,
-			connect.WithSchema(beLifelineServiceClientDeleteMethodDescriptor),
-			connect.WithClientOptions(opts...),
-		),
-		clientRevoke: connect.NewClient[v1.ClientRevokeRequest, v1.ClientRevokeResponse](
-			httpClient,
-			baseURL+BeLifelineServiceClientRevokeProcedure,
-			connect.WithSchema(beLifelineServiceClientRevokeMethodDescriptor),
-			connect.WithClientOptions(opts...),
-		),
-		extInfoCreate: connect.NewClient[v1.ExtInfoCreateRequest, v1.ExtInfoCreateResponse](
-			httpClient,
-			baseURL+BeLifelineServiceExtInfoCreateProcedure,
-			connect.WithSchema(beLifelineServiceExtInfoCreateMethodDescriptor),
-			connect.WithClientOptions(opts...),
-		),
-		extInfoList: connect.NewClient[v1.ExtInfoListRequest, v1.ExtInfoListResponse](
-			httpClient,
-			baseURL+BeLifelineServiceExtInfoListProcedure,
-			connect.WithSchema(beLifelineServiceExtInfoListMethodDescriptor),
-			connect.WithClientOptions(opts...),
-		),
-		extInfoDelete: connect.NewClient[v1.ExtInfoDeleteRequest, v1.ExtInfoDeleteResponse](
-			httpClient,
-			baseURL+BeLifelineServiceExtInfoDeleteProcedure,
-			connect.WithSchema(beLifelineServiceExtInfoDeleteMethodDescriptor),
-			connect.WithClientOptions(opts...),
-		),
-		koyoCreate: connect.NewClient[v1.KoyoCreateRequest, v1.KoyoCreateResponse](
-			httpClient,
-			baseURL+BeLifelineServiceKoyoCreateProcedure,
-			connect.WithSchema(beLifelineServiceKoyoCreateMethodDescriptor),
-			connect.WithClientOptions(opts...),
-		),
-		koyoList: connect.NewClient[v1.KoyoListRequest, v1.KoyoListResponse](
-			httpClient,
-			baseURL+BeLifelineServiceKoyoListProcedure,
-			connect.WithSchema(beLifelineServiceKoyoListMethodDescriptor),
-			connect.WithClientOptions(opts...),
-		),
-		koyoDelete: connect.NewClient[v1.KoyoDeleteRequest, v1.KoyoDeleteResponse](
-			httpClient,
-			baseURL+BeLifelineServiceKoyoDeleteProcedure,
-			connect.WithSchema(beLifelineServiceKoyoDeleteMethodDescriptor),
-			connect.WithClientOptions(opts...),
-		),
-		koyoApiRevoke: connect.NewClient[v1.KoyoApiRevokeRequest, v1.KoyoApiRevokeResponse](
-			httpClient,
-			baseURL+BeLifelineServiceKoyoApiRevokeProcedure,
-			connect.WithSchema(beLifelineServiceKoyoApiRevokeMethodDescriptor),
-			connect.WithClientOptions(opts...),
-		),
+	return &serverServiceClient{
 		health: connect.NewClient[v1.HealthRequest, v1.HealthResponse](
 			httpClient,
-			baseURL+BeLifelineServiceHealthProcedure,
-			connect.WithSchema(beLifelineServiceHealthMethodDescriptor),
+			baseURL+ServerServiceHealthProcedure,
+			connect.WithSchema(serverServiceHealthMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
 	}
 }
 
-// beLifelineServiceClient implements BeLifelineServiceClient.
-type beLifelineServiceClient struct {
-	clientCreate  *connect.Client[v1.ClientCreateRequest, v1.ClientCreateResponse]
-	clientList    *connect.Client[v1.ClientListRequest, v1.ClientListResponse]
-	clientDelete  *connect.Client[v1.ClientDeleteRequest, v1.ClientDeleteResponse]
-	clientRevoke  *connect.Client[v1.ClientRevokeRequest, v1.ClientRevokeResponse]
-	extInfoCreate *connect.Client[v1.ExtInfoCreateRequest, v1.ExtInfoCreateResponse]
-	extInfoList   *connect.Client[v1.ExtInfoListRequest, v1.ExtInfoListResponse]
-	extInfoDelete *connect.Client[v1.ExtInfoDeleteRequest, v1.ExtInfoDeleteResponse]
-	koyoCreate    *connect.Client[v1.KoyoCreateRequest, v1.KoyoCreateResponse]
-	koyoList      *connect.Client[v1.KoyoListRequest, v1.KoyoListResponse]
-	koyoDelete    *connect.Client[v1.KoyoDeleteRequest, v1.KoyoDeleteResponse]
-	koyoApiRevoke *connect.Client[v1.KoyoApiRevokeRequest, v1.KoyoApiRevokeResponse]
-	health        *connect.Client[v1.HealthRequest, v1.HealthResponse]
+// serverServiceClient implements ServerServiceClient.
+type serverServiceClient struct {
+	health *connect.Client[v1.HealthRequest, v1.HealthResponse]
 }
 
-// ClientCreate calls belifeline.v1.BeLifelineService.ClientCreate.
-func (c *beLifelineServiceClient) ClientCreate(ctx context.Context, req *connect.Request[v1.ClientCreateRequest]) (*connect.Response[v1.ClientCreateResponse], error) {
-	return c.clientCreate.CallUnary(ctx, req)
-}
-
-// ClientList calls belifeline.v1.BeLifelineService.ClientList.
-func (c *beLifelineServiceClient) ClientList(ctx context.Context, req *connect.Request[v1.ClientListRequest]) (*connect.ServerStreamForClient[v1.ClientListResponse], error) {
-	return c.clientList.CallServerStream(ctx, req)
-}
-
-// ClientDelete calls belifeline.v1.BeLifelineService.ClientDelete.
-func (c *beLifelineServiceClient) ClientDelete(ctx context.Context, req *connect.Request[v1.ClientDeleteRequest]) (*connect.Response[v1.ClientDeleteResponse], error) {
-	return c.clientDelete.CallUnary(ctx, req)
-}
-
-// ClientRevoke calls belifeline.v1.BeLifelineService.ClientRevoke.
-func (c *beLifelineServiceClient) ClientRevoke(ctx context.Context, req *connect.Request[v1.ClientRevokeRequest]) (*connect.Response[v1.ClientRevokeResponse], error) {
-	return c.clientRevoke.CallUnary(ctx, req)
-}
-
-// ExtInfoCreate calls belifeline.v1.BeLifelineService.ExtInfoCreate.
-func (c *beLifelineServiceClient) ExtInfoCreate(ctx context.Context, req *connect.Request[v1.ExtInfoCreateRequest]) (*connect.Response[v1.ExtInfoCreateResponse], error) {
-	return c.extInfoCreate.CallUnary(ctx, req)
-}
-
-// ExtInfoList calls belifeline.v1.BeLifelineService.ExtInfoList.
-func (c *beLifelineServiceClient) ExtInfoList(ctx context.Context, req *connect.Request[v1.ExtInfoListRequest]) (*connect.ServerStreamForClient[v1.ExtInfoListResponse], error) {
-	return c.extInfoList.CallServerStream(ctx, req)
-}
-
-// ExtInfoDelete calls belifeline.v1.BeLifelineService.ExtInfoDelete.
-func (c *beLifelineServiceClient) ExtInfoDelete(ctx context.Context, req *connect.Request[v1.ExtInfoDeleteRequest]) (*connect.Response[v1.ExtInfoDeleteResponse], error) {
-	return c.extInfoDelete.CallUnary(ctx, req)
-}
-
-// KoyoCreate calls belifeline.v1.BeLifelineService.KoyoCreate.
-func (c *beLifelineServiceClient) KoyoCreate(ctx context.Context, req *connect.Request[v1.KoyoCreateRequest]) (*connect.Response[v1.KoyoCreateResponse], error) {
-	return c.koyoCreate.CallUnary(ctx, req)
-}
-
-// KoyoList calls belifeline.v1.BeLifelineService.KoyoList.
-func (c *beLifelineServiceClient) KoyoList(ctx context.Context, req *connect.Request[v1.KoyoListRequest]) (*connect.ServerStreamForClient[v1.KoyoListResponse], error) {
-	return c.koyoList.CallServerStream(ctx, req)
-}
-
-// KoyoDelete calls belifeline.v1.BeLifelineService.KoyoDelete.
-func (c *beLifelineServiceClient) KoyoDelete(ctx context.Context, req *connect.Request[v1.KoyoDeleteRequest]) (*connect.Response[v1.KoyoDeleteResponse], error) {
-	return c.koyoDelete.CallUnary(ctx, req)
-}
-
-// KoyoApiRevoke calls belifeline.v1.BeLifelineService.KoyoApiRevoke.
-func (c *beLifelineServiceClient) KoyoApiRevoke(ctx context.Context, req *connect.Request[v1.KoyoApiRevokeRequest]) (*connect.Response[v1.KoyoApiRevokeResponse], error) {
-	return c.koyoApiRevoke.CallUnary(ctx, req)
-}
-
-// Health calls belifeline.v1.BeLifelineService.Health.
-func (c *beLifelineServiceClient) Health(ctx context.Context, req *connect.Request[v1.HealthRequest]) (*connect.Response[v1.HealthResponse], error) {
+// Health calls belifeline.v1.ServerService.Health.
+func (c *serverServiceClient) Health(ctx context.Context, req *connect.Request[v1.HealthRequest]) (*connect.Response[v1.HealthResponse], error) {
 	return c.health.CallUnary(ctx, req)
 }
 
-// BeLifelineServiceHandler is an implementation of the belifeline.v1.BeLifelineService service.
-type BeLifelineServiceHandler interface {
-	ClientCreate(context.Context, *connect.Request[v1.ClientCreateRequest]) (*connect.Response[v1.ClientCreateResponse], error)
-	ClientList(context.Context, *connect.Request[v1.ClientListRequest], *connect.ServerStream[v1.ClientListResponse]) error
-	ClientDelete(context.Context, *connect.Request[v1.ClientDeleteRequest]) (*connect.Response[v1.ClientDeleteResponse], error)
-	ClientRevoke(context.Context, *connect.Request[v1.ClientRevokeRequest]) (*connect.Response[v1.ClientRevokeResponse], error)
-	ExtInfoCreate(context.Context, *connect.Request[v1.ExtInfoCreateRequest]) (*connect.Response[v1.ExtInfoCreateResponse], error)
-	ExtInfoList(context.Context, *connect.Request[v1.ExtInfoListRequest], *connect.ServerStream[v1.ExtInfoListResponse]) error
-	ExtInfoDelete(context.Context, *connect.Request[v1.ExtInfoDeleteRequest]) (*connect.Response[v1.ExtInfoDeleteResponse], error)
-	KoyoCreate(context.Context, *connect.Request[v1.KoyoCreateRequest]) (*connect.Response[v1.KoyoCreateResponse], error)
-	KoyoList(context.Context, *connect.Request[v1.KoyoListRequest], *connect.ServerStream[v1.KoyoListResponse]) error
-	KoyoDelete(context.Context, *connect.Request[v1.KoyoDeleteRequest]) (*connect.Response[v1.KoyoDeleteResponse], error)
-	KoyoApiRevoke(context.Context, *connect.Request[v1.KoyoApiRevokeRequest]) (*connect.Response[v1.KoyoApiRevokeResponse], error)
+// ServerServiceHandler is an implementation of the belifeline.v1.ServerService service.
+type ServerServiceHandler interface {
 	Health(context.Context, *connect.Request[v1.HealthRequest]) (*connect.Response[v1.HealthResponse], error)
 }
 
-// NewBeLifelineServiceHandler builds an HTTP handler from the service implementation. It returns
-// the path on which to mount the handler and the handler itself.
+// NewServerServiceHandler builds an HTTP handler from the service implementation. It returns the
+// path on which to mount the handler and the handler itself.
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewBeLifelineServiceHandler(svc BeLifelineServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	beLifelineServiceClientCreateHandler := connect.NewUnaryHandler(
-		BeLifelineServiceClientCreateProcedure,
-		svc.ClientCreate,
-		connect.WithSchema(beLifelineServiceClientCreateMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
-	)
-	beLifelineServiceClientListHandler := connect.NewServerStreamHandler(
-		BeLifelineServiceClientListProcedure,
-		svc.ClientList,
-		connect.WithSchema(beLifelineServiceClientListMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
-	)
-	beLifelineServiceClientDeleteHandler := connect.NewUnaryHandler(
-		BeLifelineServiceClientDeleteProcedure,
-		svc.ClientDelete,
-		connect.WithSchema(beLifelineServiceClientDeleteMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
-	)
-	beLifelineServiceClientRevokeHandler := connect.NewUnaryHandler(
-		BeLifelineServiceClientRevokeProcedure,
-		svc.ClientRevoke,
-		connect.WithSchema(beLifelineServiceClientRevokeMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
-	)
-	beLifelineServiceExtInfoCreateHandler := connect.NewUnaryHandler(
-		BeLifelineServiceExtInfoCreateProcedure,
-		svc.ExtInfoCreate,
-		connect.WithSchema(beLifelineServiceExtInfoCreateMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
-	)
-	beLifelineServiceExtInfoListHandler := connect.NewServerStreamHandler(
-		BeLifelineServiceExtInfoListProcedure,
-		svc.ExtInfoList,
-		connect.WithSchema(beLifelineServiceExtInfoListMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
-	)
-	beLifelineServiceExtInfoDeleteHandler := connect.NewUnaryHandler(
-		BeLifelineServiceExtInfoDeleteProcedure,
-		svc.ExtInfoDelete,
-		connect.WithSchema(beLifelineServiceExtInfoDeleteMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
-	)
-	beLifelineServiceKoyoCreateHandler := connect.NewUnaryHandler(
-		BeLifelineServiceKoyoCreateProcedure,
-		svc.KoyoCreate,
-		connect.WithSchema(beLifelineServiceKoyoCreateMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
-	)
-	beLifelineServiceKoyoListHandler := connect.NewServerStreamHandler(
-		BeLifelineServiceKoyoListProcedure,
-		svc.KoyoList,
-		connect.WithSchema(beLifelineServiceKoyoListMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
-	)
-	beLifelineServiceKoyoDeleteHandler := connect.NewUnaryHandler(
-		BeLifelineServiceKoyoDeleteProcedure,
-		svc.KoyoDelete,
-		connect.WithSchema(beLifelineServiceKoyoDeleteMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
-	)
-	beLifelineServiceKoyoApiRevokeHandler := connect.NewUnaryHandler(
-		BeLifelineServiceKoyoApiRevokeProcedure,
-		svc.KoyoApiRevoke,
-		connect.WithSchema(beLifelineServiceKoyoApiRevokeMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
-	)
-	beLifelineServiceHealthHandler := connect.NewUnaryHandler(
-		BeLifelineServiceHealthProcedure,
+func NewServerServiceHandler(svc ServerServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	serverServiceHealthHandler := connect.NewUnaryHandler(
+		ServerServiceHealthProcedure,
 		svc.Health,
-		connect.WithSchema(beLifelineServiceHealthMethodDescriptor),
+		connect.WithSchema(serverServiceHealthMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
-	return "/belifeline.v1.BeLifelineService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return "/belifeline.v1.ServerService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case BeLifelineServiceClientCreateProcedure:
-			beLifelineServiceClientCreateHandler.ServeHTTP(w, r)
-		case BeLifelineServiceClientListProcedure:
-			beLifelineServiceClientListHandler.ServeHTTP(w, r)
-		case BeLifelineServiceClientDeleteProcedure:
-			beLifelineServiceClientDeleteHandler.ServeHTTP(w, r)
-		case BeLifelineServiceClientRevokeProcedure:
-			beLifelineServiceClientRevokeHandler.ServeHTTP(w, r)
-		case BeLifelineServiceExtInfoCreateProcedure:
-			beLifelineServiceExtInfoCreateHandler.ServeHTTP(w, r)
-		case BeLifelineServiceExtInfoListProcedure:
-			beLifelineServiceExtInfoListHandler.ServeHTTP(w, r)
-		case BeLifelineServiceExtInfoDeleteProcedure:
-			beLifelineServiceExtInfoDeleteHandler.ServeHTTP(w, r)
-		case BeLifelineServiceKoyoCreateProcedure:
-			beLifelineServiceKoyoCreateHandler.ServeHTTP(w, r)
-		case BeLifelineServiceKoyoListProcedure:
-			beLifelineServiceKoyoListHandler.ServeHTTP(w, r)
-		case BeLifelineServiceKoyoDeleteProcedure:
-			beLifelineServiceKoyoDeleteHandler.ServeHTTP(w, r)
-		case BeLifelineServiceKoyoApiRevokeProcedure:
-			beLifelineServiceKoyoApiRevokeHandler.ServeHTTP(w, r)
-		case BeLifelineServiceHealthProcedure:
-			beLifelineServiceHealthHandler.ServeHTTP(w, r)
+		case ServerServiceHealthProcedure:
+			serverServiceHealthHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
 	})
 }
 
-// UnimplementedBeLifelineServiceHandler returns CodeUnimplemented from all methods.
-type UnimplementedBeLifelineServiceHandler struct{}
+// UnimplementedServerServiceHandler returns CodeUnimplemented from all methods.
+type UnimplementedServerServiceHandler struct{}
 
-func (UnimplementedBeLifelineServiceHandler) ClientCreate(context.Context, *connect.Request[v1.ClientCreateRequest]) (*connect.Response[v1.ClientCreateResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.ClientCreate is not implemented"))
+func (UnimplementedServerServiceHandler) Health(context.Context, *connect.Request[v1.HealthRequest]) (*connect.Response[v1.HealthResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ServerService.Health is not implemented"))
 }
 
-func (UnimplementedBeLifelineServiceHandler) ClientList(context.Context, *connect.Request[v1.ClientListRequest], *connect.ServerStream[v1.ClientListResponse]) error {
-	return connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.ClientList is not implemented"))
+// ProviderServiceClient is a client for the belifeline.v1.ProviderService service.
+type ProviderServiceClient interface {
+	ClientCreate(context.Context, *connect.Request[v1.ClientCreateRequest]) (*connect.Response[v1.ClientCreateResponse], error)
+	ClientList(context.Context, *connect.Request[v1.ClientListRequest]) (*connect.ServerStreamForClient[v1.ClientListResponse], error)
+	ClientDelete(context.Context, *connect.Request[v1.ClientDeleteRequest]) (*connect.Response[v1.ClientDeleteResponse], error)
+	ClientRevoke(context.Context, *connect.Request[v1.ClientRevokeRequest]) (*connect.Response[v1.ClientRevokeResponse], error)
 }
 
-func (UnimplementedBeLifelineServiceHandler) ClientDelete(context.Context, *connect.Request[v1.ClientDeleteRequest]) (*connect.Response[v1.ClientDeleteResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.ClientDelete is not implemented"))
+// NewProviderServiceClient constructs a client for the belifeline.v1.ProviderService service. By
+// default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses,
+// and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
+// connect.WithGRPC() or connect.WithGRPCWeb() options.
+//
+// The URL supplied here should be the base URL for the Connect or gRPC server (for example,
+// http://api.acme.com or https://acme.com/grpc).
+func NewProviderServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ProviderServiceClient {
+	baseURL = strings.TrimRight(baseURL, "/")
+	return &providerServiceClient{
+		clientCreate: connect.NewClient[v1.ClientCreateRequest, v1.ClientCreateResponse](
+			httpClient,
+			baseURL+ProviderServiceClientCreateProcedure,
+			connect.WithSchema(providerServiceClientCreateMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		clientList: connect.NewClient[v1.ClientListRequest, v1.ClientListResponse](
+			httpClient,
+			baseURL+ProviderServiceClientListProcedure,
+			connect.WithSchema(providerServiceClientListMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		clientDelete: connect.NewClient[v1.ClientDeleteRequest, v1.ClientDeleteResponse](
+			httpClient,
+			baseURL+ProviderServiceClientDeleteProcedure,
+			connect.WithSchema(providerServiceClientDeleteMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		clientRevoke: connect.NewClient[v1.ClientRevokeRequest, v1.ClientRevokeResponse](
+			httpClient,
+			baseURL+ProviderServiceClientRevokeProcedure,
+			connect.WithSchema(providerServiceClientRevokeMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+	}
 }
 
-func (UnimplementedBeLifelineServiceHandler) ClientRevoke(context.Context, *connect.Request[v1.ClientRevokeRequest]) (*connect.Response[v1.ClientRevokeResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.ClientRevoke is not implemented"))
+// providerServiceClient implements ProviderServiceClient.
+type providerServiceClient struct {
+	clientCreate *connect.Client[v1.ClientCreateRequest, v1.ClientCreateResponse]
+	clientList   *connect.Client[v1.ClientListRequest, v1.ClientListResponse]
+	clientDelete *connect.Client[v1.ClientDeleteRequest, v1.ClientDeleteResponse]
+	clientRevoke *connect.Client[v1.ClientRevokeRequest, v1.ClientRevokeResponse]
 }
 
-func (UnimplementedBeLifelineServiceHandler) ExtInfoCreate(context.Context, *connect.Request[v1.ExtInfoCreateRequest]) (*connect.Response[v1.ExtInfoCreateResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.ExtInfoCreate is not implemented"))
+// ClientCreate calls belifeline.v1.ProviderService.ClientCreate.
+func (c *providerServiceClient) ClientCreate(ctx context.Context, req *connect.Request[v1.ClientCreateRequest]) (*connect.Response[v1.ClientCreateResponse], error) {
+	return c.clientCreate.CallUnary(ctx, req)
 }
 
-func (UnimplementedBeLifelineServiceHandler) ExtInfoList(context.Context, *connect.Request[v1.ExtInfoListRequest], *connect.ServerStream[v1.ExtInfoListResponse]) error {
-	return connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.ExtInfoList is not implemented"))
+// ClientList calls belifeline.v1.ProviderService.ClientList.
+func (c *providerServiceClient) ClientList(ctx context.Context, req *connect.Request[v1.ClientListRequest]) (*connect.ServerStreamForClient[v1.ClientListResponse], error) {
+	return c.clientList.CallServerStream(ctx, req)
 }
 
-func (UnimplementedBeLifelineServiceHandler) ExtInfoDelete(context.Context, *connect.Request[v1.ExtInfoDeleteRequest]) (*connect.Response[v1.ExtInfoDeleteResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.ExtInfoDelete is not implemented"))
+// ClientDelete calls belifeline.v1.ProviderService.ClientDelete.
+func (c *providerServiceClient) ClientDelete(ctx context.Context, req *connect.Request[v1.ClientDeleteRequest]) (*connect.Response[v1.ClientDeleteResponse], error) {
+	return c.clientDelete.CallUnary(ctx, req)
 }
 
-func (UnimplementedBeLifelineServiceHandler) KoyoCreate(context.Context, *connect.Request[v1.KoyoCreateRequest]) (*connect.Response[v1.KoyoCreateResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.KoyoCreate is not implemented"))
+// ClientRevoke calls belifeline.v1.ProviderService.ClientRevoke.
+func (c *providerServiceClient) ClientRevoke(ctx context.Context, req *connect.Request[v1.ClientRevokeRequest]) (*connect.Response[v1.ClientRevokeResponse], error) {
+	return c.clientRevoke.CallUnary(ctx, req)
 }
 
-func (UnimplementedBeLifelineServiceHandler) KoyoList(context.Context, *connect.Request[v1.KoyoListRequest], *connect.ServerStream[v1.KoyoListResponse]) error {
-	return connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.KoyoList is not implemented"))
+// ProviderServiceHandler is an implementation of the belifeline.v1.ProviderService service.
+type ProviderServiceHandler interface {
+	ClientCreate(context.Context, *connect.Request[v1.ClientCreateRequest]) (*connect.Response[v1.ClientCreateResponse], error)
+	ClientList(context.Context, *connect.Request[v1.ClientListRequest], *connect.ServerStream[v1.ClientListResponse]) error
+	ClientDelete(context.Context, *connect.Request[v1.ClientDeleteRequest]) (*connect.Response[v1.ClientDeleteResponse], error)
+	ClientRevoke(context.Context, *connect.Request[v1.ClientRevokeRequest]) (*connect.Response[v1.ClientRevokeResponse], error)
 }
 
-func (UnimplementedBeLifelineServiceHandler) KoyoDelete(context.Context, *connect.Request[v1.KoyoDeleteRequest]) (*connect.Response[v1.KoyoDeleteResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.KoyoDelete is not implemented"))
+// NewProviderServiceHandler builds an HTTP handler from the service implementation. It returns the
+// path on which to mount the handler and the handler itself.
+//
+// By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
+// and JSON codecs. They also support gzip compression.
+func NewProviderServiceHandler(svc ProviderServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	providerServiceClientCreateHandler := connect.NewUnaryHandler(
+		ProviderServiceClientCreateProcedure,
+		svc.ClientCreate,
+		connect.WithSchema(providerServiceClientCreateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	providerServiceClientListHandler := connect.NewServerStreamHandler(
+		ProviderServiceClientListProcedure,
+		svc.ClientList,
+		connect.WithSchema(providerServiceClientListMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	providerServiceClientDeleteHandler := connect.NewUnaryHandler(
+		ProviderServiceClientDeleteProcedure,
+		svc.ClientDelete,
+		connect.WithSchema(providerServiceClientDeleteMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	providerServiceClientRevokeHandler := connect.NewUnaryHandler(
+		ProviderServiceClientRevokeProcedure,
+		svc.ClientRevoke,
+		connect.WithSchema(providerServiceClientRevokeMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	return "/belifeline.v1.ProviderService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case ProviderServiceClientCreateProcedure:
+			providerServiceClientCreateHandler.ServeHTTP(w, r)
+		case ProviderServiceClientListProcedure:
+			providerServiceClientListHandler.ServeHTTP(w, r)
+		case ProviderServiceClientDeleteProcedure:
+			providerServiceClientDeleteHandler.ServeHTTP(w, r)
+		case ProviderServiceClientRevokeProcedure:
+			providerServiceClientRevokeHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
 }
 
-func (UnimplementedBeLifelineServiceHandler) KoyoApiRevoke(context.Context, *connect.Request[v1.KoyoApiRevokeRequest]) (*connect.Response[v1.KoyoApiRevokeResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.KoyoApiRevoke is not implemented"))
+// UnimplementedProviderServiceHandler returns CodeUnimplemented from all methods.
+type UnimplementedProviderServiceHandler struct{}
+
+func (UnimplementedProviderServiceHandler) ClientCreate(context.Context, *connect.Request[v1.ClientCreateRequest]) (*connect.Response[v1.ClientCreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ProviderService.ClientCreate is not implemented"))
 }
 
-func (UnimplementedBeLifelineServiceHandler) Health(context.Context, *connect.Request[v1.HealthRequest]) (*connect.Response[v1.HealthResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.BeLifelineService.Health is not implemented"))
+func (UnimplementedProviderServiceHandler) ClientList(context.Context, *connect.Request[v1.ClientListRequest], *connect.ServerStream[v1.ClientListResponse]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ProviderService.ClientList is not implemented"))
+}
+
+func (UnimplementedProviderServiceHandler) ClientDelete(context.Context, *connect.Request[v1.ClientDeleteRequest]) (*connect.Response[v1.ClientDeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ProviderService.ClientDelete is not implemented"))
+}
+
+func (UnimplementedProviderServiceHandler) ClientRevoke(context.Context, *connect.Request[v1.ClientRevokeRequest]) (*connect.Response[v1.ClientRevokeResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ProviderService.ClientRevoke is not implemented"))
+}
+
+// ExtInfoServiceClient is a client for the belifeline.v1.ExtInfoService service.
+type ExtInfoServiceClient interface {
+	ExtInfoCreate(context.Context, *connect.Request[v1.ExtInfoCreateRequest]) (*connect.Response[v1.ExtInfoCreateResponse], error)
+	ExtInfoList(context.Context, *connect.Request[v1.ExtInfoListRequest]) (*connect.ServerStreamForClient[v1.ExtInfoListResponse], error)
+	ExtInfoDelete(context.Context, *connect.Request[v1.ExtInfoDeleteRequest]) (*connect.Response[v1.ExtInfoDeleteResponse], error)
+	ExtInfoUpdateNotification(context.Context, *connect.Request[v1.ExtInfoUpdateNotificationRequest]) (*connect.Response[v1.ExtInfoUpdateNotificationResponse], error)
+}
+
+// NewExtInfoServiceClient constructs a client for the belifeline.v1.ExtInfoService service. By
+// default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses,
+// and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
+// connect.WithGRPC() or connect.WithGRPCWeb() options.
+//
+// The URL supplied here should be the base URL for the Connect or gRPC server (for example,
+// http://api.acme.com or https://acme.com/grpc).
+func NewExtInfoServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ExtInfoServiceClient {
+	baseURL = strings.TrimRight(baseURL, "/")
+	return &extInfoServiceClient{
+		extInfoCreate: connect.NewClient[v1.ExtInfoCreateRequest, v1.ExtInfoCreateResponse](
+			httpClient,
+			baseURL+ExtInfoServiceExtInfoCreateProcedure,
+			connect.WithSchema(extInfoServiceExtInfoCreateMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		extInfoList: connect.NewClient[v1.ExtInfoListRequest, v1.ExtInfoListResponse](
+			httpClient,
+			baseURL+ExtInfoServiceExtInfoListProcedure,
+			connect.WithSchema(extInfoServiceExtInfoListMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		extInfoDelete: connect.NewClient[v1.ExtInfoDeleteRequest, v1.ExtInfoDeleteResponse](
+			httpClient,
+			baseURL+ExtInfoServiceExtInfoDeleteProcedure,
+			connect.WithSchema(extInfoServiceExtInfoDeleteMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		extInfoUpdateNotification: connect.NewClient[v1.ExtInfoUpdateNotificationRequest, v1.ExtInfoUpdateNotificationResponse](
+			httpClient,
+			baseURL+ExtInfoServiceExtInfoUpdateNotificationProcedure,
+			connect.WithSchema(extInfoServiceExtInfoUpdateNotificationMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+	}
+}
+
+// extInfoServiceClient implements ExtInfoServiceClient.
+type extInfoServiceClient struct {
+	extInfoCreate             *connect.Client[v1.ExtInfoCreateRequest, v1.ExtInfoCreateResponse]
+	extInfoList               *connect.Client[v1.ExtInfoListRequest, v1.ExtInfoListResponse]
+	extInfoDelete             *connect.Client[v1.ExtInfoDeleteRequest, v1.ExtInfoDeleteResponse]
+	extInfoUpdateNotification *connect.Client[v1.ExtInfoUpdateNotificationRequest, v1.ExtInfoUpdateNotificationResponse]
+}
+
+// ExtInfoCreate calls belifeline.v1.ExtInfoService.ExtInfoCreate.
+func (c *extInfoServiceClient) ExtInfoCreate(ctx context.Context, req *connect.Request[v1.ExtInfoCreateRequest]) (*connect.Response[v1.ExtInfoCreateResponse], error) {
+	return c.extInfoCreate.CallUnary(ctx, req)
+}
+
+// ExtInfoList calls belifeline.v1.ExtInfoService.ExtInfoList.
+func (c *extInfoServiceClient) ExtInfoList(ctx context.Context, req *connect.Request[v1.ExtInfoListRequest]) (*connect.ServerStreamForClient[v1.ExtInfoListResponse], error) {
+	return c.extInfoList.CallServerStream(ctx, req)
+}
+
+// ExtInfoDelete calls belifeline.v1.ExtInfoService.ExtInfoDelete.
+func (c *extInfoServiceClient) ExtInfoDelete(ctx context.Context, req *connect.Request[v1.ExtInfoDeleteRequest]) (*connect.Response[v1.ExtInfoDeleteResponse], error) {
+	return c.extInfoDelete.CallUnary(ctx, req)
+}
+
+// ExtInfoUpdateNotification calls belifeline.v1.ExtInfoService.ExtInfoUpdateNotification.
+func (c *extInfoServiceClient) ExtInfoUpdateNotification(ctx context.Context, req *connect.Request[v1.ExtInfoUpdateNotificationRequest]) (*connect.Response[v1.ExtInfoUpdateNotificationResponse], error) {
+	return c.extInfoUpdateNotification.CallUnary(ctx, req)
+}
+
+// ExtInfoServiceHandler is an implementation of the belifeline.v1.ExtInfoService service.
+type ExtInfoServiceHandler interface {
+	ExtInfoCreate(context.Context, *connect.Request[v1.ExtInfoCreateRequest]) (*connect.Response[v1.ExtInfoCreateResponse], error)
+	ExtInfoList(context.Context, *connect.Request[v1.ExtInfoListRequest], *connect.ServerStream[v1.ExtInfoListResponse]) error
+	ExtInfoDelete(context.Context, *connect.Request[v1.ExtInfoDeleteRequest]) (*connect.Response[v1.ExtInfoDeleteResponse], error)
+	ExtInfoUpdateNotification(context.Context, *connect.Request[v1.ExtInfoUpdateNotificationRequest]) (*connect.Response[v1.ExtInfoUpdateNotificationResponse], error)
+}
+
+// NewExtInfoServiceHandler builds an HTTP handler from the service implementation. It returns the
+// path on which to mount the handler and the handler itself.
+//
+// By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
+// and JSON codecs. They also support gzip compression.
+func NewExtInfoServiceHandler(svc ExtInfoServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	extInfoServiceExtInfoCreateHandler := connect.NewUnaryHandler(
+		ExtInfoServiceExtInfoCreateProcedure,
+		svc.ExtInfoCreate,
+		connect.WithSchema(extInfoServiceExtInfoCreateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	extInfoServiceExtInfoListHandler := connect.NewServerStreamHandler(
+		ExtInfoServiceExtInfoListProcedure,
+		svc.ExtInfoList,
+		connect.WithSchema(extInfoServiceExtInfoListMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	extInfoServiceExtInfoDeleteHandler := connect.NewUnaryHandler(
+		ExtInfoServiceExtInfoDeleteProcedure,
+		svc.ExtInfoDelete,
+		connect.WithSchema(extInfoServiceExtInfoDeleteMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	extInfoServiceExtInfoUpdateNotificationHandler := connect.NewUnaryHandler(
+		ExtInfoServiceExtInfoUpdateNotificationProcedure,
+		svc.ExtInfoUpdateNotification,
+		connect.WithSchema(extInfoServiceExtInfoUpdateNotificationMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	return "/belifeline.v1.ExtInfoService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case ExtInfoServiceExtInfoCreateProcedure:
+			extInfoServiceExtInfoCreateHandler.ServeHTTP(w, r)
+		case ExtInfoServiceExtInfoListProcedure:
+			extInfoServiceExtInfoListHandler.ServeHTTP(w, r)
+		case ExtInfoServiceExtInfoDeleteProcedure:
+			extInfoServiceExtInfoDeleteHandler.ServeHTTP(w, r)
+		case ExtInfoServiceExtInfoUpdateNotificationProcedure:
+			extInfoServiceExtInfoUpdateNotificationHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
+}
+
+// UnimplementedExtInfoServiceHandler returns CodeUnimplemented from all methods.
+type UnimplementedExtInfoServiceHandler struct{}
+
+func (UnimplementedExtInfoServiceHandler) ExtInfoCreate(context.Context, *connect.Request[v1.ExtInfoCreateRequest]) (*connect.Response[v1.ExtInfoCreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ExtInfoService.ExtInfoCreate is not implemented"))
+}
+
+func (UnimplementedExtInfoServiceHandler) ExtInfoList(context.Context, *connect.Request[v1.ExtInfoListRequest], *connect.ServerStream[v1.ExtInfoListResponse]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ExtInfoService.ExtInfoList is not implemented"))
+}
+
+func (UnimplementedExtInfoServiceHandler) ExtInfoDelete(context.Context, *connect.Request[v1.ExtInfoDeleteRequest]) (*connect.Response[v1.ExtInfoDeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ExtInfoService.ExtInfoDelete is not implemented"))
+}
+
+func (UnimplementedExtInfoServiceHandler) ExtInfoUpdateNotification(context.Context, *connect.Request[v1.ExtInfoUpdateNotificationRequest]) (*connect.Response[v1.ExtInfoUpdateNotificationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ExtInfoService.ExtInfoUpdateNotification is not implemented"))
+}
+
+// KoyoServiceClient is a client for the belifeline.v1.KoyoService service.
+type KoyoServiceClient interface {
+	KoyoCreate(context.Context, *connect.Request[v1.KoyoCreateRequest]) (*connect.Response[v1.KoyoCreateResponse], error)
+	KoyoList(context.Context, *connect.Request[v1.KoyoListRequest]) (*connect.ServerStreamForClient[v1.KoyoListResponse], error)
+	KoyoDelete(context.Context, *connect.Request[v1.KoyoDeleteRequest]) (*connect.Response[v1.KoyoDeleteResponse], error)
+	KoyoApiRevoke(context.Context, *connect.Request[v1.KoyoApiRevokeRequest]) (*connect.Response[v1.KoyoApiRevokeResponse], error)
+	KoyoDataAdd(context.Context, *connect.Request[v1.KoyoDataAddRequest]) (*connect.Response[v1.KoyoDataAddResponse], error)
+}
+
+// NewKoyoServiceClient constructs a client for the belifeline.v1.KoyoService service. By default,
+// it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses, and
+// sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the connect.WithGRPC()
+// or connect.WithGRPCWeb() options.
+//
+// The URL supplied here should be the base URL for the Connect or gRPC server (for example,
+// http://api.acme.com or https://acme.com/grpc).
+func NewKoyoServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) KoyoServiceClient {
+	baseURL = strings.TrimRight(baseURL, "/")
+	return &koyoServiceClient{
+		koyoCreate: connect.NewClient[v1.KoyoCreateRequest, v1.KoyoCreateResponse](
+			httpClient,
+			baseURL+KoyoServiceKoyoCreateProcedure,
+			connect.WithSchema(koyoServiceKoyoCreateMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		koyoList: connect.NewClient[v1.KoyoListRequest, v1.KoyoListResponse](
+			httpClient,
+			baseURL+KoyoServiceKoyoListProcedure,
+			connect.WithSchema(koyoServiceKoyoListMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		koyoDelete: connect.NewClient[v1.KoyoDeleteRequest, v1.KoyoDeleteResponse](
+			httpClient,
+			baseURL+KoyoServiceKoyoDeleteProcedure,
+			connect.WithSchema(koyoServiceKoyoDeleteMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		koyoApiRevoke: connect.NewClient[v1.KoyoApiRevokeRequest, v1.KoyoApiRevokeResponse](
+			httpClient,
+			baseURL+KoyoServiceKoyoApiRevokeProcedure,
+			connect.WithSchema(koyoServiceKoyoApiRevokeMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		koyoDataAdd: connect.NewClient[v1.KoyoDataAddRequest, v1.KoyoDataAddResponse](
+			httpClient,
+			baseURL+KoyoServiceKoyoDataAddProcedure,
+			connect.WithSchema(koyoServiceKoyoDataAddMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+	}
+}
+
+// koyoServiceClient implements KoyoServiceClient.
+type koyoServiceClient struct {
+	koyoCreate    *connect.Client[v1.KoyoCreateRequest, v1.KoyoCreateResponse]
+	koyoList      *connect.Client[v1.KoyoListRequest, v1.KoyoListResponse]
+	koyoDelete    *connect.Client[v1.KoyoDeleteRequest, v1.KoyoDeleteResponse]
+	koyoApiRevoke *connect.Client[v1.KoyoApiRevokeRequest, v1.KoyoApiRevokeResponse]
+	koyoDataAdd   *connect.Client[v1.KoyoDataAddRequest, v1.KoyoDataAddResponse]
+}
+
+// KoyoCreate calls belifeline.v1.KoyoService.KoyoCreate.
+func (c *koyoServiceClient) KoyoCreate(ctx context.Context, req *connect.Request[v1.KoyoCreateRequest]) (*connect.Response[v1.KoyoCreateResponse], error) {
+	return c.koyoCreate.CallUnary(ctx, req)
+}
+
+// KoyoList calls belifeline.v1.KoyoService.KoyoList.
+func (c *koyoServiceClient) KoyoList(ctx context.Context, req *connect.Request[v1.KoyoListRequest]) (*connect.ServerStreamForClient[v1.KoyoListResponse], error) {
+	return c.koyoList.CallServerStream(ctx, req)
+}
+
+// KoyoDelete calls belifeline.v1.KoyoService.KoyoDelete.
+func (c *koyoServiceClient) KoyoDelete(ctx context.Context, req *connect.Request[v1.KoyoDeleteRequest]) (*connect.Response[v1.KoyoDeleteResponse], error) {
+	return c.koyoDelete.CallUnary(ctx, req)
+}
+
+// KoyoApiRevoke calls belifeline.v1.KoyoService.KoyoApiRevoke.
+func (c *koyoServiceClient) KoyoApiRevoke(ctx context.Context, req *connect.Request[v1.KoyoApiRevokeRequest]) (*connect.Response[v1.KoyoApiRevokeResponse], error) {
+	return c.koyoApiRevoke.CallUnary(ctx, req)
+}
+
+// KoyoDataAdd calls belifeline.v1.KoyoService.KoyoDataAdd.
+func (c *koyoServiceClient) KoyoDataAdd(ctx context.Context, req *connect.Request[v1.KoyoDataAddRequest]) (*connect.Response[v1.KoyoDataAddResponse], error) {
+	return c.koyoDataAdd.CallUnary(ctx, req)
+}
+
+// KoyoServiceHandler is an implementation of the belifeline.v1.KoyoService service.
+type KoyoServiceHandler interface {
+	KoyoCreate(context.Context, *connect.Request[v1.KoyoCreateRequest]) (*connect.Response[v1.KoyoCreateResponse], error)
+	KoyoList(context.Context, *connect.Request[v1.KoyoListRequest], *connect.ServerStream[v1.KoyoListResponse]) error
+	KoyoDelete(context.Context, *connect.Request[v1.KoyoDeleteRequest]) (*connect.Response[v1.KoyoDeleteResponse], error)
+	KoyoApiRevoke(context.Context, *connect.Request[v1.KoyoApiRevokeRequest]) (*connect.Response[v1.KoyoApiRevokeResponse], error)
+	KoyoDataAdd(context.Context, *connect.Request[v1.KoyoDataAddRequest]) (*connect.Response[v1.KoyoDataAddResponse], error)
+}
+
+// NewKoyoServiceHandler builds an HTTP handler from the service implementation. It returns the path
+// on which to mount the handler and the handler itself.
+//
+// By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
+// and JSON codecs. They also support gzip compression.
+func NewKoyoServiceHandler(svc KoyoServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	koyoServiceKoyoCreateHandler := connect.NewUnaryHandler(
+		KoyoServiceKoyoCreateProcedure,
+		svc.KoyoCreate,
+		connect.WithSchema(koyoServiceKoyoCreateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	koyoServiceKoyoListHandler := connect.NewServerStreamHandler(
+		KoyoServiceKoyoListProcedure,
+		svc.KoyoList,
+		connect.WithSchema(koyoServiceKoyoListMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	koyoServiceKoyoDeleteHandler := connect.NewUnaryHandler(
+		KoyoServiceKoyoDeleteProcedure,
+		svc.KoyoDelete,
+		connect.WithSchema(koyoServiceKoyoDeleteMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	koyoServiceKoyoApiRevokeHandler := connect.NewUnaryHandler(
+		KoyoServiceKoyoApiRevokeProcedure,
+		svc.KoyoApiRevoke,
+		connect.WithSchema(koyoServiceKoyoApiRevokeMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	koyoServiceKoyoDataAddHandler := connect.NewUnaryHandler(
+		KoyoServiceKoyoDataAddProcedure,
+		svc.KoyoDataAdd,
+		connect.WithSchema(koyoServiceKoyoDataAddMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	return "/belifeline.v1.KoyoService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case KoyoServiceKoyoCreateProcedure:
+			koyoServiceKoyoCreateHandler.ServeHTTP(w, r)
+		case KoyoServiceKoyoListProcedure:
+			koyoServiceKoyoListHandler.ServeHTTP(w, r)
+		case KoyoServiceKoyoDeleteProcedure:
+			koyoServiceKoyoDeleteHandler.ServeHTTP(w, r)
+		case KoyoServiceKoyoApiRevokeProcedure:
+			koyoServiceKoyoApiRevokeHandler.ServeHTTP(w, r)
+		case KoyoServiceKoyoDataAddProcedure:
+			koyoServiceKoyoDataAddHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
+}
+
+// UnimplementedKoyoServiceHandler returns CodeUnimplemented from all methods.
+type UnimplementedKoyoServiceHandler struct{}
+
+func (UnimplementedKoyoServiceHandler) KoyoCreate(context.Context, *connect.Request[v1.KoyoCreateRequest]) (*connect.Response[v1.KoyoCreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.KoyoService.KoyoCreate is not implemented"))
+}
+
+func (UnimplementedKoyoServiceHandler) KoyoList(context.Context, *connect.Request[v1.KoyoListRequest], *connect.ServerStream[v1.KoyoListResponse]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.KoyoService.KoyoList is not implemented"))
+}
+
+func (UnimplementedKoyoServiceHandler) KoyoDelete(context.Context, *connect.Request[v1.KoyoDeleteRequest]) (*connect.Response[v1.KoyoDeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.KoyoService.KoyoDelete is not implemented"))
+}
+
+func (UnimplementedKoyoServiceHandler) KoyoApiRevoke(context.Context, *connect.Request[v1.KoyoApiRevokeRequest]) (*connect.Response[v1.KoyoApiRevokeResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.KoyoService.KoyoApiRevoke is not implemented"))
+}
+
+func (UnimplementedKoyoServiceHandler) KoyoDataAdd(context.Context, *connect.Request[v1.KoyoDataAddRequest]) (*connect.Response[v1.KoyoDataAddResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.KoyoService.KoyoDataAdd is not implemented"))
 }
