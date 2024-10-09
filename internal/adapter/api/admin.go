@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"fmt"
 
 	connect "connectrpc.com/connect"
 	v1 "github.com/halcyon-org/kizuna/gen/belifeline/models/v1"
@@ -44,7 +45,7 @@ func (s *AdminServiceHandlerImpl) ClientList(ctx context.Context, req *connect.R
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 	if len(dataList) >= limit {
-		return nil, status.Error(codes.Internal, "might have more data")
+		return nil, status.Error(codes.Internal, fmt.Sprintf("might have more data than %d\n", limit))
 	}
 
 	var apiDataList = make([]*v1.ClientData, len(dataList))
