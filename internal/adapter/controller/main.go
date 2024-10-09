@@ -17,6 +17,7 @@ type BeLifelineController interface {
 }
 
 type BeLifelineControllerImpl struct {
+	admin    mainv1connect.AdminServiceHandler
 	provider mainv1connect.ProviderServiceHandler
 	extinfo  mainv1connect.ExtInfoServiceHandler
 	koyo     mainv1connect.KoyoServiceHandler
@@ -27,11 +28,12 @@ type BeLifelineControllerImpl struct {
 	cfg config.ConfigRepository
 }
 
-func NewBeLifelineController(provider mainv1connect.ProviderServiceHandler,
+func NewBeLifelineController(admin mainv1connect.AdminServiceHandler, provider mainv1connect.ProviderServiceHandler,
 	extinfo mainv1connect.ExtInfoServiceHandler,
 	koyo mainv1connect.KoyoServiceHandler,
 	server mainv1connect.ServerServiceHandler, auth interceptor.AuthInterceptorAdapter, config config.ConfigRepository) BeLifelineController {
 	return &BeLifelineControllerImpl{
+		admin:    admin,
 		provider: provider,
 		extinfo:  extinfo,
 		koyo:     koyo,
@@ -49,6 +51,7 @@ func (c *BeLifelineControllerImpl) Serve() error {
 
 	mux := http.NewServeMux()
 	interceptor := connect.WithInterceptors(c.auth.AuthInterceptor())
+	mux.Handle(mainv1connect.NewAdminServiceHandler(c.admin, interceptor))
 	mux.Handle(mainv1connect.NewProviderServiceHandler(c.provider, interceptor))
 	mux.Handle(mainv1connect.NewExtInfoServiceHandler(c.extinfo, interceptor))
 	mux.Handle(mainv1connect.NewKoyoServiceHandler(c.koyo, interceptor))
