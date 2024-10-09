@@ -22,6 +22,8 @@ const (
 	FieldLicense = "license"
 	// FieldLicenseDescription holds the string denoting the license_description field in the database.
 	FieldLicenseDescription = "license_description"
+	// FieldAPIKey holds the string denoting the api_key field in the database.
+	FieldAPIKey = "api_key"
 	// FieldFirstEntryAt holds the string denoting the first_entry_at field in the database.
 	FieldFirstEntryAt = "first_entry_at"
 	// FieldLastUpdatedAt holds the string denoting the last_updated_at field in the database.
@@ -37,6 +39,7 @@ var Columns = []string{
 	FieldDescription,
 	FieldLicense,
 	FieldLicenseDescription,
+	FieldAPIKey,
 	FieldFirstEntryAt,
 	FieldLastUpdatedAt,
 }
@@ -105,6 +108,11 @@ func ByLicense(opts ...sql.OrderTermOption) OrderOption {
 // ByLicenseDescription orders the results by the license_description field.
 func ByLicenseDescription(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLicenseDescription, opts...).ToFunc()
+}
+
+// ByAPIKey orders the results by the api_key field.
+func ByAPIKey(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAPIKey, opts...).ToFunc()
 }
 
 // ByFirstEntryAt orders the results by the first_entry_at field.

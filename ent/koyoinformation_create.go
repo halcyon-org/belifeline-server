@@ -65,6 +65,12 @@ func (kic *KoyoInformationCreate) SetDataType(kt koyoinformation.DataType) *Koyo
 	return kic
 }
 
+// SetAPIKey sets the "api_key" field.
+func (kic *KoyoInformationCreate) SetAPIKey(s string) *KoyoInformationCreate {
+	kic.mutation.SetAPIKey(s)
+	return kic
+}
+
 // SetFirstEntryAt sets the "first_entry_at" field.
 func (kic *KoyoInformationCreate) SetFirstEntryAt(t time.Time) *KoyoInformationCreate {
 	kic.mutation.SetFirstEntryAt(t)
@@ -235,6 +241,9 @@ func (kic *KoyoInformationCreate) check() error {
 			return &ValidationError{Name: "data_type", err: fmt.Errorf(`ent: validator failed for field "KoyoInformation.data_type": %w`, err)}
 		}
 	}
+	if _, ok := kic.mutation.APIKey(); !ok {
+		return &ValidationError{Name: "api_key", err: errors.New(`ent: missing required field "KoyoInformation.api_key"`)}
+	}
 	if _, ok := kic.mutation.FirstEntryAt(); !ok {
 		return &ValidationError{Name: "first_entry_at", err: errors.New(`ent: missing required field "KoyoInformation.first_entry_at"`)}
 	}
@@ -306,6 +315,10 @@ func (kic *KoyoInformationCreate) createSpec() (*KoyoInformation, *sqlgraph.Crea
 	if value, ok := kic.mutation.DataType(); ok {
 		_spec.SetField(koyoinformation.FieldDataType, field.TypeEnum, value)
 		_node.DataType = value
+	}
+	if value, ok := kic.mutation.APIKey(); ok {
+		_spec.SetField(koyoinformation.FieldAPIKey, field.TypeString, value)
+		_node.APIKey = value
 	}
 	if value, ok := kic.mutation.FirstEntryAt(); ok {
 		_spec.SetField(koyoinformation.FieldFirstEntryAt, field.TypeTime, value)

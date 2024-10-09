@@ -81,11 +81,11 @@ func init() {
 	// externalinformation.LicenseValidator is a validator for the "license" field. It is called by the builders before save.
 	externalinformation.LicenseValidator = externalinformationDescLicense.Validators[0].(func(string) error)
 	// externalinformationDescFirstEntryAt is the schema descriptor for first_entry_at field.
-	externalinformationDescFirstEntryAt := externalinformationFields[5].Descriptor()
+	externalinformationDescFirstEntryAt := externalinformationFields[6].Descriptor()
 	// externalinformation.DefaultFirstEntryAt holds the default value on creation for the first_entry_at field.
 	externalinformation.DefaultFirstEntryAt = externalinformationDescFirstEntryAt.Default.(func() time.Time)
 	// externalinformationDescLastUpdatedAt is the schema descriptor for last_updated_at field.
-	externalinformationDescLastUpdatedAt := externalinformationFields[6].Descriptor()
+	externalinformationDescLastUpdatedAt := externalinformationFields[7].Descriptor()
 	// externalinformation.DefaultLastUpdatedAt holds the default value on creation for the last_updated_at field.
 	externalinformation.DefaultLastUpdatedAt = externalinformationDescLastUpdatedAt.Default.(func() time.Time)
 	// externalinformation.UpdateDefaultLastUpdatedAt holds the default value on update for the last_updated_at field.
@@ -123,11 +123,11 @@ func init() {
 	// koyoinformation.LicenseValidator is a validator for the "license" field. It is called by the builders before save.
 	koyoinformation.LicenseValidator = koyoinformationDescLicense.Validators[0].(func(string) error)
 	// koyoinformationDescFirstEntryAt is the schema descriptor for first_entry_at field.
-	koyoinformationDescFirstEntryAt := koyoinformationFields[8].Descriptor()
+	koyoinformationDescFirstEntryAt := koyoinformationFields[9].Descriptor()
 	// koyoinformation.DefaultFirstEntryAt holds the default value on creation for the first_entry_at field.
 	koyoinformation.DefaultFirstEntryAt = koyoinformationDescFirstEntryAt.Default.(func() time.Time)
 	// koyoinformationDescUpdatedAt is the schema descriptor for updated_at field.
-	koyoinformationDescUpdatedAt := koyoinformationFields[10].Descriptor()
+	koyoinformationDescUpdatedAt := koyoinformationFields[11].Descriptor()
 	// koyoinformation.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	koyoinformation.DefaultUpdatedAt = koyoinformationDescUpdatedAt.Default.(func() time.Time)
 	// koyoinformation.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
