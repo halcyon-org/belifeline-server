@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 
+	"github.com/halcyon-org/kizuna/ent/schema/pulid"
 	entrepo "github.com/halcyon-org/kizuna/internal/adapter/repository/ent"
 	"github.com/halcyon-org/kizuna/internal/domain/domain"
 	"github.com/halcyon-org/kizuna/internal/util"
@@ -10,6 +11,7 @@ import (
 
 type ClientDataUsecase interface {
 	CreateClientData(ctx context.Context, username string) (*domain.ClientData, error)
+	DeleteClientData(ctx context.Context, client_id string) (string, error)
 }
 
 type clientDataUsecaseImpl struct {
@@ -30,4 +32,13 @@ func (u *clientDataUsecaseImpl) CreateClientData(ctx context.Context, username s
 
 	domainData := domain.ToDomainClientData(*data)
 	return &domainData, nil
+}
+
+func (u *clientDataUsecaseImpl) DeleteClientData(ctx context.Context, client_id string) (string, error) {
+	id, err := u.clientDataRepository.DeleteClientData(ctx, pulid.ID(client_id))
+	if err != nil {
+		return "", err
+	}
+
+	return string(*id), nil
 }

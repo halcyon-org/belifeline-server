@@ -4,10 +4,12 @@ import (
 	"context"
 
 	"github.com/halcyon-org/kizuna/ent"
+	"github.com/halcyon-org/kizuna/ent/schema/pulid"
 )
 
 type ClientDataRepository interface {
 	CreateClientData(cxt context.Context, username string, apiKey string) (*ent.ClientData, error)
+	DeleteClientData(ctx context.Context, client_id pulid.ID) (*pulid.ID, error)
 }
 
 type clientDataRepositoryImpl struct {
@@ -29,4 +31,12 @@ func (r *clientDataRepositoryImpl) CreateClientData(ctx context.Context, usernam
 		return nil, err
 	}
 	return clientData, nil
+}
+
+func (r *clientDataRepositoryImpl) DeleteClientData(ctx context.Context, client_id pulid.ID) (*pulid.ID, error) {
+	err := r.DB.ClientData.DeleteOneID(client_id).Exec(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &client_id, nil
 }

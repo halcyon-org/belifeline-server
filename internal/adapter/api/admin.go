@@ -4,6 +4,7 @@ import (
 	"context"
 
 	connect "connectrpc.com/connect"
+	v1 "github.com/halcyon-org/kizuna/gen/belifeline/models/v1"
 	mainv1 "github.com/halcyon-org/kizuna/gen/belifeline/v1"
 	"github.com/halcyon-org/kizuna/gen/belifeline/v1/mainv1connect"
 	"github.com/halcyon-org/kizuna/internal/domain/domain"
@@ -36,7 +37,14 @@ func (s *AdminServiceHandlerImpl) ClientSet(ctx context.Context, req *connect.Re
 }
 
 func (s *AdminServiceHandlerImpl) ClientDelete(ctx context.Context, req *connect.Request[mainv1.ClientDeleteRequest]) (*connect.Response[mainv1.ClientDeleteResponse], error) {
-	return nil, status.Error(codes.Unimplemented, "method ClientDelete not implemented")
+	id, err := s.clientDataUsecase.DeleteClientData(ctx, req.Msg.ClientId.String())
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	res := connect.NewResponse(&mainv1.ClientDeleteResponse{ClientId: &v1.ULID{Value: id}})
+
+	return res, nil
 }
 
 func (s *AdminServiceHandlerImpl) ClientRevoke(ctx context.Context, req *connect.Request[mainv1.ClientRevokeRequest]) (*connect.Response[mainv1.ClientRevokeResponse], error) {
