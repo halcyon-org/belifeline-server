@@ -17,10 +17,6 @@ func NewProviderServiceHandler() mainv1connect.ProviderServiceHandler {
 	return &ProviderServiceHandlerImpl{}
 }
 
-func (s *ProviderServiceHandlerImpl) ClientList(ctx context.Context, req *connect.Request[mainv1.ClientListRequest], stream *connect.ServerStream[mainv1.ClientListResponse]) error {
-	return status.Error(codes.Unimplemented, "method ClientList not implemented")
-}
-
 func (s *ProviderServiceHandlerImpl) ExtInfoList(ctx context.Context, req *connect.Request[mainv1.ExtInfoListRequest], stream *connect.ServerStream[mainv1.ExtInfoListResponse]) error {
 	return status.Error(codes.Unimplemented, "method ExtInfoList not implemented")
 }

@@ -36,6 +36,10 @@ func (s *AdminServiceHandlerImpl) ClientSet(ctx context.Context, req *connect.Re
 	return res, nil
 }
 
+func (s *AdminServiceHandlerImpl) ClientList(ctx context.Context, req *connect.Request[mainv1.ClientListRequest]) (*connect.Response[mainv1.ClientListResponse], error) {
+	return nil, status.Error(codes.Unimplemented, "method ClientList not implemented")
+}
+
 func (s *AdminServiceHandlerImpl) ClientDelete(ctx context.Context, req *connect.Request[mainv1.ClientDeleteRequest]) (*connect.Response[mainv1.ClientDeleteResponse], error) {
 	id, err := s.clientDataUsecase.DeleteClientData(ctx, req.Msg.ClientId.String())
 	if err != nil {
