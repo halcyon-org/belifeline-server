@@ -50,12 +50,11 @@ func (c *BeLifelineControllerImpl) Serve() error {
 	}
 
 	mux := http.NewServeMux()
-	interceptor := connect.WithInterceptors(c.auth.AuthInterceptor())
-	mux.Handle(mainv1connect.NewAdminServiceHandler(c.admin, interceptor))
-	mux.Handle(mainv1connect.NewProviderServiceHandler(c.provider, interceptor))
-	mux.Handle(mainv1connect.NewExtInfoServiceHandler(c.extinfo, interceptor))
-	mux.Handle(mainv1connect.NewKoyoServiceHandler(c.koyo, interceptor))
-	mux.Handle(mainv1connect.NewServerServiceHandler(c.server, interceptor))
+	mux.Handle(mainv1connect.NewAdminServiceHandler(c.admin, connect.WithInterceptors(c.auth.AuthAdminServiceInterceptor())))
+	mux.Handle(mainv1connect.NewProviderServiceHandler(c.provider, connect.WithInterceptors(c.auth.AuthProviderServiceInterceptor())))
+	mux.Handle(mainv1connect.NewExtInfoServiceHandler(c.extinfo, connect.WithInterceptors(c.auth.AuthExtInfoServiceInterceptor())))
+	mux.Handle(mainv1connect.NewKoyoServiceHandler(c.koyo, connect.WithInterceptors(c.auth.AuthKoyoServiceInterceptor())))
+	mux.Handle(mainv1connect.NewServerServiceHandler(c.server))
 
 	err = http.ListenAndServe(
 		fmt.Sprintf("%s:%d", c.cfg.GetConfig().ListenAddr, c.cfg.GetConfig().Port),
