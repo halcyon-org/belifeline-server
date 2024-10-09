@@ -17,17 +17,27 @@ type BeLifelineController interface {
 }
 
 type BeLifelineControllerImpl struct {
-	server mainv1connect.BeLifelineServiceHandler
-	auth   interceptor.AuthInterceptorAdapter
+	provider mainv1connect.ProviderServiceHandler
+	extinfo  mainv1connect.ExtInfoServiceHandler
+	koyo     mainv1connect.KoyoServiceHandler
+	server   mainv1connect.ServerServiceHandler
+
+	auth interceptor.AuthInterceptorAdapter
 
 	cfg config.ConfigRepository
 }
 
-func NewBeLifelineController(server mainv1connect.BeLifelineServiceHandler, auth interceptor.AuthInterceptorAdapter, config config.ConfigRepository) BeLifelineController {
+func NewBeLifelineController(provider mainv1connect.ProviderServiceHandler,
+	extinfo mainv1connect.ExtInfoServiceHandler,
+	koyo mainv1connect.KoyoServiceHandler,
+	server mainv1connect.ServerServiceHandler, auth interceptor.AuthInterceptorAdapter, config config.ConfigRepository) BeLifelineController {
 	return &BeLifelineControllerImpl{
-		server: server,
-		auth:   auth,
-		cfg:    config,
+		provider: provider,
+		extinfo:  extinfo,
+		koyo:     koyo,
+		server:   server,
+		auth:     auth,
+		cfg:      config,
 	}
 }
 
@@ -39,8 +49,10 @@ func (c *BeLifelineControllerImpl) Serve() error {
 
 	mux := http.NewServeMux()
 	interceptor := connect.WithInterceptors(c.auth.AuthInterceptor())
-	path, handler := mainv1connect.NewBeLifelineServiceHandler(c.server, interceptor)
-	mux.Handle(path, handler)
+	mux.Handle(mainv1connect.NewProviderServiceHandler(c.provider, interceptor))
+	mux.Handle(mainv1connect.NewExtInfoServiceHandler(c.extinfo, interceptor))
+	mux.Handle(mainv1connect.NewKoyoServiceHandler(c.koyo, interceptor))
+	mux.Handle(mainv1connect.NewServerServiceHandler(c.server, interceptor))
 
 	err = http.ListenAndServe(
 		fmt.Sprintf("%s:%d", c.cfg.GetConfig().ListenAddr, c.cfg.GetConfig().Port),
