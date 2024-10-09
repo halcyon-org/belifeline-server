@@ -21,6 +21,7 @@ func (ExternalInformation) Fields() []ent.Field {
 		field.String("description").NotEmpty(),
 		field.String("license").NotEmpty(),
 		field.String("license_description"),
+		field.String("api_key"),
 		field.Time("first_entry_at").Default(time.Now).Immutable(),
 		field.Time("last_updated_at").Default(time.Now).UpdateDefault(time.Now),
 	}

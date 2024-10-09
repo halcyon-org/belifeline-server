@@ -25,6 +25,7 @@ func (KoyoInformation) Fields() []ent.Field {
 		field.String("version").NotEmpty(),
 		field.String("license").NotEmpty(),
 		field.Enum("data_type").Values("unspecified", "image", "csv", "json"),
+		field.String("api_key"),
 		field.Time("first_entry_at").Default(time.Now).Immutable(),
 		field.Time("last_entry_at"),
 		field.Time("updated_at").Default(time.Now).UpdateDefault(time.Now),
