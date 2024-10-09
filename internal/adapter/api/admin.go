@@ -36,8 +36,25 @@ func (s *AdminServiceHandlerImpl) ClientSet(ctx context.Context, req *connect.Re
 	return res, nil
 }
 
+const limit = 100
+
 func (s *AdminServiceHandlerImpl) ClientList(ctx context.Context, req *connect.Request[mainv1.ClientListRequest]) (*connect.Response[mainv1.ClientListResponse], error) {
-	return nil, status.Error(codes.Unimplemented, "method ClientList not implemented")
+	dataList, err := s.clientDataUsecase.ListClientData(ctx, limit)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+	if len(dataList) >= limit {
+		return nil, status.Error(codes.Internal, "might have more data")
+	}
+
+	var apiDataList = make([]*v1.ClientData, len(dataList))
+	for i, data := range dataList {
+		apiData := domain.ToApiClientData(*data)
+		apiDataList[i] = &apiData
+	}
+	res := connect.NewResponse(&mainv1.ClientListResponse{ClientDataList: apiDataList})
+
+	return res, nil
 }
 
 func (s *AdminServiceHandlerImpl) ClientDelete(ctx context.Context, req *connect.Request[mainv1.ClientDeleteRequest]) (*connect.Response[mainv1.ClientDeleteResponse], error) {

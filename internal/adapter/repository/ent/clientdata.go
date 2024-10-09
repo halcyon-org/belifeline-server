@@ -9,6 +9,7 @@ import (
 
 type ClientDataRepository interface {
 	CreateClientData(cxt context.Context, username string, apiKey string) (*ent.ClientData, error)
+	ListClientData(cxt context.Context, limit int32) ([]*ent.ClientData, error)
 	DeleteClientData(ctx context.Context, client_id pulid.ID) (*pulid.ID, error)
 }
 
@@ -31,6 +32,16 @@ func (r *clientDataRepositoryImpl) CreateClientData(ctx context.Context, usernam
 		return nil, err
 	}
 	return clientData, nil
+}
+
+func (r *clientDataRepositoryImpl) ListClientData(ctx context.Context, limit int32) ([]*ent.ClientData, error) {
+	clientDataList, err := r.DB.ClientData.Query().
+		Limit(int(limit)).
+		All(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return clientDataList, nil
 }
 
 func (r *clientDataRepositoryImpl) DeleteClientData(ctx context.Context, client_id pulid.ID) (*pulid.ID, error) {
