@@ -26,6 +26,8 @@ type ExternalInformation struct {
 	License string `json:"license,omitempty"`
 	// LicenseDescription holds the value of the "license_description" field.
 	LicenseDescription string `json:"license_description,omitempty"`
+	// APIKey holds the value of the "api_key" field.
+	APIKey string `json:"api_key,omitempty"`
 	// FirstEntryAt holds the value of the "first_entry_at" field.
 	FirstEntryAt time.Time `json:"first_entry_at,omitempty"`
 	// LastUpdatedAt holds the value of the "last_updated_at" field.
@@ -41,7 +43,7 @@ func (*ExternalInformation) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case externalinformation.FieldID:
 			values[i] = new(pulid.ID)
-		case externalinformation.FieldName, externalinformation.FieldDescription, externalinformation.FieldLicense, externalinformation.FieldLicenseDescription:
+		case externalinformation.FieldName, externalinformation.FieldDescription, externalinformation.FieldLicense, externalinformation.FieldLicenseDescription, externalinformation.FieldAPIKey:
 			values[i] = new(sql.NullString)
 		case externalinformation.FieldFirstEntryAt, externalinformation.FieldLastUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -91,6 +93,12 @@ func (ei *ExternalInformation) assignValues(columns []string, values []any) erro
 				return fmt.Errorf("unexpected type %T for field license_description", values[i])
 			} else if value.Valid {
 				ei.LicenseDescription = value.String
+			}
+		case externalinformation.FieldAPIKey:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field api_key", values[i])
+			} else if value.Valid {
+				ei.APIKey = value.String
 			}
 		case externalinformation.FieldFirstEntryAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -158,6 +166,9 @@ func (ei *ExternalInformation) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("license_description=")
 	builder.WriteString(ei.LicenseDescription)
+	builder.WriteString(", ")
+	builder.WriteString("api_key=")
+	builder.WriteString(ei.APIKey)
 	builder.WriteString(", ")
 	builder.WriteString("first_entry_at=")
 	builder.WriteString(ei.FirstEntryAt.Format(time.ANSIC))

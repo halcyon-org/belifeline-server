@@ -33,6 +33,8 @@ type KoyoInformation struct {
 	License string `json:"license,omitempty"`
 	// DataType holds the value of the "data_type" field.
 	DataType koyoinformation.DataType `json:"data_type,omitempty"`
+	// APIKey holds the value of the "api_key" field.
+	APIKey string `json:"api_key,omitempty"`
 	// FirstEntryAt holds the value of the "first_entry_at" field.
 	FirstEntryAt time.Time `json:"first_entry_at,omitempty"`
 	// LastEntryAt holds the value of the "last_entry_at" field.
@@ -83,7 +85,7 @@ func (*KoyoInformation) scanValues(columns []string) ([]any, error) {
 			values[i] = new([]byte)
 		case koyoinformation.FieldID:
 			values[i] = new(pulid.ID)
-		case koyoinformation.FieldName, koyoinformation.FieldDescription, koyoinformation.FieldVersion, koyoinformation.FieldLicense, koyoinformation.FieldDataType:
+		case koyoinformation.FieldName, koyoinformation.FieldDescription, koyoinformation.FieldVersion, koyoinformation.FieldLicense, koyoinformation.FieldDataType, koyoinformation.FieldAPIKey:
 			values[i] = new(sql.NullString)
 		case koyoinformation.FieldFirstEntryAt, koyoinformation.FieldLastEntryAt, koyoinformation.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -153,6 +155,12 @@ func (ki *KoyoInformation) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field data_type", values[i])
 			} else if value.Valid {
 				ki.DataType = koyoinformation.DataType(value.String)
+			}
+		case koyoinformation.FieldAPIKey:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field api_key", values[i])
+			} else if value.Valid {
+				ki.APIKey = value.String
 			}
 		case koyoinformation.FieldFirstEntryAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -238,6 +246,9 @@ func (ki *KoyoInformation) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("data_type=")
 	builder.WriteString(fmt.Sprintf("%v", ki.DataType))
+	builder.WriteString(", ")
+	builder.WriteString("api_key=")
+	builder.WriteString(ki.APIKey)
 	builder.WriteString(", ")
 	builder.WriteString("first_entry_at=")
 	builder.WriteString(ki.FirstEntryAt.Format(time.ANSIC))

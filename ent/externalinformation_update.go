@@ -84,6 +84,20 @@ func (eiu *ExternalInformationUpdate) SetNillableLicenseDescription(s *string) *
 	return eiu
 }
 
+// SetAPIKey sets the "api_key" field.
+func (eiu *ExternalInformationUpdate) SetAPIKey(s string) *ExternalInformationUpdate {
+	eiu.mutation.SetAPIKey(s)
+	return eiu
+}
+
+// SetNillableAPIKey sets the "api_key" field if the given value is not nil.
+func (eiu *ExternalInformationUpdate) SetNillableAPIKey(s *string) *ExternalInformationUpdate {
+	if s != nil {
+		eiu.SetAPIKey(*s)
+	}
+	return eiu
+}
+
 // SetLastUpdatedAt sets the "last_updated_at" field.
 func (eiu *ExternalInformationUpdate) SetLastUpdatedAt(t time.Time) *ExternalInformationUpdate {
 	eiu.mutation.SetLastUpdatedAt(t)
@@ -175,6 +189,9 @@ func (eiu *ExternalInformationUpdate) sqlSave(ctx context.Context) (n int, err e
 	if value, ok := eiu.mutation.LicenseDescription(); ok {
 		_spec.SetField(externalinformation.FieldLicenseDescription, field.TypeString, value)
 	}
+	if value, ok := eiu.mutation.APIKey(); ok {
+		_spec.SetField(externalinformation.FieldAPIKey, field.TypeString, value)
+	}
 	if value, ok := eiu.mutation.LastUpdatedAt(); ok {
 		_spec.SetField(externalinformation.FieldLastUpdatedAt, field.TypeTime, value)
 	}
@@ -250,6 +267,20 @@ func (eiuo *ExternalInformationUpdateOne) SetLicenseDescription(s string) *Exter
 func (eiuo *ExternalInformationUpdateOne) SetNillableLicenseDescription(s *string) *ExternalInformationUpdateOne {
 	if s != nil {
 		eiuo.SetLicenseDescription(*s)
+	}
+	return eiuo
+}
+
+// SetAPIKey sets the "api_key" field.
+func (eiuo *ExternalInformationUpdateOne) SetAPIKey(s string) *ExternalInformationUpdateOne {
+	eiuo.mutation.SetAPIKey(s)
+	return eiuo
+}
+
+// SetNillableAPIKey sets the "api_key" field if the given value is not nil.
+func (eiuo *ExternalInformationUpdateOne) SetNillableAPIKey(s *string) *ExternalInformationUpdateOne {
+	if s != nil {
+		eiuo.SetAPIKey(*s)
 	}
 	return eiuo
 }
@@ -374,6 +405,9 @@ func (eiuo *ExternalInformationUpdateOne) sqlSave(ctx context.Context) (_node *E
 	}
 	if value, ok := eiuo.mutation.LicenseDescription(); ok {
 		_spec.SetField(externalinformation.FieldLicenseDescription, field.TypeString, value)
+	}
+	if value, ok := eiuo.mutation.APIKey(); ok {
+		_spec.SetField(externalinformation.FieldAPIKey, field.TypeString, value)
 	}
 	if value, ok := eiuo.mutation.LastUpdatedAt(); ok {
 		_spec.SetField(externalinformation.FieldLastUpdatedAt, field.TypeTime, value)

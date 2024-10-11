@@ -45,6 +45,12 @@ func (eic *ExternalInformationCreate) SetLicenseDescription(s string) *ExternalI
 	return eic
 }
 
+// SetAPIKey sets the "api_key" field.
+func (eic *ExternalInformationCreate) SetAPIKey(s string) *ExternalInformationCreate {
+	eic.mutation.SetAPIKey(s)
+	return eic
+}
+
 // SetFirstEntryAt sets the "first_entry_at" field.
 func (eic *ExternalInformationCreate) SetFirstEntryAt(t time.Time) *ExternalInformationCreate {
 	eic.mutation.SetFirstEntryAt(t)
@@ -165,6 +171,9 @@ func (eic *ExternalInformationCreate) check() error {
 	if _, ok := eic.mutation.LicenseDescription(); !ok {
 		return &ValidationError{Name: "license_description", err: errors.New(`ent: missing required field "ExternalInformation.license_description"`)}
 	}
+	if _, ok := eic.mutation.APIKey(); !ok {
+		return &ValidationError{Name: "api_key", err: errors.New(`ent: missing required field "ExternalInformation.api_key"`)}
+	}
 	if _, ok := eic.mutation.FirstEntryAt(); !ok {
 		return &ValidationError{Name: "first_entry_at", err: errors.New(`ent: missing required field "ExternalInformation.first_entry_at"`)}
 	}
@@ -221,6 +230,10 @@ func (eic *ExternalInformationCreate) createSpec() (*ExternalInformation, *sqlgr
 	if value, ok := eic.mutation.LicenseDescription(); ok {
 		_spec.SetField(externalinformation.FieldLicenseDescription, field.TypeString, value)
 		_node.LicenseDescription = value
+	}
+	if value, ok := eic.mutation.APIKey(); ok {
+		_spec.SetField(externalinformation.FieldAPIKey, field.TypeString, value)
+		_node.APIKey = value
 	}
 	if value, ok := eic.mutation.FirstEntryAt(); ok {
 		_spec.SetField(externalinformation.FieldFirstEntryAt, field.TypeTime, value)

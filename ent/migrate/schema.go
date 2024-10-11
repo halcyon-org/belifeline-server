@@ -45,6 +45,7 @@ var (
 		{Name: "description", Type: field.TypeString},
 		{Name: "license", Type: field.TypeString},
 		{Name: "license_description", Type: field.TypeString},
+		{Name: "api_key", Type: field.TypeString},
 		{Name: "first_entry_at", Type: field.TypeTime},
 		{Name: "last_updated_at", Type: field.TypeTime},
 		{Name: "koyo_information_externals", Type: field.TypeString, Nullable: true},
@@ -57,7 +58,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "external_informations_koyo_informations_externals",
-				Columns:    []*schema.Column{ExternalInformationsColumns[7]},
+				Columns:    []*schema.Column{ExternalInformationsColumns[8]},
 				RefColumns: []*schema.Column{KoyoInformationsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -98,6 +99,7 @@ var (
 		{Name: "version", Type: field.TypeString},
 		{Name: "license", Type: field.TypeString},
 		{Name: "data_type", Type: field.TypeEnum, Enums: []string{"unspecified", "image", "csv", "json"}},
+		{Name: "api_key", Type: field.TypeString},
 		{Name: "first_entry_at", Type: field.TypeTime},
 		{Name: "last_entry_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},

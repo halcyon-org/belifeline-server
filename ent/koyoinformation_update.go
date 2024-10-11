@@ -120,6 +120,20 @@ func (kiu *KoyoInformationUpdate) SetNillableDataType(kt *koyoinformation.DataTy
 	return kiu
 }
 
+// SetAPIKey sets the "api_key" field.
+func (kiu *KoyoInformationUpdate) SetAPIKey(s string) *KoyoInformationUpdate {
+	kiu.mutation.SetAPIKey(s)
+	return kiu
+}
+
+// SetNillableAPIKey sets the "api_key" field if the given value is not nil.
+func (kiu *KoyoInformationUpdate) SetNillableAPIKey(s *string) *KoyoInformationUpdate {
+	if s != nil {
+		kiu.SetAPIKey(*s)
+	}
+	return kiu
+}
+
 // SetLastEntryAt sets the "last_entry_at" field.
 func (kiu *KoyoInformationUpdate) SetLastEntryAt(t time.Time) *KoyoInformationUpdate {
 	kiu.mutation.SetLastEntryAt(t)
@@ -315,6 +329,9 @@ func (kiu *KoyoInformationUpdate) sqlSave(ctx context.Context) (n int, err error
 	}
 	if value, ok := kiu.mutation.DataType(); ok {
 		_spec.SetField(koyoinformation.FieldDataType, field.TypeEnum, value)
+	}
+	if value, ok := kiu.mutation.APIKey(); ok {
+		_spec.SetField(koyoinformation.FieldAPIKey, field.TypeString, value)
 	}
 	if value, ok := kiu.mutation.LastEntryAt(); ok {
 		_spec.SetField(koyoinformation.FieldLastEntryAt, field.TypeTime, value)
@@ -516,6 +533,20 @@ func (kiuo *KoyoInformationUpdateOne) SetDataType(kt koyoinformation.DataType) *
 func (kiuo *KoyoInformationUpdateOne) SetNillableDataType(kt *koyoinformation.DataType) *KoyoInformationUpdateOne {
 	if kt != nil {
 		kiuo.SetDataType(*kt)
+	}
+	return kiuo
+}
+
+// SetAPIKey sets the "api_key" field.
+func (kiuo *KoyoInformationUpdateOne) SetAPIKey(s string) *KoyoInformationUpdateOne {
+	kiuo.mutation.SetAPIKey(s)
+	return kiuo
+}
+
+// SetNillableAPIKey sets the "api_key" field if the given value is not nil.
+func (kiuo *KoyoInformationUpdateOne) SetNillableAPIKey(s *string) *KoyoInformationUpdateOne {
+	if s != nil {
+		kiuo.SetAPIKey(*s)
 	}
 	return kiuo
 }
@@ -745,6 +776,9 @@ func (kiuo *KoyoInformationUpdateOne) sqlSave(ctx context.Context) (_node *KoyoI
 	}
 	if value, ok := kiuo.mutation.DataType(); ok {
 		_spec.SetField(koyoinformation.FieldDataType, field.TypeEnum, value)
+	}
+	if value, ok := kiuo.mutation.APIKey(); ok {
+		_spec.SetField(koyoinformation.FieldAPIKey, field.TypeString, value)
 	}
 	if value, ok := kiuo.mutation.LastEntryAt(); ok {
 		_spec.SetField(koyoinformation.FieldLastEntryAt, field.TypeTime, value)

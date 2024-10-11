@@ -20,6 +20,7 @@ var repositorySet = wire.NewSet(
 	repoent.NewAdminUserRepository,
 	repoent.NewClientDataRepository,
 	repoent.NewKoyoInformationRepository,
+	repoent.NewExternalInformationRepository,
 )
 
 var adapterSet = wire.NewSet(

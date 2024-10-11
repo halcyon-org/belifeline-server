@@ -75,6 +75,11 @@ func LicenseDescription(v string) predicate.ExternalInformation {
 	return predicate.ExternalInformation(sql.FieldEQ(FieldLicenseDescription, v))
 }
 
+// APIKey applies equality check predicate on the "api_key" field. It's identical to APIKeyEQ.
+func APIKey(v string) predicate.ExternalInformation {
+	return predicate.ExternalInformation(sql.FieldEQ(FieldAPIKey, v))
+}
+
 // FirstEntryAt applies equality check predicate on the "first_entry_at" field. It's identical to FirstEntryAtEQ.
 func FirstEntryAt(v time.Time) predicate.ExternalInformation {
 	return predicate.ExternalInformation(sql.FieldEQ(FieldFirstEntryAt, v))
@@ -343,6 +348,71 @@ func LicenseDescriptionEqualFold(v string) predicate.ExternalInformation {
 // LicenseDescriptionContainsFold applies the ContainsFold predicate on the "license_description" field.
 func LicenseDescriptionContainsFold(v string) predicate.ExternalInformation {
 	return predicate.ExternalInformation(sql.FieldContainsFold(FieldLicenseDescription, v))
+}
+
+// APIKeyEQ applies the EQ predicate on the "api_key" field.
+func APIKeyEQ(v string) predicate.ExternalInformation {
+	return predicate.ExternalInformation(sql.FieldEQ(FieldAPIKey, v))
+}
+
+// APIKeyNEQ applies the NEQ predicate on the "api_key" field.
+func APIKeyNEQ(v string) predicate.ExternalInformation {
+	return predicate.ExternalInformation(sql.FieldNEQ(FieldAPIKey, v))
+}
+
+// APIKeyIn applies the In predicate on the "api_key" field.
+func APIKeyIn(vs ...string) predicate.ExternalInformation {
+	return predicate.ExternalInformation(sql.FieldIn(FieldAPIKey, vs...))
+}
+
+// APIKeyNotIn applies the NotIn predicate on the "api_key" field.
+func APIKeyNotIn(vs ...string) predicate.ExternalInformation {
+	return predicate.ExternalInformation(sql.FieldNotIn(FieldAPIKey, vs...))
+}
+
+// APIKeyGT applies the GT predicate on the "api_key" field.
+func APIKeyGT(v string) predicate.ExternalInformation {
+	return predicate.ExternalInformation(sql.FieldGT(FieldAPIKey, v))
+}
+
+// APIKeyGTE applies the GTE predicate on the "api_key" field.
+func APIKeyGTE(v string) predicate.ExternalInformation {
+	return predicate.ExternalInformation(sql.FieldGTE(FieldAPIKey, v))
+}
+
+// APIKeyLT applies the LT predicate on the "api_key" field.
+func APIKeyLT(v string) predicate.ExternalInformation {
+	return predicate.ExternalInformation(sql.FieldLT(FieldAPIKey, v))
+}
+
+// APIKeyLTE applies the LTE predicate on the "api_key" field.
+func APIKeyLTE(v string) predicate.ExternalInformation {
+	return predicate.ExternalInformation(sql.FieldLTE(FieldAPIKey, v))
+}
+
+// APIKeyContains applies the Contains predicate on the "api_key" field.
+func APIKeyContains(v string) predicate.ExternalInformation {
+	return predicate.ExternalInformation(sql.FieldContains(FieldAPIKey, v))
+}
+
+// APIKeyHasPrefix applies the HasPrefix predicate on the "api_key" field.
+func APIKeyHasPrefix(v string) predicate.ExternalInformation {
+	return predicate.ExternalInformation(sql.FieldHasPrefix(FieldAPIKey, v))
+}
+
+// APIKeyHasSuffix applies the HasSuffix predicate on the "api_key" field.
+func APIKeyHasSuffix(v string) predicate.ExternalInformation {
+	return predicate.ExternalInformation(sql.FieldHasSuffix(FieldAPIKey, v))
+}
+
+// APIKeyEqualFold applies the EqualFold predicate on the "api_key" field.
+func APIKeyEqualFold(v string) predicate.ExternalInformation {
+	return predicate.ExternalInformation(sql.FieldEqualFold(FieldAPIKey, v))
+}
+
+// APIKeyContainsFold applies the ContainsFold predicate on the "api_key" field.
+func APIKeyContainsFold(v string) predicate.ExternalInformation {
+	return predicate.ExternalInformation(sql.FieldContainsFold(FieldAPIKey, v))
 }
 
 // FirstEntryAtEQ applies the EQ predicate on the "first_entry_at" field.

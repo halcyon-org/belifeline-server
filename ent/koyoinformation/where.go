@@ -76,6 +76,11 @@ func License(v string) predicate.KoyoInformation {
 	return predicate.KoyoInformation(sql.FieldEQ(FieldLicense, v))
 }
 
+// APIKey applies equality check predicate on the "api_key" field. It's identical to APIKeyEQ.
+func APIKey(v string) predicate.KoyoInformation {
+	return predicate.KoyoInformation(sql.FieldEQ(FieldAPIKey, v))
+}
+
 // FirstEntryAt applies equality check predicate on the "first_entry_at" field. It's identical to FirstEntryAtEQ.
 func FirstEntryAt(v time.Time) predicate.KoyoInformation {
 	return predicate.KoyoInformation(sql.FieldEQ(FieldFirstEntryAt, v))
@@ -369,6 +374,71 @@ func DataTypeIn(vs ...DataType) predicate.KoyoInformation {
 // DataTypeNotIn applies the NotIn predicate on the "data_type" field.
 func DataTypeNotIn(vs ...DataType) predicate.KoyoInformation {
 	return predicate.KoyoInformation(sql.FieldNotIn(FieldDataType, vs...))
+}
+
+// APIKeyEQ applies the EQ predicate on the "api_key" field.
+func APIKeyEQ(v string) predicate.KoyoInformation {
+	return predicate.KoyoInformation(sql.FieldEQ(FieldAPIKey, v))
+}
+
+// APIKeyNEQ applies the NEQ predicate on the "api_key" field.
+func APIKeyNEQ(v string) predicate.KoyoInformation {
+	return predicate.KoyoInformation(sql.FieldNEQ(FieldAPIKey, v))
+}
+
+// APIKeyIn applies the In predicate on the "api_key" field.
+func APIKeyIn(vs ...string) predicate.KoyoInformation {
+	return predicate.KoyoInformation(sql.FieldIn(FieldAPIKey, vs...))
+}
+
+// APIKeyNotIn applies the NotIn predicate on the "api_key" field.
+func APIKeyNotIn(vs ...string) predicate.KoyoInformation {
+	return predicate.KoyoInformation(sql.FieldNotIn(FieldAPIKey, vs...))
+}
+
+// APIKeyGT applies the GT predicate on the "api_key" field.
+func APIKeyGT(v string) predicate.KoyoInformation {
+	return predicate.KoyoInformation(sql.FieldGT(FieldAPIKey, v))
+}
+
+// APIKeyGTE applies the GTE predicate on the "api_key" field.
+func APIKeyGTE(v string) predicate.KoyoInformation {
+	return predicate.KoyoInformation(sql.FieldGTE(FieldAPIKey, v))
+}
+
+// APIKeyLT applies the LT predicate on the "api_key" field.
+func APIKeyLT(v string) predicate.KoyoInformation {
+	return predicate.KoyoInformation(sql.FieldLT(FieldAPIKey, v))
+}
+
+// APIKeyLTE applies the LTE predicate on the "api_key" field.
+func APIKeyLTE(v string) predicate.KoyoInformation {
+	return predicate.KoyoInformation(sql.FieldLTE(FieldAPIKey, v))
+}
+
+// APIKeyContains applies the Contains predicate on the "api_key" field.
+func APIKeyContains(v string) predicate.KoyoInformation {
+	return predicate.KoyoInformation(sql.FieldContains(FieldAPIKey, v))
+}
+
+// APIKeyHasPrefix applies the HasPrefix predicate on the "api_key" field.
+func APIKeyHasPrefix(v string) predicate.KoyoInformation {
+	return predicate.KoyoInformation(sql.FieldHasPrefix(FieldAPIKey, v))
+}
+
+// APIKeyHasSuffix applies the HasSuffix predicate on the "api_key" field.
+func APIKeyHasSuffix(v string) predicate.KoyoInformation {
+	return predicate.KoyoInformation(sql.FieldHasSuffix(FieldAPIKey, v))
+}
+
+// APIKeyEqualFold applies the EqualFold predicate on the "api_key" field.
+func APIKeyEqualFold(v string) predicate.KoyoInformation {
+	return predicate.KoyoInformation(sql.FieldEqualFold(FieldAPIKey, v))
+}
+
+// APIKeyContainsFold applies the ContainsFold predicate on the "api_key" field.
+func APIKeyContainsFold(v string) predicate.KoyoInformation {
+	return predicate.KoyoInformation(sql.FieldContainsFold(FieldAPIKey, v))
 }
 
 // FirstEntryAtEQ applies the EQ predicate on the "first_entry_at" field.

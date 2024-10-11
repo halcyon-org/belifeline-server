@@ -30,6 +30,8 @@ const (
 	FieldLicense = "license"
 	// FieldDataType holds the string denoting the data_type field in the database.
 	FieldDataType = "data_type"
+	// FieldAPIKey holds the string denoting the api_key field in the database.
+	FieldAPIKey = "api_key"
 	// FieldFirstEntryAt holds the string denoting the first_entry_at field in the database.
 	FieldFirstEntryAt = "first_entry_at"
 	// FieldLastEntryAt holds the string denoting the last_entry_at field in the database.
@@ -68,6 +70,7 @@ var Columns = []string{
 	FieldVersion,
 	FieldLicense,
 	FieldDataType,
+	FieldAPIKey,
 	FieldFirstEntryAt,
 	FieldLastEntryAt,
 	FieldUpdatedAt,
@@ -156,6 +159,11 @@ func ByLicense(opts ...sql.OrderTermOption) OrderOption {
 // ByDataType orders the results by the data_type field.
 func ByDataType(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDataType, opts...).ToFunc()
+}
+
+// ByAPIKey orders the results by the api_key field.
+func ByAPIKey(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAPIKey, opts...).ToFunc()
 }
 
 // ByFirstEntryAt orders the results by the first_entry_at field.

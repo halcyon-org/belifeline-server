@@ -10,15 +10,28 @@ import (
 
 type AuthUsecase interface {
 	AuthAdminUser(ctx context.Context, apiKey string) (*domain.AdminUser, error)
+	AuthClientData(ctx context.Context, apiKey string) (*domain.ClientData, error)
+	AuthKoyoInformation(ctx context.Context, apiKey string) (*domain.KoyoInformation, error)
+	AuthExternalInformation(ctx context.Context, apiKey string) (*domain.ExternalInformation, error)
 }
 
 type authUsecaseImpl struct {
-	adminUserRepository ent.AdminUserRepository
+	adminUserRepository           ent.AdminUserRepository
+	clientDataRepository          ent.ClientDataRepository
+	koyoInformationRepository     ent.KoyoInformationRepository
+	externalInformationRepository ent.ExternalInformationRepository
 }
 
-func NewAuthUsecase(adminUserRepository ent.AdminUserRepository) AuthUsecase {
+func NewAuthUsecase(adminUserRepository ent.AdminUserRepository,
+	clientDataRepository ent.ClientDataRepository,
+	koyoInformationRepository ent.KoyoInformationRepository,
+	externalInformationRepository ent.ExternalInformationRepository,
+) AuthUsecase {
 	return &authUsecaseImpl{
-		adminUserRepository: adminUserRepository,
+		adminUserRepository:           adminUserRepository,
+		clientDataRepository:          clientDataRepository,
+		koyoInformationRepository:     koyoInformationRepository,
+		externalInformationRepository: externalInformationRepository,
 	}
 }
 
@@ -31,4 +44,31 @@ func (u *authUsecaseImpl) AuthAdminUser(ctx context.Context, apiKey string) (*do
 	}
 	adminUser := domain.ToDomainAdminUser(*user)
 	return &adminUser, nil
+}
+
+func (u *authUsecaseImpl) AuthClientData(ctx context.Context, apiKey string) (*domain.ClientData, error) {
+	data, err := u.clientDataRepository.GetClientDataByAPIKey(ctx, apiKey)
+	if err != nil {
+		return nil, ErrorAuthenticationFailed
+	}
+	clientData := domain.ToDomainClientData(*data)
+	return &clientData, nil
+}
+
+func (u *authUsecaseImpl) AuthKoyoInformation(ctx context.Context, apiKey string) (*domain.KoyoInformation, error) {
+	info, err := u.koyoInformationRepository.GetKoyoInformationByAPIKey(ctx, apiKey)
+	if err != nil {
+		return nil, ErrorAuthenticationFailed
+	}
+	koyoInformation := domain.ToDomainKoyoInformation(*info)
+	return &koyoInformation, nil
+}
+
+func (u *authUsecaseImpl) AuthExternalInformation(ctx context.Context, apiKey string) (*domain.ExternalInformation, error) {
+	info, err := u.externalInformationRepository.GetExternalInformationByAPIKey(ctx, apiKey)
+	if err != nil {
+		return nil, ErrorAuthenticationFailed
+	}
+	externalInformation := domain.ToDomainExternalInformation(*info)
+	return &externalInformation, nil
 }
