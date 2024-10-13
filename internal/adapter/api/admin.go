@@ -88,7 +88,7 @@ func (s *AdminServiceHandlerImpl) ExternalInformationDelete(ctx context.Context,
 	return nil, status.Error(codes.Unimplemented, "method ExternalInformationDelete not implemented")
 }
 
-func (s *AdminServiceHandlerImpl) KoyoSet(ctx context.Context, req *connect.Request[mainv1.KoyoSetRequest]) (*connect.Response[mainv1.KoyoSetResponse], error) {
+func (s *AdminServiceHandlerImpl) KoyoCreate(ctx context.Context, req *connect.Request[mainv1.KoyoCreateRequest]) (*connect.Response[mainv1.KoyoCreateResponse], error) {
 	return nil, status.Error(codes.Unimplemented, "method KoyoSet not implemented")
 }
 
