@@ -3,8 +3,8 @@ package domain
 import (
 	"time"
 
-	"github.com/halcyon-org/kizuna/ent"
 	v1 "github.com/halcyon-org/kizuna/gen/belifeline/models/v1"
+	"github.com/halcyon-org/kizuna/gen/ent"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 

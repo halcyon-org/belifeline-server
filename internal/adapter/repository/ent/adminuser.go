@@ -3,8 +3,8 @@ package ent
 import (
 	"context"
 
-	"github.com/halcyon-org/kizuna/ent"
-	"github.com/halcyon-org/kizuna/ent/adminuser"
+	"github.com/halcyon-org/kizuna/gen/ent"
+	"github.com/halcyon-org/kizuna/gen/ent/adminuser"
 )
 
 type AdminUserRepository interface {

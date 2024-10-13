@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/halcyon-org/kizuna/ent"
-	"github.com/halcyon-org/kizuna/ent/clientdata"
 	"github.com/halcyon-org/kizuna/ent/schema/pulid"
+	"github.com/halcyon-org/kizuna/gen/ent"
+	"github.com/halcyon-org/kizuna/gen/ent/clientdata"
 )
 
 type ClientDataRepository interface {

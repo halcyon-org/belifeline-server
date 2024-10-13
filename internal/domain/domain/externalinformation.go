@@ -3,7 +3,7 @@ package domain
 import (
 	"time"
 
-	"github.com/halcyon-org/kizuna/ent"
+	"github.com/halcyon-org/kizuna/gen/ent"
 )
 
 type ExternalInformation struct {

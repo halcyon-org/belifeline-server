@@ -3,8 +3,8 @@ package ent
 import (
 	"context"
 
-	"github.com/halcyon-org/kizuna/ent"
-	"github.com/halcyon-org/kizuna/ent/koyoinformation"
+	"github.com/halcyon-org/kizuna/gen/ent"
+	"github.com/halcyon-org/kizuna/gen/ent/koyoinformation"
 )
 
 type KoyoInformationRepository interface {

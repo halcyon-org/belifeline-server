@@ -10,7 +10,7 @@ import (
 	"io"
 	"log"
 
-	"github.com/halcyon-org/kizuna/ent"
+	"github.com/halcyon-org/kizuna/gen/ent"
 	"github.com/halcyon-org/kizuna/internal/adapter/repository/config"
 	_ "github.com/lib/pq"
 )
