@@ -121,28 +121,31 @@ jobs:
       - uses: ./.github/actions/setup-db
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-golang
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
       - name: Setup sqlfluff
         run: |
           pip install sqlfluff
       - name: Run migration
         id: migration-run
         run: |
-            set -o pipefail
-            MIGRATE_OUT=$(go run cmd/migration/main.go --dry | sqlfluff fix - --dialect postgres)
-            EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-            {
-              echo "comment<<$EOF"
-              if [ -n "$MIGRATE_OUT" ]; then
-                printf "# Migration dry run\n\n"
-                printf "<details>\n"
-                printf "<summary>migration dry run result</summary>\n"
-                printf "\n\`\`\`\n\n"
-                echo "$MIGRATE_OUT"
-                printf "\n\`\`\`\n\n"
-                printf "</details>\n"
-              fi
-              echo "$EOF"
-            } >> "$GITHUB_ENV"
+          set -o pipefail
+          MIGRATE_OUT=$(go run cmd/migration/main.go --dry | sqlfluff fix - --dialect postgres)
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          {
+            echo "comment<<$EOF"
+            if [ -n "$MIGRATE_OUT" ]; then
+              printf "# Migration dry run\n\n"
+              printf "<details>\n"
+              printf "<summary>migration dry run result</summary>\n"
+              printf "\n\`\`\`\n\n"
+              echo "$MIGRATE_OUT"
+              printf "\n\`\`\`\n\n"
+              printf "</details>\n"
+            fi
+            echo "$EOF"
+          } >> "$GITHUB_ENV"
       - name: Run migration
         run: go run cmd/migration/main.go
       - name: Create PR comment
