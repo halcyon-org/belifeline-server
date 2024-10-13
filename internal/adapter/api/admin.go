@@ -59,7 +59,7 @@ func (s *AdminServiceHandlerImpl) ClientList(ctx context.Context, req *connect.R
 }
 
 func (s *AdminServiceHandlerImpl) ClientDelete(ctx context.Context, req *connect.Request[mainv1.ClientDeleteRequest]) (*connect.Response[mainv1.ClientDeleteResponse], error) {
-	id, err := s.clientDataUsecase.DeleteClientData(ctx, req.Msg.ClientId.String())
+	id, err := s.clientDataUsecase.DeleteClientData(ctx, req.Msg.ClientId.Value)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
