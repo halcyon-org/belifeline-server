@@ -70,7 +70,14 @@ func (s *AdminServiceHandlerImpl) ClientDelete(ctx context.Context, req *connect
 }
 
 func (s *AdminServiceHandlerImpl) ClientRevoke(ctx context.Context, req *connect.Request[mainv1.ClientRevokeRequest]) (*connect.Response[mainv1.ClientRevokeResponse], error) {
-	return nil, status.Error(codes.Unimplemented, "method ClientRevoke not implemented")
+	id, apiKey, err := s.clientDataUsecase.RevokeApiKey(ctx, req.Msg.ClientId.Value)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	res := connect.NewResponse(&mainv1.ClientRevokeResponse{ClientId: &v1.ULID{Value: id}, ApiKey: &v1.ApiKey{Key: apiKey}})
+
+	return res, nil
 }
 
 func (s *AdminServiceHandlerImpl) ExtInfoSet(ctx context.Context, req *connect.Request[mainv1.ExtInfoSetRequest]) (*connect.Response[mainv1.ExtInfoSetResponse], error) {

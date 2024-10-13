@@ -2,6 +2,7 @@ package ent
 
 import (
 	"context"
+	"time"
 
 	"github.com/halcyon-org/kizuna/ent"
 	"github.com/halcyon-org/kizuna/ent/clientdata"
@@ -12,6 +13,7 @@ type ClientDataRepository interface {
 	CreateClientData(cxt context.Context, username string, apiKey string) (*ent.ClientData, error)
 	GetAllClientData(cxt context.Context, limit int32) ([]*ent.ClientData, error)
 	DeleteClientData(ctx context.Context, client_id pulid.ID) (*pulid.ID, error)
+	RevokeAPIKey(ctx context.Context, client_id pulid.ID) (*pulid.ID, string, error)
 	GetClientDataByAPIKey(ctx context.Context, apiKey string) (*ent.ClientData, error)
 }
 
@@ -52,6 +54,23 @@ func (r *clientDataRepositoryImpl) DeleteClientData(ctx context.Context, client_
 		return nil, err
 	}
 	return &client_id, nil
+}
+
+func (r *clientDataRepositoryImpl) RevokeAPIKey(ctx context.Context, client_id pulid.ID) (*pulid.ID, string, error) {
+	clientData, err := r.DB.ClientData.Query().Where(clientdata.ID(pulid.ID(client_id))).Only(ctx)
+	apiKey := clientData.APIKey
+	if err != nil {
+		return nil, "", err
+	}
+
+	if _, err := r.DB.ClientData.UpdateOneID(client_id).
+		SetAPIKey("").
+		SetLastUpdatedAt(time.Now()).
+		Save(ctx); err != nil {
+		return nil, "", err
+	}
+
+	return &clientData.ID, apiKey, nil
 }
 
 func (r *clientDataRepositoryImpl) GetClientDataByAPIKey(ctx context.Context, apiKey string) (*ent.ClientData, error) {
