@@ -81,31 +81,12 @@ func (a *AuthInterceptorImpl) AuthProviderServiceInterceptor() connect.UnaryInte
 				return nil, connect.NewError(connect.CodePermissionDenied, ErrMissingAPIKey)
 			}
 
-			admin, err := a.authUsecase.AuthAdminUser(ctx, apiKey)
-			if err == nil && admin != nil {
-				ctx = context.WithValue(ctx, AdminUserKey, admin)
-				return next(ctx, req)
+			client, err := a.authUsecase.AuthClientInformation(ctx, apiKey)
+			if err != nil {
+				return nil, connect.NewError(connect.CodePermissionDenied, err)
 			}
-
-			data, err := a.authUsecase.AuthClientInformation(ctx, apiKey)
-			if err == nil && data != nil {
-				ctx = context.WithValue(ctx, ClientInformationKey, data)
-				return next(ctx, req)
-			}
-
-			koyo, err := a.authUsecase.AuthKoyoInformation(ctx, apiKey)
-			if err == nil && koyo != nil {
-				ctx = context.WithValue(ctx, KoyoInfoKey, koyo)
-				return next(ctx, req)
-			}
-
-			extinfo, err := a.authUsecase.AuthExternalInformation(ctx, apiKey)
-			if err == nil && extinfo != nil {
-				ctx = context.WithValue(ctx, ExternalInformationKey, extinfo)
-				return next(ctx, req)
-			}
-
-			return nil, connect.NewError(connect.CodePermissionDenied, err)
+			ctx = context.WithValue(ctx, ClientInformationKey, client)
+			return next(ctx, req)
 		})
 	}
 	return connect.UnaryInterceptorFunc(interceptor)
@@ -124,18 +105,11 @@ func (a *AuthInterceptorImpl) AuthKoyoServiceInterceptor() connect.UnaryIntercep
 			}
 
 			koyo, err := a.authUsecase.AuthKoyoInformation(ctx, apiKey)
-			if err == nil && koyo != nil {
-				ctx = context.WithValue(ctx, KoyoInfoKey, koyo)
-				return next(ctx, req)
+			if err != nil {
+				return nil, connect.NewError(connect.CodePermissionDenied, err)
 			}
-
-			admin, err := a.authUsecase.AuthAdminUser(ctx, apiKey)
-			if err == nil && admin != nil {
-				ctx = context.WithValue(ctx, AdminUserKey, admin)
-				return next(ctx, req)
-			}
-
-			return nil, connect.NewError(connect.CodePermissionDenied, err)
+			ctx = context.WithValue(ctx, KoyoInfoKey, koyo)
+			return next(ctx, req)
 		})
 	}
 	return connect.UnaryInterceptorFunc(interceptor)
@@ -153,19 +127,12 @@ func (a *AuthInterceptorImpl) AuthExternalInformationServiceInterceptor() connec
 				return nil, connect.NewError(connect.CodePermissionDenied, ErrMissingAPIKey)
 			}
 
-			extinfo, err := a.authUsecase.AuthExternalInformation(ctx, apiKey)
-			if err == nil && extinfo != nil {
-				ctx = context.WithValue(ctx, ExternalInformationKey, extinfo)
-				return next(ctx, req)
+			ext, err := a.authUsecase.AuthExternalInformation(ctx, apiKey)
+			if err != nil {
+				return nil, connect.NewError(connect.CodePermissionDenied, err)
 			}
-
-			admin, err := a.authUsecase.AuthAdminUser(ctx, apiKey)
-			if err == nil && admin != nil {
-				ctx = context.WithValue(ctx, AdminUserKey, admin)
-				return next(ctx, req)
-			}
-
-			return nil, connect.NewError(connect.CodePermissionDenied, err)
+			ctx = context.WithValue(ctx, ExternalInformationKey, ext)
+			return next(ctx, req)
 		})
 	}
 	return connect.UnaryInterceptorFunc(interceptor)
