@@ -31,7 +31,7 @@ func InitializeControllerSet() (*ControllersSet, error) {
 	clientInformationUsecase := usecase.NewClientInformationUsecase(clientInformationRepository)
 	adminServiceHandler := api.NewAdminServiceHandler(clientInformationUsecase)
 	providerServiceHandler := api.NewProviderServiceHandler()
-	invalid type := api.NewExtInfoServiceHandler()
+	invalid type := api.NewExternalInformationServiceHandler()
 	koyoServiceHandler := api.NewKoyoServiceHandler()
 	serverServiceHandler := api.NewServerServiceHandler()
 	adminUserRepository := ent2.NewAdminUserRepository(client)
@@ -52,7 +52,7 @@ func InitializeControllerSet() (*ControllersSet, error) {
 var repositorySet = wire.NewSet(config.NewConfigRepository, ent2.NewAdminUserRepository, ent2.NewClientInformationRepository, ent2.NewKoyoInformationRepository, ent2.NewExternalInformationRepository,
 )
 
-var adapterSet = wire.NewSet(api.NewAdminServiceHandler, api.NewProviderServiceHandler, api.NewExtInfoServiceHandler, api.NewKoyoServiceHandler, api.NewServerServiceHandler, interceptor.NewAuthInterceptorAdapter,
+var adapterSet = wire.NewSet(api.NewAdminServiceHandler, api.NewProviderServiceHandler, api.NewExternalInformationServiceHandler, api.NewKoyoServiceHandler, api.NewServerServiceHandler, interceptor.NewAuthInterceptorAdapter,
 )
 
 var controllerSet = wire.NewSet(controller.NewBeLifelineController,

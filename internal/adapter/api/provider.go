@@ -17,16 +17,16 @@ func NewProviderServiceHandler() mainv1connect.ProviderServiceHandler {
 	return &ProviderServiceHandlerImpl{}
 }
 
-func (s *ProviderServiceHandlerImpl) ExtInfoList(ctx context.Context, req *connect.Request[mainv1.ExtInfoListRequest], stream *connect.ServerStream[mainv1.ExtInfoListResponse]) error {
-	return status.Error(codes.Unimplemented, "method ExtInfoList not implemented")
+func (s *ProviderServiceHandlerImpl) ExternalInformationList(ctx context.Context, req *connect.Request[mainv1.ExternalInformationListRequest], stream *connect.ServerStream[mainv1.ExternalInformationListResponse]) error {
+	return status.Error(codes.Unimplemented, "method ExternalInformationList not implemented")
 }
 
 func (s *ProviderServiceHandlerImpl) KoyoList(ctx context.Context, req *connect.Request[mainv1.KoyoListRequest], stream *connect.ServerStream[mainv1.KoyoListResponse]) error {
 	return status.Error(codes.Unimplemented, "method KoyoList not implemented")
 }
 
-func (s *ProviderServiceHandlerImpl) ExtInfoGet(context.Context, *connect.Request[mainv1.ExtInfoGetRequest]) (*connect.Response[mainv1.ExtInfoGetResponse], error) {
-	return nil, status.Error(codes.Unimplemented, "method ExtInfoGet not implemented")
+func (s *ProviderServiceHandlerImpl) ExternalInformationGet(context.Context, *connect.Request[mainv1.ExternalInformationGetRequest]) (*connect.Response[mainv1.ExternalInformationGetResponse], error) {
+	return nil, status.Error(codes.Unimplemented, "method ExternalInformationGet not implemented")
 }
 
 func (s *ProviderServiceHandlerImpl) KoyoDataGet(context.Context, *connect.Request[mainv1.KoyoDataGetRequest]) (*connect.Response[mainv1.KoyoDataGetResponse], error) {

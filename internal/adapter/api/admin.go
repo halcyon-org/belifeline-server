@@ -80,12 +80,12 @@ func (s *AdminServiceHandlerImpl) ClientRevoke(ctx context.Context, req *connect
 	return res, nil
 }
 
-func (s *AdminServiceHandlerImpl) ExtInfoSet(ctx context.Context, req *connect.Request[mainv1.ExtInfoSetRequest]) (*connect.Response[mainv1.ExtInfoSetResponse], error) {
-	return nil, status.Error(codes.Unimplemented, "method ExtInfoSet not implemented")
+func (s *AdminServiceHandlerImpl) ExternalInformationSet(ctx context.Context, req *connect.Request[mainv1.ExternalInformationSetRequest]) (*connect.Response[mainv1.ExternalInformationSetResponse], error) {
+	return nil, status.Error(codes.Unimplemented, "method ExternalInformationSet not implemented")
 }
 
-func (s *AdminServiceHandlerImpl) ExtInfoDelete(ctx context.Context, req *connect.Request[mainv1.ExtInfoDeleteRequest]) (*connect.Response[mainv1.ExtInfoDeleteResponse], error) {
-	return nil, status.Error(codes.Unimplemented, "method ExtInfoDelete not implemented")
+func (s *AdminServiceHandlerImpl) ExternalInformationDelete(ctx context.Context, req *connect.Request[mainv1.ExternalInformationDeleteRequest]) (*connect.Response[mainv1.ExternalInformationDeleteResponse], error) {
+	return nil, status.Error(codes.Unimplemented, "method ExternalInformationDelete not implemented")
 }
 
 func (s *AdminServiceHandlerImpl) KoyoSet(ctx context.Context, req *connect.Request[mainv1.KoyoSetRequest]) (*connect.Response[mainv1.KoyoSetResponse], error) {

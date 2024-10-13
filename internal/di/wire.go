@@ -26,7 +26,7 @@ var repositorySet = wire.NewSet(
 var adapterSet = wire.NewSet(
 	api.NewAdminServiceHandler,
 	api.NewProviderServiceHandler,
-	api.NewExtInfoServiceHandler,
+	api.NewExternalInformationServiceHandler,
 	api.NewKoyoServiceHandler,
 	api.NewServerServiceHandler,
 	interceptor.NewAuthInterceptorAdapter,

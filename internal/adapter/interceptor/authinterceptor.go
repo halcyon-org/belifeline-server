@@ -21,17 +21,17 @@ const AuthAPIKeyHeader = "X-API-Key"
 type AuthHeaderType string
 
 const (
-	AdminUserKey         AuthHeaderType = "admin_user"
-	ClientInformationKey AuthHeaderType = "client_data"
-	KoyoInfoKey          AuthHeaderType = "koyo_info"
-	ExtInfoKey           AuthHeaderType = "ext_info"
+	AdminUserKey           AuthHeaderType = "admin_user"
+	ClientInformationKey   AuthHeaderType = "client_data"
+	KoyoInfoKey            AuthHeaderType = "koyo_info"
+	ExternalInformationKey AuthHeaderType = "ext_info"
 )
 
 type AuthInterceptorAdapter interface {
 	AuthAdminServiceInterceptor() connect.UnaryInterceptorFunc
 	AuthProviderServiceInterceptor() connect.UnaryInterceptorFunc
 	AuthKoyoServiceInterceptor() connect.UnaryInterceptorFunc
-	AuthExtInfoServiceInterceptor() connect.UnaryInterceptorFunc
+	AuthExternalInformationServiceInterceptor() connect.UnaryInterceptorFunc
 }
 
 type AuthInterceptorImpl struct {
@@ -101,7 +101,7 @@ func (a *AuthInterceptorImpl) AuthProviderServiceInterceptor() connect.UnaryInte
 
 			extinfo, err := a.authUsecase.AuthExternalInformation(ctx, apiKey)
 			if err == nil && extinfo != nil {
-				ctx = context.WithValue(ctx, ExtInfoKey, extinfo)
+				ctx = context.WithValue(ctx, ExternalInformationKey, extinfo)
 				return next(ctx, req)
 			}
 
@@ -141,7 +141,7 @@ func (a *AuthInterceptorImpl) AuthKoyoServiceInterceptor() connect.UnaryIntercep
 	return connect.UnaryInterceptorFunc(interceptor)
 }
 
-func (a *AuthInterceptorImpl) AuthExtInfoServiceInterceptor() connect.UnaryInterceptorFunc {
+func (a *AuthInterceptorImpl) AuthExternalInformationServiceInterceptor() connect.UnaryInterceptorFunc {
 	interceptor := func(next connect.UnaryFunc) connect.UnaryFunc {
 		return connect.UnaryFunc(func(ctx context.Context, req connect.AnyRequest) (connect.AnyResponse, error) {
 			if req.Spec().IsClient {
@@ -155,7 +155,7 @@ func (a *AuthInterceptorImpl) AuthExtInfoServiceInterceptor() connect.UnaryInter
 
 			extinfo, err := a.authUsecase.AuthExternalInformation(ctx, apiKey)
 			if err == nil && extinfo != nil {
-				ctx = context.WithValue(ctx, ExtInfoKey, extinfo)
+				ctx = context.WithValue(ctx, ExternalInformationKey, extinfo)
 				return next(ctx, req)
 			}
 
