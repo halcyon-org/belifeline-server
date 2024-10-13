@@ -15,24 +15,24 @@ import (
 )
 
 type AdminServiceHandlerImpl struct {
-	clientDataUsecase usecase.ClientDataUsecase
+	clientInformationUsecase usecase.ClientInformationUsecase
 }
 
-func NewAdminServiceHandler(clientDataUsecase usecase.ClientDataUsecase) mainv1connect.AdminServiceHandler {
+func NewAdminServiceHandler(clientInformationUsecase usecase.ClientInformationUsecase) mainv1connect.AdminServiceHandler {
 	return &AdminServiceHandlerImpl{
-		clientDataUsecase: clientDataUsecase,
+		clientInformationUsecase: clientInformationUsecase,
 	}
 }
 
 func (s *AdminServiceHandlerImpl) ClientSet(ctx context.Context, req *connect.Request[mainv1.ClientSetRequest]) (*connect.Response[mainv1.ClientSetResponse], error) {
 	// FIXME: Create and Set
-	user, err := s.clientDataUsecase.CreateClientData(ctx, req.Msg.Username)
+	user, err := s.clientInformationUsecase.CreateClientInformation(ctx, req.Msg.Username)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	apiData := domain.ToApiClientData(*user)
-	res := connect.NewResponse(&mainv1.ClientSetResponse{ClientData: &apiData})
+	apiData := domain.ToApiClientInformation(*user)
+	res := connect.NewResponse(&mainv1.ClientSetResponse{ClientInformation: &apiData})
 
 	return res, nil
 }
@@ -40,7 +40,7 @@ func (s *AdminServiceHandlerImpl) ClientSet(ctx context.Context, req *connect.Re
 const limit = 100
 
 func (s *AdminServiceHandlerImpl) ClientList(ctx context.Context, req *connect.Request[mainv1.ClientListRequest]) (*connect.Response[mainv1.ClientListResponse], error) {
-	dataList, err := s.clientDataUsecase.ListClientData(ctx, limit)
+	dataList, err := s.clientInformationUsecase.ListClientInformation(ctx, limit)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
@@ -48,18 +48,18 @@ func (s *AdminServiceHandlerImpl) ClientList(ctx context.Context, req *connect.R
 		return nil, status.Error(codes.Internal, fmt.Sprintf("might have more data than %d\n", limit))
 	}
 
-	var apiDataList = make([]*v1.ClientData, len(dataList))
+	var apiDataList = make([]*v1.ClientInformation, len(dataList))
 	for i, data := range dataList {
-		apiData := domain.ToApiClientData(*data)
+		apiData := domain.ToApiClientInformation(*data)
 		apiDataList[i] = &apiData
 	}
-	res := connect.NewResponse(&mainv1.ClientListResponse{ClientDataList: apiDataList})
+	res := connect.NewResponse(&mainv1.ClientListResponse{ClientInformationList: apiDataList})
 
 	return res, nil
 }
 
 func (s *AdminServiceHandlerImpl) ClientDelete(ctx context.Context, req *connect.Request[mainv1.ClientDeleteRequest]) (*connect.Response[mainv1.ClientDeleteResponse], error) {
-	id, err := s.clientDataUsecase.DeleteClientData(ctx, req.Msg.ClientId.Value)
+	id, err := s.clientInformationUsecase.DeleteClientInformation(ctx, req.Msg.ClientId.Value)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
@@ -70,7 +70,7 @@ func (s *AdminServiceHandlerImpl) ClientDelete(ctx context.Context, req *connect
 }
 
 func (s *AdminServiceHandlerImpl) ClientRevoke(ctx context.Context, req *connect.Request[mainv1.ClientRevokeRequest]) (*connect.Response[mainv1.ClientRevokeResponse], error) {
-	id, apiKey, err := s.clientDataUsecase.RevokeApiKey(ctx, req.Msg.ClientId.Value)
+	id, apiKey, err := s.clientInformationUsecase.RevokeApiKey(ctx, req.Msg.ClientId.Value)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

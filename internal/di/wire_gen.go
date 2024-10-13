@@ -27,9 +27,9 @@ func InitializeControllerSet() (*ControllersSet, error) {
 	if err != nil {
 		return nil, err
 	}
-	clientDataRepository := ent2.NewClientDataRepository(client)
-	clientDataUsecase := usecase.NewClientDataUsecase(clientDataRepository)
-	adminServiceHandler := api.NewAdminServiceHandler(clientDataUsecase)
+	clientInformationRepository := ent2.NewClientInformationRepository(client)
+	clientInformationUsecase := usecase.NewClientInformationUsecase(clientInformationRepository)
+	adminServiceHandler := api.NewAdminServiceHandler(clientInformationUsecase)
 	providerServiceHandler := api.NewProviderServiceHandler()
 	invalid type := api.NewExtInfoServiceHandler()
 	koyoServiceHandler := api.NewKoyoServiceHandler()
@@ -37,7 +37,7 @@ func InitializeControllerSet() (*ControllersSet, error) {
 	adminUserRepository := ent2.NewAdminUserRepository(client)
 	koyoInformationRepository := ent2.NewKoyoInformationRepository(client)
 	externalInformationRepository := ent2.NewExternalInformationRepository(client)
-	authUsecase := usecase.NewAuthUsecase(adminUserRepository, clientDataRepository, koyoInformationRepository, externalInformationRepository)
+	authUsecase := usecase.NewAuthUsecase(adminUserRepository, clientInformationRepository, koyoInformationRepository, externalInformationRepository)
 	authInterceptorAdapter := interceptor.NewAuthInterceptorAdapter(authUsecase)
 	beLifelineController := controller.NewBeLifelineController(adminServiceHandler, providerServiceHandler, invalid type, koyoServiceHandler, serverServiceHandler, authInterceptorAdapter, configRepository)
 	controllersSet := &ControllersSet{
@@ -49,7 +49,7 @@ func InitializeControllerSet() (*ControllersSet, error) {
 // wire.go:
 
 // Adapter
-var repositorySet = wire.NewSet(config.NewConfigRepository, ent2.NewAdminUserRepository, ent2.NewClientDataRepository, ent2.NewKoyoInformationRepository, ent2.NewExternalInformationRepository,
+var repositorySet = wire.NewSet(config.NewConfigRepository, ent2.NewAdminUserRepository, ent2.NewClientInformationRepository, ent2.NewKoyoInformationRepository, ent2.NewExternalInformationRepository,
 )
 
 var adapterSet = wire.NewSet(api.NewAdminServiceHandler, api.NewProviderServiceHandler, api.NewExtInfoServiceHandler, api.NewKoyoServiceHandler, api.NewServerServiceHandler, interceptor.NewAuthInterceptorAdapter,
@@ -63,7 +63,7 @@ var infrastructureSet = wire.NewSet(ent.InitDB,
 )
 
 // Usecase
-var usecaseSet = wire.NewSet(usecase.NewAuthUsecase, usecase.NewKoyoInformationUsecase, usecase.NewClientDataUsecase,
+var usecaseSet = wire.NewSet(usecase.NewAuthUsecase, usecase.NewKoyoInformationUsecase, usecase.NewClientInformationUsecase,
 )
 
 type ControllersSet struct {

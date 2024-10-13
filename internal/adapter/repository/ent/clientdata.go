@@ -6,58 +6,58 @@ import (
 
 	"github.com/halcyon-org/kizuna/ent/schema/pulid"
 	"github.com/halcyon-org/kizuna/gen/ent"
-	"github.com/halcyon-org/kizuna/gen/ent/clientdata"
+	"github.com/halcyon-org/kizuna/gen/ent/clientinformation"
 )
 
-type ClientDataRepository interface {
-	CreateClientData(cxt context.Context, username string, apiKey string) (*ent.ClientData, error)
-	GetAllClientData(cxt context.Context, limit int32) ([]*ent.ClientData, error)
-	DeleteClientData(ctx context.Context, client_id pulid.ID) (*pulid.ID, error)
+type ClientInformationRepository interface {
+	CreateClientInformation(cxt context.Context, username string, apiKey string) (*ent.ClientInformation, error)
+	GetAllClientInformation(cxt context.Context, limit int32) ([]*ent.ClientInformation, error)
+	DeleteClientInformation(ctx context.Context, client_id pulid.ID) (*pulid.ID, error)
 	UpdateAPIKey(ctx context.Context, client_id pulid.ID, apiKey string) (*pulid.ID, string, error)
-	GetClientDataByAPIKey(ctx context.Context, apiKey string) (*ent.ClientData, error)
+	GetClientInformationByAPIKey(ctx context.Context, apiKey string) (*ent.ClientInformation, error)
 }
 
-type clientDataRepositoryImpl struct {
+type clientInformationRepositoryImpl struct {
 	DB *ent.Client
 }
 
-func NewClientDataRepository(db *ent.Client) ClientDataRepository {
-	return &clientDataRepositoryImpl{
+func NewClientInformationRepository(db *ent.Client) ClientInformationRepository {
+	return &clientInformationRepositoryImpl{
 		DB: db,
 	}
 }
 
-func (r *clientDataRepositoryImpl) CreateClientData(ctx context.Context, username string, apiKey string) (*ent.ClientData, error) {
-	clientData, err := r.DB.ClientData.Create().
+func (r *clientInformationRepositoryImpl) CreateClientInformation(ctx context.Context, username string, apiKey string) (*ent.ClientInformation, error) {
+	clientInformation, err := r.DB.ClientInformation.Create().
 		SetUsername(username).
 		SetAPIKey(apiKey).
 		Save(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return clientData, nil
+	return clientInformation, nil
 }
 
-func (r *clientDataRepositoryImpl) GetAllClientData(ctx context.Context, limit int32) ([]*ent.ClientData, error) {
-	clientDataList, err := r.DB.ClientData.Query().
+func (r *clientInformationRepositoryImpl) GetAllClientInformation(ctx context.Context, limit int32) ([]*ent.ClientInformation, error) {
+	clientInformationList, err := r.DB.ClientInformation.Query().
 		Limit(int(limit)).
 		All(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return clientDataList, nil
+	return clientInformationList, nil
 }
 
-func (r *clientDataRepositoryImpl) DeleteClientData(ctx context.Context, client_id pulid.ID) (*pulid.ID, error) {
-	err := r.DB.ClientData.DeleteOneID(client_id).Exec(ctx)
+func (r *clientInformationRepositoryImpl) DeleteClientInformation(ctx context.Context, client_id pulid.ID) (*pulid.ID, error) {
+	err := r.DB.ClientInformation.DeleteOneID(client_id).Exec(ctx)
 	if err != nil {
 		return nil, err
 	}
 	return &client_id, nil
 }
 
-func (r *clientDataRepositoryImpl) UpdateAPIKey(ctx context.Context, client_id pulid.ID, apiKey string) (*pulid.ID, string, error) {
-	clientData, err := r.DB.ClientData.UpdateOneID(client_id).
+func (r *clientInformationRepositoryImpl) UpdateAPIKey(ctx context.Context, client_id pulid.ID, apiKey string) (*pulid.ID, string, error) {
+	clientInformation, err := r.DB.ClientInformation.UpdateOneID(client_id).
 		SetAPIKey(apiKey).
 		SetLastUpdatedAt(time.Now()).
 		Save(ctx)
@@ -65,9 +65,9 @@ func (r *clientDataRepositoryImpl) UpdateAPIKey(ctx context.Context, client_id p
 		return nil, "", err
 	}
 
-	return &clientData.ID, clientData.APIKey, nil
+	return &clientInformation.ID, clientInformation.APIKey, nil
 }
 
-func (r *clientDataRepositoryImpl) GetClientDataByAPIKey(ctx context.Context, apiKey string) (*ent.ClientData, error) {
-	return r.DB.ClientData.Query().Where(clientdata.APIKey(apiKey)).Only(ctx)
+func (r *clientInformationRepositoryImpl) GetClientInformationByAPIKey(ctx context.Context, apiKey string) (*ent.ClientInformation, error) {
+	return r.DB.ClientInformation.Query().Where(clientinformation.APIKey(apiKey)).Only(ctx)
 }

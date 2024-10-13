@@ -21,10 +21,10 @@ const AuthAPIKeyHeader = "X-API-Key"
 type AuthHeaderType string
 
 const (
-	AdminUserKey  AuthHeaderType = "admin_user"
-	ClientDataKey AuthHeaderType = "client_data"
-	KoyoInfoKey   AuthHeaderType = "koyo_info"
-	ExtInfoKey    AuthHeaderType = "ext_info"
+	AdminUserKey         AuthHeaderType = "admin_user"
+	ClientInformationKey AuthHeaderType = "client_data"
+	KoyoInfoKey          AuthHeaderType = "koyo_info"
+	ExtInfoKey           AuthHeaderType = "ext_info"
 )
 
 type AuthInterceptorAdapter interface {
@@ -87,9 +87,9 @@ func (a *AuthInterceptorImpl) AuthProviderServiceInterceptor() connect.UnaryInte
 				return next(ctx, req)
 			}
 
-			data, err := a.authUsecase.AuthClientData(ctx, apiKey)
+			data, err := a.authUsecase.AuthClientInformation(ctx, apiKey)
 			if err == nil && data != nil {
-				ctx = context.WithValue(ctx, ClientDataKey, data)
+				ctx = context.WithValue(ctx, ClientInformationKey, data)
 				return next(ctx, req)
 			}
 
