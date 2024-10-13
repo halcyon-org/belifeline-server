@@ -13,6 +13,7 @@ type ClientDataUsecase interface {
 	CreateClientData(ctx context.Context, username string) (*domain.ClientData, error)
 	ListClientData(ctx context.Context, limit int32) ([]*domain.ClientData, error)
 	DeleteClientData(ctx context.Context, client_id string) (string, error)
+	RevokeApiKey(ctx context.Context, client_id string) (string, string, error)
 }
 
 type clientDataUsecaseImpl struct {
@@ -56,4 +57,13 @@ func (u *clientDataUsecaseImpl) DeleteClientData(ctx context.Context, client_id 
 	}
 
 	return string(*id), nil
+}
+
+func (u *clientDataUsecaseImpl) RevokeApiKey(ctx context.Context, client_id string) (string, string, error) {
+	id, apiKey, err := u.clientDataRepository.UpdateAPIKey(ctx, pulid.ID(client_id), util.GenApiKey())
+	if err != nil {
+		return "", "", err
+	}
+
+	return string(*id), apiKey, nil
 }
