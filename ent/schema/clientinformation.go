@@ -8,13 +8,13 @@ import (
 	"github.com/halcyon-org/kizuna/ent/schema/pulid"
 )
 
-// ClientData holds the schema definition for the ClientData entity.
-type ClientData struct {
+// ClientInformation holds the schema definition for the ClientInformation entity.
+type ClientInformation struct {
 	ent.Schema
 }
 
-// Fields of the ClientData.
-func (ClientData) Fields() []ent.Field {
+// Fields of the ClientInformation.
+func (ClientInformation) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("id").GoType(pulid.ID("")).Unique().Immutable().DefaultFunc(func() pulid.ID { return pulid.MustNew("US") }),
 		field.String("username").NotEmpty(),
@@ -25,7 +25,7 @@ func (ClientData) Fields() []ent.Field {
 	}
 }
 
-// Edges of the ClientData.
-func (ClientData) Edges() []ent.Edge {
+// Edges of the ClientInformation.
+func (ClientInformation) Edges() []ent.Edge {
 	return nil
 }

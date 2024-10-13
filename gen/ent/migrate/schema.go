@@ -23,8 +23,8 @@ var (
 		Columns:    AdminUsersColumns,
 		PrimaryKey: []*schema.Column{AdminUsersColumns[0]},
 	}
-	// ClientDataColumns holds the columns for the "client_data" table.
-	ClientDataColumns = []*schema.Column{
+	// ClientInformationsColumns holds the columns for the "client_informations" table.
+	ClientInformationsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeString, Unique: true},
 		{Name: "username", Type: field.TypeString},
 		{Name: "api_key", Type: field.TypeString},
@@ -32,11 +32,11 @@ var (
 		{Name: "last_used_at", Type: field.TypeTime},
 		{Name: "last_updated_at", Type: field.TypeTime},
 	}
-	// ClientDataTable holds the schema information for the "client_data" table.
-	ClientDataTable = &schema.Table{
-		Name:       "client_data",
-		Columns:    ClientDataColumns,
-		PrimaryKey: []*schema.Column{ClientDataColumns[0]},
+	// ClientInformationsTable holds the schema information for the "client_informations" table.
+	ClientInformationsTable = &schema.Table{
+		Name:       "client_informations",
+		Columns:    ClientInformationsColumns,
+		PrimaryKey: []*schema.Column{ClientInformationsColumns[0]},
 	}
 	// ExternalInformationsColumns holds the columns for the "external_informations" table.
 	ExternalInformationsColumns = []*schema.Column{
@@ -113,7 +113,7 @@ var (
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		AdminUsersTable,
-		ClientDataTable,
+		ClientInformationsTable,
 		ExternalInformationsTable,
 		KoyoDataTable,
 		KoyoInformationsTable,

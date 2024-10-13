@@ -17,7 +17,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/halcyon-org/kizuna/gen/ent/adminuser"
-	"github.com/halcyon-org/kizuna/gen/ent/clientdata"
+	"github.com/halcyon-org/kizuna/gen/ent/clientinformation"
 	"github.com/halcyon-org/kizuna/gen/ent/externalinformation"
 	"github.com/halcyon-org/kizuna/gen/ent/koyodata"
 	"github.com/halcyon-org/kizuna/gen/ent/koyoinformation"
@@ -30,8 +30,8 @@ type Client struct {
 	Schema *migrate.Schema
 	// AdminUser is the client for interacting with the AdminUser builders.
 	AdminUser *AdminUserClient
-	// ClientData is the client for interacting with the ClientData builders.
-	ClientData *ClientDataClient
+	// ClientInformation is the client for interacting with the ClientInformation builders.
+	ClientInformation *ClientInformationClient
 	// ExternalInformation is the client for interacting with the ExternalInformation builders.
 	ExternalInformation *ExternalInformationClient
 	// KoyoData is the client for interacting with the KoyoData builders.
@@ -50,7 +50,7 @@ func NewClient(opts ...Option) *Client {
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.AdminUser = NewAdminUserClient(c.config)
-	c.ClientData = NewClientDataClient(c.config)
+	c.ClientInformation = NewClientInformationClient(c.config)
 	c.ExternalInformation = NewExternalInformationClient(c.config)
 	c.KoyoData = NewKoyoDataClient(c.config)
 	c.KoyoInformation = NewKoyoInformationClient(c.config)
@@ -147,7 +147,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		ctx:                 ctx,
 		config:              cfg,
 		AdminUser:           NewAdminUserClient(cfg),
-		ClientData:          NewClientDataClient(cfg),
+		ClientInformation:   NewClientInformationClient(cfg),
 		ExternalInformation: NewExternalInformationClient(cfg),
 		KoyoData:            NewKoyoDataClient(cfg),
 		KoyoInformation:     NewKoyoInformationClient(cfg),
@@ -171,7 +171,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		ctx:                 ctx,
 		config:              cfg,
 		AdminUser:           NewAdminUserClient(cfg),
-		ClientData:          NewClientDataClient(cfg),
+		ClientInformation:   NewClientInformationClient(cfg),
 		ExternalInformation: NewExternalInformationClient(cfg),
 		KoyoData:            NewKoyoDataClient(cfg),
 		KoyoInformation:     NewKoyoInformationClient(cfg),
@@ -204,7 +204,7 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	c.AdminUser.Use(hooks...)
-	c.ClientData.Use(hooks...)
+	c.ClientInformation.Use(hooks...)
 	c.ExternalInformation.Use(hooks...)
 	c.KoyoData.Use(hooks...)
 	c.KoyoInformation.Use(hooks...)
@@ -214,7 +214,7 @@ func (c *Client) Use(hooks ...Hook) {
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	c.AdminUser.Intercept(interceptors...)
-	c.ClientData.Intercept(interceptors...)
+	c.ClientInformation.Intercept(interceptors...)
 	c.ExternalInformation.Intercept(interceptors...)
 	c.KoyoData.Intercept(interceptors...)
 	c.KoyoInformation.Intercept(interceptors...)
@@ -225,8 +225,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
 	case *AdminUserMutation:
 		return c.AdminUser.mutate(ctx, m)
-	case *ClientDataMutation:
-		return c.ClientData.mutate(ctx, m)
+	case *ClientInformationMutation:
+		return c.ClientInformation.mutate(ctx, m)
 	case *ExternalInformationMutation:
 		return c.ExternalInformation.mutate(ctx, m)
 	case *KoyoDataMutation:
@@ -371,107 +371,107 @@ func (c *AdminUserClient) mutate(ctx context.Context, m *AdminUserMutation) (Val
 	}
 }
 
-// ClientDataClient is a client for the ClientData schema.
-type ClientDataClient struct {
+// ClientInformationClient is a client for the ClientInformation schema.
+type ClientInformationClient struct {
 	config
 }
 
-// NewClientDataClient returns a client for the ClientData from the given config.
-func NewClientDataClient(c config) *ClientDataClient {
-	return &ClientDataClient{config: c}
+// NewClientInformationClient returns a client for the ClientInformation from the given config.
+func NewClientInformationClient(c config) *ClientInformationClient {
+	return &ClientInformationClient{config: c}
 }
 
 // Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `clientdata.Hooks(f(g(h())))`.
-func (c *ClientDataClient) Use(hooks ...Hook) {
-	c.hooks.ClientData = append(c.hooks.ClientData, hooks...)
+// A call to `Use(f, g, h)` equals to `clientinformation.Hooks(f(g(h())))`.
+func (c *ClientInformationClient) Use(hooks ...Hook) {
+	c.hooks.ClientInformation = append(c.hooks.ClientInformation, hooks...)
 }
 
 // Intercept adds a list of query interceptors to the interceptors stack.
-// A call to `Intercept(f, g, h)` equals to `clientdata.Intercept(f(g(h())))`.
-func (c *ClientDataClient) Intercept(interceptors ...Interceptor) {
-	c.inters.ClientData = append(c.inters.ClientData, interceptors...)
+// A call to `Intercept(f, g, h)` equals to `clientinformation.Intercept(f(g(h())))`.
+func (c *ClientInformationClient) Intercept(interceptors ...Interceptor) {
+	c.inters.ClientInformation = append(c.inters.ClientInformation, interceptors...)
 }
 
-// Create returns a builder for creating a ClientData entity.
-func (c *ClientDataClient) Create() *ClientDataCreate {
-	mutation := newClientDataMutation(c.config, OpCreate)
-	return &ClientDataCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Create returns a builder for creating a ClientInformation entity.
+func (c *ClientInformationClient) Create() *ClientInformationCreate {
+	mutation := newClientInformationMutation(c.config, OpCreate)
+	return &ClientInformationCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// CreateBulk returns a builder for creating a bulk of ClientData entities.
-func (c *ClientDataClient) CreateBulk(builders ...*ClientDataCreate) *ClientDataCreateBulk {
-	return &ClientDataCreateBulk{config: c.config, builders: builders}
+// CreateBulk returns a builder for creating a bulk of ClientInformation entities.
+func (c *ClientInformationClient) CreateBulk(builders ...*ClientInformationCreate) *ClientInformationCreateBulk {
+	return &ClientInformationCreateBulk{config: c.config, builders: builders}
 }
 
 // MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
 // a builder and applies setFunc on it.
-func (c *ClientDataClient) MapCreateBulk(slice any, setFunc func(*ClientDataCreate, int)) *ClientDataCreateBulk {
+func (c *ClientInformationClient) MapCreateBulk(slice any, setFunc func(*ClientInformationCreate, int)) *ClientInformationCreateBulk {
 	rv := reflect.ValueOf(slice)
 	if rv.Kind() != reflect.Slice {
-		return &ClientDataCreateBulk{err: fmt.Errorf("calling to ClientDataClient.MapCreateBulk with wrong type %T, need slice", slice)}
+		return &ClientInformationCreateBulk{err: fmt.Errorf("calling to ClientInformationClient.MapCreateBulk with wrong type %T, need slice", slice)}
 	}
-	builders := make([]*ClientDataCreate, rv.Len())
+	builders := make([]*ClientInformationCreate, rv.Len())
 	for i := 0; i < rv.Len(); i++ {
 		builders[i] = c.Create()
 		setFunc(builders[i], i)
 	}
-	return &ClientDataCreateBulk{config: c.config, builders: builders}
+	return &ClientInformationCreateBulk{config: c.config, builders: builders}
 }
 
-// Update returns an update builder for ClientData.
-func (c *ClientDataClient) Update() *ClientDataUpdate {
-	mutation := newClientDataMutation(c.config, OpUpdate)
-	return &ClientDataUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Update returns an update builder for ClientInformation.
+func (c *ClientInformationClient) Update() *ClientInformationUpdate {
+	mutation := newClientInformationMutation(c.config, OpUpdate)
+	return &ClientInformationUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *ClientDataClient) UpdateOne(cd *ClientData) *ClientDataUpdateOne {
-	mutation := newClientDataMutation(c.config, OpUpdateOne, withClientData(cd))
-	return &ClientDataUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *ClientInformationClient) UpdateOne(ci *ClientInformation) *ClientInformationUpdateOne {
+	mutation := newClientInformationMutation(c.config, OpUpdateOne, withClientInformation(ci))
+	return &ClientInformationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *ClientDataClient) UpdateOneID(id pulid.ID) *ClientDataUpdateOne {
-	mutation := newClientDataMutation(c.config, OpUpdateOne, withClientDataID(id))
-	return &ClientDataUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *ClientInformationClient) UpdateOneID(id pulid.ID) *ClientInformationUpdateOne {
+	mutation := newClientInformationMutation(c.config, OpUpdateOne, withClientInformationID(id))
+	return &ClientInformationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// Delete returns a delete builder for ClientData.
-func (c *ClientDataClient) Delete() *ClientDataDelete {
-	mutation := newClientDataMutation(c.config, OpDelete)
-	return &ClientDataDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Delete returns a delete builder for ClientInformation.
+func (c *ClientInformationClient) Delete() *ClientInformationDelete {
+	mutation := newClientInformationMutation(c.config, OpDelete)
+	return &ClientInformationDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *ClientDataClient) DeleteOne(cd *ClientData) *ClientDataDeleteOne {
-	return c.DeleteOneID(cd.ID)
+func (c *ClientInformationClient) DeleteOne(ci *ClientInformation) *ClientInformationDeleteOne {
+	return c.DeleteOneID(ci.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *ClientDataClient) DeleteOneID(id pulid.ID) *ClientDataDeleteOne {
-	builder := c.Delete().Where(clientdata.ID(id))
+func (c *ClientInformationClient) DeleteOneID(id pulid.ID) *ClientInformationDeleteOne {
+	builder := c.Delete().Where(clientinformation.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
-	return &ClientDataDeleteOne{builder}
+	return &ClientInformationDeleteOne{builder}
 }
 
-// Query returns a query builder for ClientData.
-func (c *ClientDataClient) Query() *ClientDataQuery {
-	return &ClientDataQuery{
+// Query returns a query builder for ClientInformation.
+func (c *ClientInformationClient) Query() *ClientInformationQuery {
+	return &ClientInformationQuery{
 		config: c.config,
-		ctx:    &QueryContext{Type: TypeClientData},
+		ctx:    &QueryContext{Type: TypeClientInformation},
 		inters: c.Interceptors(),
 	}
 }
 
-// Get returns a ClientData entity by its id.
-func (c *ClientDataClient) Get(ctx context.Context, id pulid.ID) (*ClientData, error) {
-	return c.Query().Where(clientdata.ID(id)).Only(ctx)
+// Get returns a ClientInformation entity by its id.
+func (c *ClientInformationClient) Get(ctx context.Context, id pulid.ID) (*ClientInformation, error) {
+	return c.Query().Where(clientinformation.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *ClientDataClient) GetX(ctx context.Context, id pulid.ID) *ClientData {
+func (c *ClientInformationClient) GetX(ctx context.Context, id pulid.ID) *ClientInformation {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -480,27 +480,27 @@ func (c *ClientDataClient) GetX(ctx context.Context, id pulid.ID) *ClientData {
 }
 
 // Hooks returns the client hooks.
-func (c *ClientDataClient) Hooks() []Hook {
-	return c.hooks.ClientData
+func (c *ClientInformationClient) Hooks() []Hook {
+	return c.hooks.ClientInformation
 }
 
 // Interceptors returns the client interceptors.
-func (c *ClientDataClient) Interceptors() []Interceptor {
-	return c.inters.ClientData
+func (c *ClientInformationClient) Interceptors() []Interceptor {
+	return c.inters.ClientInformation
 }
 
-func (c *ClientDataClient) mutate(ctx context.Context, m *ClientDataMutation) (Value, error) {
+func (c *ClientInformationClient) mutate(ctx context.Context, m *ClientInformationMutation) (Value, error) {
 	switch m.Op() {
 	case OpCreate:
-		return (&ClientDataCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+		return (&ClientInformationCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
 	case OpUpdate:
-		return (&ClientDataUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+		return (&ClientInformationUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
 	case OpUpdateOne:
-		return (&ClientDataUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+		return (&ClientInformationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
 	case OpDelete, OpDeleteOne:
-		return (&ClientDataDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+		return (&ClientInformationDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
-		return nil, fmt.Errorf("ent: unknown ClientData mutation op: %q", m.Op())
+		return nil, fmt.Errorf("ent: unknown ClientInformation mutation op: %q", m.Op())
 	}
 }
 
@@ -938,10 +938,11 @@ func (c *KoyoInformationClient) mutate(ctx context.Context, m *KoyoInformationMu
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		AdminUser, ClientData, ExternalInformation, KoyoData, KoyoInformation []ent.Hook
+		AdminUser, ClientInformation, ExternalInformation, KoyoData,
+		KoyoInformation []ent.Hook
 	}
 	inters struct {
-		AdminUser, ClientData, ExternalInformation, KoyoData,
+		AdminUser, ClientInformation, ExternalInformation, KoyoData,
 		KoyoInformation []ent.Interceptor
 	}
 )

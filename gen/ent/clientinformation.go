@@ -10,11 +10,11 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"github.com/halcyon-org/kizuna/ent/schema/pulid"
-	"github.com/halcyon-org/kizuna/gen/ent/clientdata"
+	"github.com/halcyon-org/kizuna/gen/ent/clientinformation"
 )
 
-// ClientData is the model entity for the ClientData schema.
-type ClientData struct {
+// ClientInformation is the model entity for the ClientInformation schema.
+type ClientInformation struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID pulid.ID `json:"id,omitempty"`
@@ -32,15 +32,15 @@ type ClientData struct {
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
-func (*ClientData) scanValues(columns []string) ([]any, error) {
+func (*ClientInformation) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case clientdata.FieldID:
+		case clientinformation.FieldID:
 			values[i] = new(pulid.ID)
-		case clientdata.FieldUsername, clientdata.FieldAPIKey:
+		case clientinformation.FieldUsername, clientinformation.FieldAPIKey:
 			values[i] = new(sql.NullString)
-		case clientdata.FieldCreatedAt, clientdata.FieldLastUsedAt, clientdata.FieldLastUpdatedAt:
+		case clientinformation.FieldCreatedAt, clientinformation.FieldLastUsedAt, clientinformation.FieldLastUpdatedAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -50,102 +50,102 @@ func (*ClientData) scanValues(columns []string) ([]any, error) {
 }
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
-// to the ClientData fields.
-func (cd *ClientData) assignValues(columns []string, values []any) error {
+// to the ClientInformation fields.
+func (ci *ClientInformation) assignValues(columns []string, values []any) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
 	for i := range columns {
 		switch columns[i] {
-		case clientdata.FieldID:
+		case clientinformation.FieldID:
 			if value, ok := values[i].(*pulid.ID); !ok {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
 			} else if value != nil {
-				cd.ID = *value
+				ci.ID = *value
 			}
-		case clientdata.FieldUsername:
+		case clientinformation.FieldUsername:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field username", values[i])
 			} else if value.Valid {
-				cd.Username = value.String
+				ci.Username = value.String
 			}
-		case clientdata.FieldAPIKey:
+		case clientinformation.FieldAPIKey:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field api_key", values[i])
 			} else if value.Valid {
-				cd.APIKey = value.String
+				ci.APIKey = value.String
 			}
-		case clientdata.FieldCreatedAt:
+		case clientinformation.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				cd.CreatedAt = value.Time
+				ci.CreatedAt = value.Time
 			}
-		case clientdata.FieldLastUsedAt:
+		case clientinformation.FieldLastUsedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field last_used_at", values[i])
 			} else if value.Valid {
-				cd.LastUsedAt = value.Time
+				ci.LastUsedAt = value.Time
 			}
-		case clientdata.FieldLastUpdatedAt:
+		case clientinformation.FieldLastUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field last_updated_at", values[i])
 			} else if value.Valid {
-				cd.LastUpdatedAt = value.Time
+				ci.LastUpdatedAt = value.Time
 			}
 		default:
-			cd.selectValues.Set(columns[i], values[i])
+			ci.selectValues.Set(columns[i], values[i])
 		}
 	}
 	return nil
 }
 
-// Value returns the ent.Value that was dynamically selected and assigned to the ClientData.
+// Value returns the ent.Value that was dynamically selected and assigned to the ClientInformation.
 // This includes values selected through modifiers, order, etc.
-func (cd *ClientData) Value(name string) (ent.Value, error) {
-	return cd.selectValues.Get(name)
+func (ci *ClientInformation) Value(name string) (ent.Value, error) {
+	return ci.selectValues.Get(name)
 }
 
-// Update returns a builder for updating this ClientData.
-// Note that you need to call ClientData.Unwrap() before calling this method if this ClientData
+// Update returns a builder for updating this ClientInformation.
+// Note that you need to call ClientInformation.Unwrap() before calling this method if this ClientInformation
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (cd *ClientData) Update() *ClientDataUpdateOne {
-	return NewClientDataClient(cd.config).UpdateOne(cd)
+func (ci *ClientInformation) Update() *ClientInformationUpdateOne {
+	return NewClientInformationClient(ci.config).UpdateOne(ci)
 }
 
-// Unwrap unwraps the ClientData entity that was returned from a transaction after it was closed,
+// Unwrap unwraps the ClientInformation entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (cd *ClientData) Unwrap() *ClientData {
-	_tx, ok := cd.config.driver.(*txDriver)
+func (ci *ClientInformation) Unwrap() *ClientInformation {
+	_tx, ok := ci.config.driver.(*txDriver)
 	if !ok {
-		panic("ent: ClientData is not a transactional entity")
+		panic("ent: ClientInformation is not a transactional entity")
 	}
-	cd.config.driver = _tx.drv
-	return cd
+	ci.config.driver = _tx.drv
+	return ci
 }
 
 // String implements the fmt.Stringer.
-func (cd *ClientData) String() string {
+func (ci *ClientInformation) String() string {
 	var builder strings.Builder
-	builder.WriteString("ClientData(")
-	builder.WriteString(fmt.Sprintf("id=%v, ", cd.ID))
+	builder.WriteString("ClientInformation(")
+	builder.WriteString(fmt.Sprintf("id=%v, ", ci.ID))
 	builder.WriteString("username=")
-	builder.WriteString(cd.Username)
+	builder.WriteString(ci.Username)
 	builder.WriteString(", ")
 	builder.WriteString("api_key=")
-	builder.WriteString(cd.APIKey)
+	builder.WriteString(ci.APIKey)
 	builder.WriteString(", ")
 	builder.WriteString("created_at=")
-	builder.WriteString(cd.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(ci.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("last_used_at=")
-	builder.WriteString(cd.LastUsedAt.Format(time.ANSIC))
+	builder.WriteString(ci.LastUsedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("last_updated_at=")
-	builder.WriteString(cd.LastUpdatedAt.Format(time.ANSIC))
+	builder.WriteString(ci.LastUpdatedAt.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }
 
-// ClientDataSlice is a parsable slice of ClientData.
-type ClientDataSlice []*ClientData
+// ClientInformations is a parsable slice of ClientInformation.
+type ClientInformations []*ClientInformation
