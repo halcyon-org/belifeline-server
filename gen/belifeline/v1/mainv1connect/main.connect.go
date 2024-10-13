@@ -27,8 +27,9 @@ const (
 	AdminServiceName = "belifeline.v1.AdminService"
 	// ProviderServiceName is the fully-qualified name of the ProviderService service.
 	ProviderServiceName = "belifeline.v1.ProviderService"
-	// ExtInfoServiceName is the fully-qualified name of the ExtInfoService service.
-	ExtInfoServiceName = "belifeline.v1.ExtInfoService"
+	// ExternalInformationServiceName is the fully-qualified name of the ExternalInformationService
+	// service.
+	ExternalInformationServiceName = "belifeline.v1.ExternalInformationService"
 	// KoyoServiceName is the fully-qualified name of the KoyoService service.
 	KoyoServiceName = "belifeline.v1.KoyoService"
 )
@@ -53,64 +54,71 @@ const (
 	// AdminServiceClientRevokeProcedure is the fully-qualified name of the AdminService's ClientRevoke
 	// RPC.
 	AdminServiceClientRevokeProcedure = "/belifeline.v1.AdminService/ClientRevoke"
-	// AdminServiceExtInfoSetProcedure is the fully-qualified name of the AdminService's ExtInfoSet RPC.
-	AdminServiceExtInfoSetProcedure = "/belifeline.v1.AdminService/ExtInfoSet"
-	// AdminServiceExtInfoDeleteProcedure is the fully-qualified name of the AdminService's
-	// ExtInfoDelete RPC.
-	AdminServiceExtInfoDeleteProcedure = "/belifeline.v1.AdminService/ExtInfoDelete"
-	// AdminServiceKoyoSetProcedure is the fully-qualified name of the AdminService's KoyoSet RPC.
-	AdminServiceKoyoSetProcedure = "/belifeline.v1.AdminService/KoyoSet"
+	// AdminServiceExternalInformationSetProcedure is the fully-qualified name of the AdminService's
+	// ExternalInformationSet RPC.
+	AdminServiceExternalInformationSetProcedure = "/belifeline.v1.AdminService/ExternalInformationSet"
+	// AdminServiceExternalInformationDeleteProcedure is the fully-qualified name of the AdminService's
+	// ExternalInformationDelete RPC.
+	AdminServiceExternalInformationDeleteProcedure = "/belifeline.v1.AdminService/ExternalInformationDelete"
+	// AdminServiceKoyoCreateProcedure is the fully-qualified name of the AdminService's KoyoCreate RPC.
+	AdminServiceKoyoCreateProcedure = "/belifeline.v1.AdminService/KoyoCreate"
 	// AdminServiceKoyoDeleteProcedure is the fully-qualified name of the AdminService's KoyoDelete RPC.
 	AdminServiceKoyoDeleteProcedure = "/belifeline.v1.AdminService/KoyoDelete"
 	// AdminServiceKoyoApiRevokeProcedure is the fully-qualified name of the AdminService's
 	// KoyoApiRevoke RPC.
 	AdminServiceKoyoApiRevokeProcedure = "/belifeline.v1.AdminService/KoyoApiRevoke"
-	// ProviderServiceExtInfoListProcedure is the fully-qualified name of the ProviderService's
-	// ExtInfoList RPC.
-	ProviderServiceExtInfoListProcedure = "/belifeline.v1.ProviderService/ExtInfoList"
+	// ProviderServiceExternalInformationListProcedure is the fully-qualified name of the
+	// ProviderService's ExternalInformationList RPC.
+	ProviderServiceExternalInformationListProcedure = "/belifeline.v1.ProviderService/ExternalInformationList"
 	// ProviderServiceKoyoListProcedure is the fully-qualified name of the ProviderService's KoyoList
 	// RPC.
 	ProviderServiceKoyoListProcedure = "/belifeline.v1.ProviderService/KoyoList"
-	// ProviderServiceExtInfoGetProcedure is the fully-qualified name of the ProviderService's
-	// ExtInfoGet RPC.
-	ProviderServiceExtInfoGetProcedure = "/belifeline.v1.ProviderService/ExtInfoGet"
+	// ProviderServiceExternalInformationGetProcedure is the fully-qualified name of the
+	// ProviderService's ExternalInformationGet RPC.
+	ProviderServiceExternalInformationGetProcedure = "/belifeline.v1.ProviderService/ExternalInformationGet"
 	// ProviderServiceKoyoDataGetProcedure is the fully-qualified name of the ProviderService's
 	// KoyoDataGet RPC.
 	ProviderServiceKoyoDataGetProcedure = "/belifeline.v1.ProviderService/KoyoDataGet"
-	// ExtInfoServiceExtInfoUpdateNotificationProcedure is the fully-qualified name of the
-	// ExtInfoService's ExtInfoUpdateNotification RPC.
-	ExtInfoServiceExtInfoUpdateNotificationProcedure = "/belifeline.v1.ExtInfoService/ExtInfoUpdateNotification"
+	// ExternalInformationServiceExternalInformationUpdateNotificationProcedure is the fully-qualified
+	// name of the ExternalInformationService's ExternalInformationUpdateNotification RPC.
+	ExternalInformationServiceExternalInformationUpdateNotificationProcedure = "/belifeline.v1.ExternalInformationService/ExternalInformationUpdateNotification"
+	// KoyoServiceKoyoUpdateProcedure is the fully-qualified name of the KoyoService's KoyoUpdate RPC.
+	KoyoServiceKoyoUpdateProcedure = "/belifeline.v1.KoyoService/KoyoUpdate"
 	// KoyoServiceKoyoDataAddProcedure is the fully-qualified name of the KoyoService's KoyoDataAdd RPC.
 	KoyoServiceKoyoDataAddProcedure = "/belifeline.v1.KoyoService/KoyoDataAdd"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
-	serverServiceServiceDescriptor                          = v1.File_belifeline_v1_main_proto.Services().ByName("ServerService")
-	serverServiceHealthMethodDescriptor                     = serverServiceServiceDescriptor.Methods().ByName("Health")
-	adminServiceServiceDescriptor                           = v1.File_belifeline_v1_main_proto.Services().ByName("AdminService")
-	adminServiceClientSetMethodDescriptor                   = adminServiceServiceDescriptor.Methods().ByName("ClientSet")
-	adminServiceClientListMethodDescriptor                  = adminServiceServiceDescriptor.Methods().ByName("ClientList")
-	adminServiceClientDeleteMethodDescriptor                = adminServiceServiceDescriptor.Methods().ByName("ClientDelete")
-	adminServiceClientRevokeMethodDescriptor                = adminServiceServiceDescriptor.Methods().ByName("ClientRevoke")
-	adminServiceExtInfoSetMethodDescriptor                  = adminServiceServiceDescriptor.Methods().ByName("ExtInfoSet")
-	adminServiceExtInfoDeleteMethodDescriptor               = adminServiceServiceDescriptor.Methods().ByName("ExtInfoDelete")
-	adminServiceKoyoSetMethodDescriptor                     = adminServiceServiceDescriptor.Methods().ByName("KoyoSet")
-	adminServiceKoyoDeleteMethodDescriptor                  = adminServiceServiceDescriptor.Methods().ByName("KoyoDelete")
-	adminServiceKoyoApiRevokeMethodDescriptor               = adminServiceServiceDescriptor.Methods().ByName("KoyoApiRevoke")
-	providerServiceServiceDescriptor                        = v1.File_belifeline_v1_main_proto.Services().ByName("ProviderService")
-	providerServiceExtInfoListMethodDescriptor              = providerServiceServiceDescriptor.Methods().ByName("ExtInfoList")
-	providerServiceKoyoListMethodDescriptor                 = providerServiceServiceDescriptor.Methods().ByName("KoyoList")
-	providerServiceExtInfoGetMethodDescriptor               = providerServiceServiceDescriptor.Methods().ByName("ExtInfoGet")
-	providerServiceKoyoDataGetMethodDescriptor              = providerServiceServiceDescriptor.Methods().ByName("KoyoDataGet")
-	extInfoServiceServiceDescriptor                         = v1.File_belifeline_v1_main_proto.Services().ByName("ExtInfoService")
-	extInfoServiceExtInfoUpdateNotificationMethodDescriptor = extInfoServiceServiceDescriptor.Methods().ByName("ExtInfoUpdateNotification")
-	koyoServiceServiceDescriptor                            = v1.File_belifeline_v1_main_proto.Services().ByName("KoyoService")
-	koyoServiceKoyoDataAddMethodDescriptor                  = koyoServiceServiceDescriptor.Methods().ByName("KoyoDataAdd")
+	serverServiceServiceDescriptor                                                  = v1.File_belifeline_v1_main_proto.Services().ByName("ServerService")
+	serverServiceHealthMethodDescriptor                                             = serverServiceServiceDescriptor.Methods().ByName("Health")
+	adminServiceServiceDescriptor                                                   = v1.File_belifeline_v1_main_proto.Services().ByName("AdminService")
+	adminServiceClientSetMethodDescriptor                                           = adminServiceServiceDescriptor.Methods().ByName("ClientSet")
+	adminServiceClientListMethodDescriptor                                          = adminServiceServiceDescriptor.Methods().ByName("ClientList")
+	adminServiceClientDeleteMethodDescriptor                                        = adminServiceServiceDescriptor.Methods().ByName("ClientDelete")
+	adminServiceClientRevokeMethodDescriptor                                        = adminServiceServiceDescriptor.Methods().ByName("ClientRevoke")
+	adminServiceExternalInformationSetMethodDescriptor                              = adminServiceServiceDescriptor.Methods().ByName("ExternalInformationSet")
+	adminServiceExternalInformationDeleteMethodDescriptor                           = adminServiceServiceDescriptor.Methods().ByName("ExternalInformationDelete")
+	adminServiceKoyoCreateMethodDescriptor                                          = adminServiceServiceDescriptor.Methods().ByName("KoyoCreate")
+	adminServiceKoyoDeleteMethodDescriptor                                          = adminServiceServiceDescriptor.Methods().ByName("KoyoDelete")
+	adminServiceKoyoApiRevokeMethodDescriptor                                       = adminServiceServiceDescriptor.Methods().ByName("KoyoApiRevoke")
+	providerServiceServiceDescriptor                                                = v1.File_belifeline_v1_main_proto.Services().ByName("ProviderService")
+	providerServiceExternalInformationListMethodDescriptor                          = providerServiceServiceDescriptor.Methods().ByName("ExternalInformationList")
+	providerServiceKoyoListMethodDescriptor                                         = providerServiceServiceDescriptor.Methods().ByName("KoyoList")
+	providerServiceExternalInformationGetMethodDescriptor                           = providerServiceServiceDescriptor.Methods().ByName("ExternalInformationGet")
+	providerServiceKoyoDataGetMethodDescriptor                                      = providerServiceServiceDescriptor.Methods().ByName("KoyoDataGet")
+	externalInformationServiceServiceDescriptor                                     = v1.File_belifeline_v1_main_proto.Services().ByName("ExternalInformationService")
+	externalInformationServiceExternalInformationUpdateNotificationMethodDescriptor = externalInformationServiceServiceDescriptor.Methods().ByName("ExternalInformationUpdateNotification")
+	koyoServiceServiceDescriptor                                                    = v1.File_belifeline_v1_main_proto.Services().ByName("KoyoService")
+	koyoServiceKoyoUpdateMethodDescriptor                                           = koyoServiceServiceDescriptor.Methods().ByName("KoyoUpdate")
+	koyoServiceKoyoDataAddMethodDescriptor                                          = koyoServiceServiceDescriptor.Methods().ByName("KoyoDataAdd")
 )
 
 // ServerServiceClient is a client for the belifeline.v1.ServerService service.
 type ServerServiceClient interface {
+	// *
+	// Health check
+	// Returns the status message of the server
 	Health(context.Context, *connect.Request[v1.HealthRequest]) (*connect.Response[v1.HealthResponse], error)
 }
 
@@ -145,6 +153,9 @@ func (c *serverServiceClient) Health(ctx context.Context, req *connect.Request[v
 
 // ServerServiceHandler is an implementation of the belifeline.v1.ServerService service.
 type ServerServiceHandler interface {
+	// *
+	// Health check
+	// Returns the status message of the server
 	Health(context.Context, *connect.Request[v1.HealthRequest]) (*connect.Response[v1.HealthResponse], error)
 }
 
@@ -179,14 +190,25 @@ func (UnimplementedServerServiceHandler) Health(context.Context, *connect.Reques
 
 // AdminServiceClient is a client for the belifeline.v1.AdminService service.
 type AdminServiceClient interface {
+	// Create or update a client. The client ID is automatically generated and returned
 	ClientSet(context.Context, *connect.Request[v1.ClientSetRequest]) (*connect.Response[v1.ClientSetResponse], error)
+	// List all clients
 	ClientList(context.Context, *connect.Request[v1.ClientListRequest]) (*connect.Response[v1.ClientListResponse], error)
+	// Delete a client
 	ClientDelete(context.Context, *connect.Request[v1.ClientDeleteRequest]) (*connect.Response[v1.ClientDeleteResponse], error)
+	// Revoke and renew the client's API key. The client's API key is automatically generated and returned
 	ClientRevoke(context.Context, *connect.Request[v1.ClientRevokeRequest]) (*connect.Response[v1.ClientRevokeResponse], error)
-	ExtInfoSet(context.Context, *connect.Request[v1.ExtInfoSetRequest]) (*connect.Response[v1.ExtInfoSetResponse], error)
-	ExtInfoDelete(context.Context, *connect.Request[v1.ExtInfoDeleteRequest]) (*connect.Response[v1.ExtInfoDeleteResponse], error)
-	KoyoSet(context.Context, *connect.Request[v1.KoyoSetRequest]) (*connect.Response[v1.KoyoSetResponse], error)
+	// Create or update an external information. The external information provider ID is automatically generated and returned
+	ExternalInformationSet(context.Context, *connect.Request[v1.ExternalInformationSetRequest]) (*connect.Response[v1.ExternalInformationSetResponse], error)
+	// Delete an external information
+	ExternalInformationDelete(context.Context, *connect.Request[v1.ExternalInformationDeleteRequest]) (*connect.Response[v1.ExternalInformationDeleteResponse], error)
+	// *
+	// Create or update a koyo
+	// The koyo ID is automatically generated and returned
+	KoyoCreate(context.Context, *connect.Request[v1.KoyoCreateRequest]) (*connect.Response[v1.KoyoCreateResponse], error)
+	// Delete a koyo
 	KoyoDelete(context.Context, *connect.Request[v1.KoyoDeleteRequest]) (*connect.Response[v1.KoyoDeleteResponse], error)
+	// Revoke and renew the koyo's API key. The koyo's API key is automatically generated and returned
 	KoyoApiRevoke(context.Context, *connect.Request[v1.KoyoApiRevokeRequest]) (*connect.Response[v1.KoyoApiRevokeResponse], error)
 }
 
@@ -224,22 +246,22 @@ func NewAdminServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(adminServiceClientRevokeMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		extInfoSet: connect.NewClient[v1.ExtInfoSetRequest, v1.ExtInfoSetResponse](
+		externalInformationSet: connect.NewClient[v1.ExternalInformationSetRequest, v1.ExternalInformationSetResponse](
 			httpClient,
-			baseURL+AdminServiceExtInfoSetProcedure,
-			connect.WithSchema(adminServiceExtInfoSetMethodDescriptor),
+			baseURL+AdminServiceExternalInformationSetProcedure,
+			connect.WithSchema(adminServiceExternalInformationSetMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		extInfoDelete: connect.NewClient[v1.ExtInfoDeleteRequest, v1.ExtInfoDeleteResponse](
+		externalInformationDelete: connect.NewClient[v1.ExternalInformationDeleteRequest, v1.ExternalInformationDeleteResponse](
 			httpClient,
-			baseURL+AdminServiceExtInfoDeleteProcedure,
-			connect.WithSchema(adminServiceExtInfoDeleteMethodDescriptor),
+			baseURL+AdminServiceExternalInformationDeleteProcedure,
+			connect.WithSchema(adminServiceExternalInformationDeleteMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		koyoSet: connect.NewClient[v1.KoyoSetRequest, v1.KoyoSetResponse](
+		koyoCreate: connect.NewClient[v1.KoyoCreateRequest, v1.KoyoCreateResponse](
 			httpClient,
-			baseURL+AdminServiceKoyoSetProcedure,
-			connect.WithSchema(adminServiceKoyoSetMethodDescriptor),
+			baseURL+AdminServiceKoyoCreateProcedure,
+			connect.WithSchema(adminServiceKoyoCreateMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
 		koyoDelete: connect.NewClient[v1.KoyoDeleteRequest, v1.KoyoDeleteResponse](
@@ -259,15 +281,15 @@ func NewAdminServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 
 // adminServiceClient implements AdminServiceClient.
 type adminServiceClient struct {
-	clientSet     *connect.Client[v1.ClientSetRequest, v1.ClientSetResponse]
-	clientList    *connect.Client[v1.ClientListRequest, v1.ClientListResponse]
-	clientDelete  *connect.Client[v1.ClientDeleteRequest, v1.ClientDeleteResponse]
-	clientRevoke  *connect.Client[v1.ClientRevokeRequest, v1.ClientRevokeResponse]
-	extInfoSet    *connect.Client[v1.ExtInfoSetRequest, v1.ExtInfoSetResponse]
-	extInfoDelete *connect.Client[v1.ExtInfoDeleteRequest, v1.ExtInfoDeleteResponse]
-	koyoSet       *connect.Client[v1.KoyoSetRequest, v1.KoyoSetResponse]
-	koyoDelete    *connect.Client[v1.KoyoDeleteRequest, v1.KoyoDeleteResponse]
-	koyoApiRevoke *connect.Client[v1.KoyoApiRevokeRequest, v1.KoyoApiRevokeResponse]
+	clientSet                 *connect.Client[v1.ClientSetRequest, v1.ClientSetResponse]
+	clientList                *connect.Client[v1.ClientListRequest, v1.ClientListResponse]
+	clientDelete              *connect.Client[v1.ClientDeleteRequest, v1.ClientDeleteResponse]
+	clientRevoke              *connect.Client[v1.ClientRevokeRequest, v1.ClientRevokeResponse]
+	externalInformationSet    *connect.Client[v1.ExternalInformationSetRequest, v1.ExternalInformationSetResponse]
+	externalInformationDelete *connect.Client[v1.ExternalInformationDeleteRequest, v1.ExternalInformationDeleteResponse]
+	koyoCreate                *connect.Client[v1.KoyoCreateRequest, v1.KoyoCreateResponse]
+	koyoDelete                *connect.Client[v1.KoyoDeleteRequest, v1.KoyoDeleteResponse]
+	koyoApiRevoke             *connect.Client[v1.KoyoApiRevokeRequest, v1.KoyoApiRevokeResponse]
 }
 
 // ClientSet calls belifeline.v1.AdminService.ClientSet.
@@ -290,19 +312,19 @@ func (c *adminServiceClient) ClientRevoke(ctx context.Context, req *connect.Requ
 	return c.clientRevoke.CallUnary(ctx, req)
 }
 
-// ExtInfoSet calls belifeline.v1.AdminService.ExtInfoSet.
-func (c *adminServiceClient) ExtInfoSet(ctx context.Context, req *connect.Request[v1.ExtInfoSetRequest]) (*connect.Response[v1.ExtInfoSetResponse], error) {
-	return c.extInfoSet.CallUnary(ctx, req)
+// ExternalInformationSet calls belifeline.v1.AdminService.ExternalInformationSet.
+func (c *adminServiceClient) ExternalInformationSet(ctx context.Context, req *connect.Request[v1.ExternalInformationSetRequest]) (*connect.Response[v1.ExternalInformationSetResponse], error) {
+	return c.externalInformationSet.CallUnary(ctx, req)
 }
 
-// ExtInfoDelete calls belifeline.v1.AdminService.ExtInfoDelete.
-func (c *adminServiceClient) ExtInfoDelete(ctx context.Context, req *connect.Request[v1.ExtInfoDeleteRequest]) (*connect.Response[v1.ExtInfoDeleteResponse], error) {
-	return c.extInfoDelete.CallUnary(ctx, req)
+// ExternalInformationDelete calls belifeline.v1.AdminService.ExternalInformationDelete.
+func (c *adminServiceClient) ExternalInformationDelete(ctx context.Context, req *connect.Request[v1.ExternalInformationDeleteRequest]) (*connect.Response[v1.ExternalInformationDeleteResponse], error) {
+	return c.externalInformationDelete.CallUnary(ctx, req)
 }
 
-// KoyoSet calls belifeline.v1.AdminService.KoyoSet.
-func (c *adminServiceClient) KoyoSet(ctx context.Context, req *connect.Request[v1.KoyoSetRequest]) (*connect.Response[v1.KoyoSetResponse], error) {
-	return c.koyoSet.CallUnary(ctx, req)
+// KoyoCreate calls belifeline.v1.AdminService.KoyoCreate.
+func (c *adminServiceClient) KoyoCreate(ctx context.Context, req *connect.Request[v1.KoyoCreateRequest]) (*connect.Response[v1.KoyoCreateResponse], error) {
+	return c.koyoCreate.CallUnary(ctx, req)
 }
 
 // KoyoDelete calls belifeline.v1.AdminService.KoyoDelete.
@@ -317,14 +339,25 @@ func (c *adminServiceClient) KoyoApiRevoke(ctx context.Context, req *connect.Req
 
 // AdminServiceHandler is an implementation of the belifeline.v1.AdminService service.
 type AdminServiceHandler interface {
+	// Create or update a client. The client ID is automatically generated and returned
 	ClientSet(context.Context, *connect.Request[v1.ClientSetRequest]) (*connect.Response[v1.ClientSetResponse], error)
+	// List all clients
 	ClientList(context.Context, *connect.Request[v1.ClientListRequest]) (*connect.Response[v1.ClientListResponse], error)
+	// Delete a client
 	ClientDelete(context.Context, *connect.Request[v1.ClientDeleteRequest]) (*connect.Response[v1.ClientDeleteResponse], error)
+	// Revoke and renew the client's API key. The client's API key is automatically generated and returned
 	ClientRevoke(context.Context, *connect.Request[v1.ClientRevokeRequest]) (*connect.Response[v1.ClientRevokeResponse], error)
-	ExtInfoSet(context.Context, *connect.Request[v1.ExtInfoSetRequest]) (*connect.Response[v1.ExtInfoSetResponse], error)
-	ExtInfoDelete(context.Context, *connect.Request[v1.ExtInfoDeleteRequest]) (*connect.Response[v1.ExtInfoDeleteResponse], error)
-	KoyoSet(context.Context, *connect.Request[v1.KoyoSetRequest]) (*connect.Response[v1.KoyoSetResponse], error)
+	// Create or update an external information. The external information provider ID is automatically generated and returned
+	ExternalInformationSet(context.Context, *connect.Request[v1.ExternalInformationSetRequest]) (*connect.Response[v1.ExternalInformationSetResponse], error)
+	// Delete an external information
+	ExternalInformationDelete(context.Context, *connect.Request[v1.ExternalInformationDeleteRequest]) (*connect.Response[v1.ExternalInformationDeleteResponse], error)
+	// *
+	// Create or update a koyo
+	// The koyo ID is automatically generated and returned
+	KoyoCreate(context.Context, *connect.Request[v1.KoyoCreateRequest]) (*connect.Response[v1.KoyoCreateResponse], error)
+	// Delete a koyo
 	KoyoDelete(context.Context, *connect.Request[v1.KoyoDeleteRequest]) (*connect.Response[v1.KoyoDeleteResponse], error)
+	// Revoke and renew the koyo's API key. The koyo's API key is automatically generated and returned
 	KoyoApiRevoke(context.Context, *connect.Request[v1.KoyoApiRevokeRequest]) (*connect.Response[v1.KoyoApiRevokeResponse], error)
 }
 
@@ -358,22 +391,22 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(adminServiceClientRevokeMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
-	adminServiceExtInfoSetHandler := connect.NewUnaryHandler(
-		AdminServiceExtInfoSetProcedure,
-		svc.ExtInfoSet,
-		connect.WithSchema(adminServiceExtInfoSetMethodDescriptor),
+	adminServiceExternalInformationSetHandler := connect.NewUnaryHandler(
+		AdminServiceExternalInformationSetProcedure,
+		svc.ExternalInformationSet,
+		connect.WithSchema(adminServiceExternalInformationSetMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
-	adminServiceExtInfoDeleteHandler := connect.NewUnaryHandler(
-		AdminServiceExtInfoDeleteProcedure,
-		svc.ExtInfoDelete,
-		connect.WithSchema(adminServiceExtInfoDeleteMethodDescriptor),
+	adminServiceExternalInformationDeleteHandler := connect.NewUnaryHandler(
+		AdminServiceExternalInformationDeleteProcedure,
+		svc.ExternalInformationDelete,
+		connect.WithSchema(adminServiceExternalInformationDeleteMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
-	adminServiceKoyoSetHandler := connect.NewUnaryHandler(
-		AdminServiceKoyoSetProcedure,
-		svc.KoyoSet,
-		connect.WithSchema(adminServiceKoyoSetMethodDescriptor),
+	adminServiceKoyoCreateHandler := connect.NewUnaryHandler(
+		AdminServiceKoyoCreateProcedure,
+		svc.KoyoCreate,
+		connect.WithSchema(adminServiceKoyoCreateMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
 	adminServiceKoyoDeleteHandler := connect.NewUnaryHandler(
@@ -398,12 +431,12 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 			adminServiceClientDeleteHandler.ServeHTTP(w, r)
 		case AdminServiceClientRevokeProcedure:
 			adminServiceClientRevokeHandler.ServeHTTP(w, r)
-		case AdminServiceExtInfoSetProcedure:
-			adminServiceExtInfoSetHandler.ServeHTTP(w, r)
-		case AdminServiceExtInfoDeleteProcedure:
-			adminServiceExtInfoDeleteHandler.ServeHTTP(w, r)
-		case AdminServiceKoyoSetProcedure:
-			adminServiceKoyoSetHandler.ServeHTTP(w, r)
+		case AdminServiceExternalInformationSetProcedure:
+			adminServiceExternalInformationSetHandler.ServeHTTP(w, r)
+		case AdminServiceExternalInformationDeleteProcedure:
+			adminServiceExternalInformationDeleteHandler.ServeHTTP(w, r)
+		case AdminServiceKoyoCreateProcedure:
+			adminServiceKoyoCreateHandler.ServeHTTP(w, r)
 		case AdminServiceKoyoDeleteProcedure:
 			adminServiceKoyoDeleteHandler.ServeHTTP(w, r)
 		case AdminServiceKoyoApiRevokeProcedure:
@@ -433,16 +466,16 @@ func (UnimplementedAdminServiceHandler) ClientRevoke(context.Context, *connect.R
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.AdminService.ClientRevoke is not implemented"))
 }
 
-func (UnimplementedAdminServiceHandler) ExtInfoSet(context.Context, *connect.Request[v1.ExtInfoSetRequest]) (*connect.Response[v1.ExtInfoSetResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.AdminService.ExtInfoSet is not implemented"))
+func (UnimplementedAdminServiceHandler) ExternalInformationSet(context.Context, *connect.Request[v1.ExternalInformationSetRequest]) (*connect.Response[v1.ExternalInformationSetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.AdminService.ExternalInformationSet is not implemented"))
 }
 
-func (UnimplementedAdminServiceHandler) ExtInfoDelete(context.Context, *connect.Request[v1.ExtInfoDeleteRequest]) (*connect.Response[v1.ExtInfoDeleteResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.AdminService.ExtInfoDelete is not implemented"))
+func (UnimplementedAdminServiceHandler) ExternalInformationDelete(context.Context, *connect.Request[v1.ExternalInformationDeleteRequest]) (*connect.Response[v1.ExternalInformationDeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.AdminService.ExternalInformationDelete is not implemented"))
 }
 
-func (UnimplementedAdminServiceHandler) KoyoSet(context.Context, *connect.Request[v1.KoyoSetRequest]) (*connect.Response[v1.KoyoSetResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.AdminService.KoyoSet is not implemented"))
+func (UnimplementedAdminServiceHandler) KoyoCreate(context.Context, *connect.Request[v1.KoyoCreateRequest]) (*connect.Response[v1.KoyoCreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.AdminService.KoyoCreate is not implemented"))
 }
 
 func (UnimplementedAdminServiceHandler) KoyoDelete(context.Context, *connect.Request[v1.KoyoDeleteRequest]) (*connect.Response[v1.KoyoDeleteResponse], error) {
@@ -455,9 +488,13 @@ func (UnimplementedAdminServiceHandler) KoyoApiRevoke(context.Context, *connect.
 
 // ProviderServiceClient is a client for the belifeline.v1.ProviderService service.
 type ProviderServiceClient interface {
-	ExtInfoList(context.Context, *connect.Request[v1.ExtInfoListRequest]) (*connect.ServerStreamForClient[v1.ExtInfoListResponse], error)
+	// List all external information
+	ExternalInformationList(context.Context, *connect.Request[v1.ExternalInformationListRequest]) (*connect.ServerStreamForClient[v1.ExternalInformationListResponse], error)
+	// List all koyo information
 	KoyoList(context.Context, *connect.Request[v1.KoyoListRequest]) (*connect.ServerStreamForClient[v1.KoyoListResponse], error)
-	ExtInfoGet(context.Context, *connect.Request[v1.ExtInfoGetRequest]) (*connect.Response[v1.ExtInfoGetResponse], error)
+	// Get basic information about External Information
+	ExternalInformationGet(context.Context, *connect.Request[v1.ExternalInformationGetRequest]) (*connect.Response[v1.ExternalInformationGetResponse], error)
+	// Get koyo data generated by Koyo
 	KoyoDataGet(context.Context, *connect.Request[v1.KoyoDataGetRequest]) (*connect.Response[v1.KoyoDataGetResponse], error)
 }
 
@@ -471,10 +508,10 @@ type ProviderServiceClient interface {
 func NewProviderServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ProviderServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &providerServiceClient{
-		extInfoList: connect.NewClient[v1.ExtInfoListRequest, v1.ExtInfoListResponse](
+		externalInformationList: connect.NewClient[v1.ExternalInformationListRequest, v1.ExternalInformationListResponse](
 			httpClient,
-			baseURL+ProviderServiceExtInfoListProcedure,
-			connect.WithSchema(providerServiceExtInfoListMethodDescriptor),
+			baseURL+ProviderServiceExternalInformationListProcedure,
+			connect.WithSchema(providerServiceExternalInformationListMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
 		koyoList: connect.NewClient[v1.KoyoListRequest, v1.KoyoListResponse](
@@ -483,10 +520,10 @@ func NewProviderServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 			connect.WithSchema(providerServiceKoyoListMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		extInfoGet: connect.NewClient[v1.ExtInfoGetRequest, v1.ExtInfoGetResponse](
+		externalInformationGet: connect.NewClient[v1.ExternalInformationGetRequest, v1.ExternalInformationGetResponse](
 			httpClient,
-			baseURL+ProviderServiceExtInfoGetProcedure,
-			connect.WithSchema(providerServiceExtInfoGetMethodDescriptor),
+			baseURL+ProviderServiceExternalInformationGetProcedure,
+			connect.WithSchema(providerServiceExternalInformationGetMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
 		koyoDataGet: connect.NewClient[v1.KoyoDataGetRequest, v1.KoyoDataGetResponse](
@@ -500,15 +537,15 @@ func NewProviderServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 
 // providerServiceClient implements ProviderServiceClient.
 type providerServiceClient struct {
-	extInfoList *connect.Client[v1.ExtInfoListRequest, v1.ExtInfoListResponse]
-	koyoList    *connect.Client[v1.KoyoListRequest, v1.KoyoListResponse]
-	extInfoGet  *connect.Client[v1.ExtInfoGetRequest, v1.ExtInfoGetResponse]
-	koyoDataGet *connect.Client[v1.KoyoDataGetRequest, v1.KoyoDataGetResponse]
+	externalInformationList *connect.Client[v1.ExternalInformationListRequest, v1.ExternalInformationListResponse]
+	koyoList                *connect.Client[v1.KoyoListRequest, v1.KoyoListResponse]
+	externalInformationGet  *connect.Client[v1.ExternalInformationGetRequest, v1.ExternalInformationGetResponse]
+	koyoDataGet             *connect.Client[v1.KoyoDataGetRequest, v1.KoyoDataGetResponse]
 }
 
-// ExtInfoList calls belifeline.v1.ProviderService.ExtInfoList.
-func (c *providerServiceClient) ExtInfoList(ctx context.Context, req *connect.Request[v1.ExtInfoListRequest]) (*connect.ServerStreamForClient[v1.ExtInfoListResponse], error) {
-	return c.extInfoList.CallServerStream(ctx, req)
+// ExternalInformationList calls belifeline.v1.ProviderService.ExternalInformationList.
+func (c *providerServiceClient) ExternalInformationList(ctx context.Context, req *connect.Request[v1.ExternalInformationListRequest]) (*connect.ServerStreamForClient[v1.ExternalInformationListResponse], error) {
+	return c.externalInformationList.CallServerStream(ctx, req)
 }
 
 // KoyoList calls belifeline.v1.ProviderService.KoyoList.
@@ -516,9 +553,9 @@ func (c *providerServiceClient) KoyoList(ctx context.Context, req *connect.Reque
 	return c.koyoList.CallServerStream(ctx, req)
 }
 
-// ExtInfoGet calls belifeline.v1.ProviderService.ExtInfoGet.
-func (c *providerServiceClient) ExtInfoGet(ctx context.Context, req *connect.Request[v1.ExtInfoGetRequest]) (*connect.Response[v1.ExtInfoGetResponse], error) {
-	return c.extInfoGet.CallUnary(ctx, req)
+// ExternalInformationGet calls belifeline.v1.ProviderService.ExternalInformationGet.
+func (c *providerServiceClient) ExternalInformationGet(ctx context.Context, req *connect.Request[v1.ExternalInformationGetRequest]) (*connect.Response[v1.ExternalInformationGetResponse], error) {
+	return c.externalInformationGet.CallUnary(ctx, req)
 }
 
 // KoyoDataGet calls belifeline.v1.ProviderService.KoyoDataGet.
@@ -528,9 +565,13 @@ func (c *providerServiceClient) KoyoDataGet(ctx context.Context, req *connect.Re
 
 // ProviderServiceHandler is an implementation of the belifeline.v1.ProviderService service.
 type ProviderServiceHandler interface {
-	ExtInfoList(context.Context, *connect.Request[v1.ExtInfoListRequest], *connect.ServerStream[v1.ExtInfoListResponse]) error
+	// List all external information
+	ExternalInformationList(context.Context, *connect.Request[v1.ExternalInformationListRequest], *connect.ServerStream[v1.ExternalInformationListResponse]) error
+	// List all koyo information
 	KoyoList(context.Context, *connect.Request[v1.KoyoListRequest], *connect.ServerStream[v1.KoyoListResponse]) error
-	ExtInfoGet(context.Context, *connect.Request[v1.ExtInfoGetRequest]) (*connect.Response[v1.ExtInfoGetResponse], error)
+	// Get basic information about External Information
+	ExternalInformationGet(context.Context, *connect.Request[v1.ExternalInformationGetRequest]) (*connect.Response[v1.ExternalInformationGetResponse], error)
+	// Get koyo data generated by Koyo
 	KoyoDataGet(context.Context, *connect.Request[v1.KoyoDataGetRequest]) (*connect.Response[v1.KoyoDataGetResponse], error)
 }
 
@@ -540,10 +581,10 @@ type ProviderServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewProviderServiceHandler(svc ProviderServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	providerServiceExtInfoListHandler := connect.NewServerStreamHandler(
-		ProviderServiceExtInfoListProcedure,
-		svc.ExtInfoList,
-		connect.WithSchema(providerServiceExtInfoListMethodDescriptor),
+	providerServiceExternalInformationListHandler := connect.NewServerStreamHandler(
+		ProviderServiceExternalInformationListProcedure,
+		svc.ExternalInformationList,
+		connect.WithSchema(providerServiceExternalInformationListMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
 	providerServiceKoyoListHandler := connect.NewServerStreamHandler(
@@ -552,10 +593,10 @@ func NewProviderServiceHandler(svc ProviderServiceHandler, opts ...connect.Handl
 		connect.WithSchema(providerServiceKoyoListMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
-	providerServiceExtInfoGetHandler := connect.NewUnaryHandler(
-		ProviderServiceExtInfoGetProcedure,
-		svc.ExtInfoGet,
-		connect.WithSchema(providerServiceExtInfoGetMethodDescriptor),
+	providerServiceExternalInformationGetHandler := connect.NewUnaryHandler(
+		ProviderServiceExternalInformationGetProcedure,
+		svc.ExternalInformationGet,
+		connect.WithSchema(providerServiceExternalInformationGetMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
 	providerServiceKoyoDataGetHandler := connect.NewUnaryHandler(
@@ -566,12 +607,12 @@ func NewProviderServiceHandler(svc ProviderServiceHandler, opts ...connect.Handl
 	)
 	return "/belifeline.v1.ProviderService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case ProviderServiceExtInfoListProcedure:
-			providerServiceExtInfoListHandler.ServeHTTP(w, r)
+		case ProviderServiceExternalInformationListProcedure:
+			providerServiceExternalInformationListHandler.ServeHTTP(w, r)
 		case ProviderServiceKoyoListProcedure:
 			providerServiceKoyoListHandler.ServeHTTP(w, r)
-		case ProviderServiceExtInfoGetProcedure:
-			providerServiceExtInfoGetHandler.ServeHTTP(w, r)
+		case ProviderServiceExternalInformationGetProcedure:
+			providerServiceExternalInformationGetHandler.ServeHTTP(w, r)
 		case ProviderServiceKoyoDataGetProcedure:
 			providerServiceKoyoDataGetHandler.ServeHTTP(w, r)
 		default:
@@ -583,92 +624,100 @@ func NewProviderServiceHandler(svc ProviderServiceHandler, opts ...connect.Handl
 // UnimplementedProviderServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedProviderServiceHandler struct{}
 
-func (UnimplementedProviderServiceHandler) ExtInfoList(context.Context, *connect.Request[v1.ExtInfoListRequest], *connect.ServerStream[v1.ExtInfoListResponse]) error {
-	return connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ProviderService.ExtInfoList is not implemented"))
+func (UnimplementedProviderServiceHandler) ExternalInformationList(context.Context, *connect.Request[v1.ExternalInformationListRequest], *connect.ServerStream[v1.ExternalInformationListResponse]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ProviderService.ExternalInformationList is not implemented"))
 }
 
 func (UnimplementedProviderServiceHandler) KoyoList(context.Context, *connect.Request[v1.KoyoListRequest], *connect.ServerStream[v1.KoyoListResponse]) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ProviderService.KoyoList is not implemented"))
 }
 
-func (UnimplementedProviderServiceHandler) ExtInfoGet(context.Context, *connect.Request[v1.ExtInfoGetRequest]) (*connect.Response[v1.ExtInfoGetResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ProviderService.ExtInfoGet is not implemented"))
+func (UnimplementedProviderServiceHandler) ExternalInformationGet(context.Context, *connect.Request[v1.ExternalInformationGetRequest]) (*connect.Response[v1.ExternalInformationGetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ProviderService.ExternalInformationGet is not implemented"))
 }
 
 func (UnimplementedProviderServiceHandler) KoyoDataGet(context.Context, *connect.Request[v1.KoyoDataGetRequest]) (*connect.Response[v1.KoyoDataGetResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ProviderService.KoyoDataGet is not implemented"))
 }
 
-// ExtInfoServiceClient is a client for the belifeline.v1.ExtInfoService service.
-type ExtInfoServiceClient interface {
-	ExtInfoUpdateNotification(context.Context, *connect.Request[v1.ExtInfoUpdateNotificationRequest]) (*connect.Response[v1.ExtInfoUpdateNotificationResponse], error)
+// ExternalInformationServiceClient is a client for the belifeline.v1.ExternalInformationService
+// service.
+type ExternalInformationServiceClient interface {
+	// rpc to inform kizuna that extinfo (external api and other information) has been updated
+	ExternalInformationUpdateNotification(context.Context, *connect.Request[v1.ExternalInformationUpdateNotificationRequest]) (*connect.Response[v1.ExternalInformationUpdateNotificationResponse], error)
 }
 
-// NewExtInfoServiceClient constructs a client for the belifeline.v1.ExtInfoService service. By
-// default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses,
-// and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
-// connect.WithGRPC() or connect.WithGRPCWeb() options.
+// NewExternalInformationServiceClient constructs a client for the
+// belifeline.v1.ExternalInformationService service. By default, it uses the Connect protocol with
+// the binary Protobuf Codec, asks for gzipped responses, and sends uncompressed requests. To use
+// the gRPC or gRPC-Web protocols, supply the connect.WithGRPC() or connect.WithGRPCWeb() options.
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewExtInfoServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ExtInfoServiceClient {
+func NewExternalInformationServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ExternalInformationServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
-	return &extInfoServiceClient{
-		extInfoUpdateNotification: connect.NewClient[v1.ExtInfoUpdateNotificationRequest, v1.ExtInfoUpdateNotificationResponse](
+	return &externalInformationServiceClient{
+		externalInformationUpdateNotification: connect.NewClient[v1.ExternalInformationUpdateNotificationRequest, v1.ExternalInformationUpdateNotificationResponse](
 			httpClient,
-			baseURL+ExtInfoServiceExtInfoUpdateNotificationProcedure,
-			connect.WithSchema(extInfoServiceExtInfoUpdateNotificationMethodDescriptor),
+			baseURL+ExternalInformationServiceExternalInformationUpdateNotificationProcedure,
+			connect.WithSchema(externalInformationServiceExternalInformationUpdateNotificationMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
 	}
 }
 
-// extInfoServiceClient implements ExtInfoServiceClient.
-type extInfoServiceClient struct {
-	extInfoUpdateNotification *connect.Client[v1.ExtInfoUpdateNotificationRequest, v1.ExtInfoUpdateNotificationResponse]
+// externalInformationServiceClient implements ExternalInformationServiceClient.
+type externalInformationServiceClient struct {
+	externalInformationUpdateNotification *connect.Client[v1.ExternalInformationUpdateNotificationRequest, v1.ExternalInformationUpdateNotificationResponse]
 }
 
-// ExtInfoUpdateNotification calls belifeline.v1.ExtInfoService.ExtInfoUpdateNotification.
-func (c *extInfoServiceClient) ExtInfoUpdateNotification(ctx context.Context, req *connect.Request[v1.ExtInfoUpdateNotificationRequest]) (*connect.Response[v1.ExtInfoUpdateNotificationResponse], error) {
-	return c.extInfoUpdateNotification.CallUnary(ctx, req)
+// ExternalInformationUpdateNotification calls
+// belifeline.v1.ExternalInformationService.ExternalInformationUpdateNotification.
+func (c *externalInformationServiceClient) ExternalInformationUpdateNotification(ctx context.Context, req *connect.Request[v1.ExternalInformationUpdateNotificationRequest]) (*connect.Response[v1.ExternalInformationUpdateNotificationResponse], error) {
+	return c.externalInformationUpdateNotification.CallUnary(ctx, req)
 }
 
-// ExtInfoServiceHandler is an implementation of the belifeline.v1.ExtInfoService service.
-type ExtInfoServiceHandler interface {
-	ExtInfoUpdateNotification(context.Context, *connect.Request[v1.ExtInfoUpdateNotificationRequest]) (*connect.Response[v1.ExtInfoUpdateNotificationResponse], error)
+// ExternalInformationServiceHandler is an implementation of the
+// belifeline.v1.ExternalInformationService service.
+type ExternalInformationServiceHandler interface {
+	// rpc to inform kizuna that extinfo (external api and other information) has been updated
+	ExternalInformationUpdateNotification(context.Context, *connect.Request[v1.ExternalInformationUpdateNotificationRequest]) (*connect.Response[v1.ExternalInformationUpdateNotificationResponse], error)
 }
 
-// NewExtInfoServiceHandler builds an HTTP handler from the service implementation. It returns the
-// path on which to mount the handler and the handler itself.
+// NewExternalInformationServiceHandler builds an HTTP handler from the service implementation. It
+// returns the path on which to mount the handler and the handler itself.
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewExtInfoServiceHandler(svc ExtInfoServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	extInfoServiceExtInfoUpdateNotificationHandler := connect.NewUnaryHandler(
-		ExtInfoServiceExtInfoUpdateNotificationProcedure,
-		svc.ExtInfoUpdateNotification,
-		connect.WithSchema(extInfoServiceExtInfoUpdateNotificationMethodDescriptor),
+func NewExternalInformationServiceHandler(svc ExternalInformationServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	externalInformationServiceExternalInformationUpdateNotificationHandler := connect.NewUnaryHandler(
+		ExternalInformationServiceExternalInformationUpdateNotificationProcedure,
+		svc.ExternalInformationUpdateNotification,
+		connect.WithSchema(externalInformationServiceExternalInformationUpdateNotificationMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
-	return "/belifeline.v1.ExtInfoService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return "/belifeline.v1.ExternalInformationService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case ExtInfoServiceExtInfoUpdateNotificationProcedure:
-			extInfoServiceExtInfoUpdateNotificationHandler.ServeHTTP(w, r)
+		case ExternalInformationServiceExternalInformationUpdateNotificationProcedure:
+			externalInformationServiceExternalInformationUpdateNotificationHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
 	})
 }
 
-// UnimplementedExtInfoServiceHandler returns CodeUnimplemented from all methods.
-type UnimplementedExtInfoServiceHandler struct{}
+// UnimplementedExternalInformationServiceHandler returns CodeUnimplemented from all methods.
+type UnimplementedExternalInformationServiceHandler struct{}
 
-func (UnimplementedExtInfoServiceHandler) ExtInfoUpdateNotification(context.Context, *connect.Request[v1.ExtInfoUpdateNotificationRequest]) (*connect.Response[v1.ExtInfoUpdateNotificationResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ExtInfoService.ExtInfoUpdateNotification is not implemented"))
+func (UnimplementedExternalInformationServiceHandler) ExternalInformationUpdateNotification(context.Context, *connect.Request[v1.ExternalInformationUpdateNotificationRequest]) (*connect.Response[v1.ExternalInformationUpdateNotificationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ExternalInformationService.ExternalInformationUpdateNotification is not implemented"))
 }
 
 // KoyoServiceClient is a client for the belifeline.v1.KoyoService service.
 type KoyoServiceClient interface {
+	// Update koyo information
+	KoyoUpdate(context.Context, *connect.Request[v1.KoyoUpdateRequest]) (*connect.Response[v1.KoyoUpdateResponse], error)
+	// After koyo processes the data, it calls this rpc to store the generated data (in permanent storage via kizuna)
 	KoyoDataAdd(context.Context, *connect.Request[v1.KoyoDataAddRequest]) (*connect.Response[v1.KoyoDataAddResponse], error)
 }
 
@@ -682,6 +731,12 @@ type KoyoServiceClient interface {
 func NewKoyoServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) KoyoServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &koyoServiceClient{
+		koyoUpdate: connect.NewClient[v1.KoyoUpdateRequest, v1.KoyoUpdateResponse](
+			httpClient,
+			baseURL+KoyoServiceKoyoUpdateProcedure,
+			connect.WithSchema(koyoServiceKoyoUpdateMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 		koyoDataAdd: connect.NewClient[v1.KoyoDataAddRequest, v1.KoyoDataAddResponse](
 			httpClient,
 			baseURL+KoyoServiceKoyoDataAddProcedure,
@@ -693,7 +748,13 @@ func NewKoyoServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 
 // koyoServiceClient implements KoyoServiceClient.
 type koyoServiceClient struct {
+	koyoUpdate  *connect.Client[v1.KoyoUpdateRequest, v1.KoyoUpdateResponse]
 	koyoDataAdd *connect.Client[v1.KoyoDataAddRequest, v1.KoyoDataAddResponse]
+}
+
+// KoyoUpdate calls belifeline.v1.KoyoService.KoyoUpdate.
+func (c *koyoServiceClient) KoyoUpdate(ctx context.Context, req *connect.Request[v1.KoyoUpdateRequest]) (*connect.Response[v1.KoyoUpdateResponse], error) {
+	return c.koyoUpdate.CallUnary(ctx, req)
 }
 
 // KoyoDataAdd calls belifeline.v1.KoyoService.KoyoDataAdd.
@@ -703,6 +764,9 @@ func (c *koyoServiceClient) KoyoDataAdd(ctx context.Context, req *connect.Reques
 
 // KoyoServiceHandler is an implementation of the belifeline.v1.KoyoService service.
 type KoyoServiceHandler interface {
+	// Update koyo information
+	KoyoUpdate(context.Context, *connect.Request[v1.KoyoUpdateRequest]) (*connect.Response[v1.KoyoUpdateResponse], error)
+	// After koyo processes the data, it calls this rpc to store the generated data (in permanent storage via kizuna)
 	KoyoDataAdd(context.Context, *connect.Request[v1.KoyoDataAddRequest]) (*connect.Response[v1.KoyoDataAddResponse], error)
 }
 
@@ -712,6 +776,12 @@ type KoyoServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewKoyoServiceHandler(svc KoyoServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	koyoServiceKoyoUpdateHandler := connect.NewUnaryHandler(
+		KoyoServiceKoyoUpdateProcedure,
+		svc.KoyoUpdate,
+		connect.WithSchema(koyoServiceKoyoUpdateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	koyoServiceKoyoDataAddHandler := connect.NewUnaryHandler(
 		KoyoServiceKoyoDataAddProcedure,
 		svc.KoyoDataAdd,
@@ -720,6 +790,8 @@ func NewKoyoServiceHandler(svc KoyoServiceHandler, opts ...connect.HandlerOption
 	)
 	return "/belifeline.v1.KoyoService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
+		case KoyoServiceKoyoUpdateProcedure:
+			koyoServiceKoyoUpdateHandler.ServeHTTP(w, r)
 		case KoyoServiceKoyoDataAddProcedure:
 			koyoServiceKoyoDataAddHandler.ServeHTTP(w, r)
 		default:
@@ -730,6 +802,10 @@ func NewKoyoServiceHandler(svc KoyoServiceHandler, opts ...connect.HandlerOption
 
 // UnimplementedKoyoServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedKoyoServiceHandler struct{}
+
+func (UnimplementedKoyoServiceHandler) KoyoUpdate(context.Context, *connect.Request[v1.KoyoUpdateRequest]) (*connect.Response[v1.KoyoUpdateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.KoyoService.KoyoUpdate is not implemented"))
+}
 
 func (UnimplementedKoyoServiceHandler) KoyoDataAdd(context.Context, *connect.Request[v1.KoyoDataAddRequest]) (*connect.Response[v1.KoyoDataAddResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.KoyoService.KoyoDataAdd is not implemented"))
