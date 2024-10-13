@@ -60,7 +60,7 @@ func (u *clientDataUsecaseImpl) DeleteClientData(ctx context.Context, client_id 
 }
 
 func (u *clientDataUsecaseImpl) RevokeApiKey(ctx context.Context, client_id string) (string, string, error) {
-	id, apiKey, err := u.clientDataRepository.RevokeAPIKey(ctx, pulid.ID(client_id))
+	id, apiKey, err := u.clientDataRepository.RevokeAPIKey(ctx, pulid.ID(client_id), util.GenApiKey())
 	if err != nil {
 		return "", "", err
 	}
