@@ -3,7 +3,7 @@ package ent
 import (
 	"fmt"
 
-	"github.com/halcyon-org/kizuna/ent"
+	"github.com/halcyon-org/kizuna/gen/ent"
 	"github.com/halcyon-org/kizuna/internal/adapter/repository/config"
 	_ "github.com/lib/pq"
 )
