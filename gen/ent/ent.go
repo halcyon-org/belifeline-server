@@ -13,7 +13,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/halcyon-org/kizuna/gen/ent/adminuser"
-	"github.com/halcyon-org/kizuna/gen/ent/clientdata"
+	"github.com/halcyon-org/kizuna/gen/ent/clientinformation"
 	"github.com/halcyon-org/kizuna/gen/ent/externalinformation"
 	"github.com/halcyon-org/kizuna/gen/ent/koyodata"
 	"github.com/halcyon-org/kizuna/gen/ent/koyoinformation"
@@ -78,7 +78,7 @@ func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
 			adminuser.Table:           adminuser.ValidColumn,
-			clientdata.Table:          clientdata.ValidColumn,
+			clientinformation.Table:   clientinformation.ValidColumn,
 			externalinformation.Table: externalinformation.ValidColumn,
 			koyodata.Table:            koyodata.ValidColumn,
 			koyoinformation.Table:     koyoinformation.ValidColumn,

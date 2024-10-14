@@ -14,8 +14,8 @@ type Tx struct {
 	config
 	// AdminUser is the client for interacting with the AdminUser builders.
 	AdminUser *AdminUserClient
-	// ClientData is the client for interacting with the ClientData builders.
-	ClientData *ClientDataClient
+	// ClientInformation is the client for interacting with the ClientInformation builders.
+	ClientInformation *ClientInformationClient
 	// ExternalInformation is the client for interacting with the ExternalInformation builders.
 	ExternalInformation *ExternalInformationClient
 	// KoyoData is the client for interacting with the KoyoData builders.
@@ -154,7 +154,7 @@ func (tx *Tx) Client() *Client {
 
 func (tx *Tx) init() {
 	tx.AdminUser = NewAdminUserClient(tx.config)
-	tx.ClientData = NewClientDataClient(tx.config)
+	tx.ClientInformation = NewClientInformationClient(tx.config)
 	tx.ExternalInformation = NewExternalInformationClient(tx.config)
 	tx.KoyoData = NewKoyoDataClient(tx.config)
 	tx.KoyoInformation = NewKoyoInformationClient(tx.config)

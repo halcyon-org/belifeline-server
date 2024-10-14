@@ -8,7 +8,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-type ClientData struct {
+type ClientInformation struct {
 	ID            string
 	Username      string
 	APIKey        string
@@ -17,8 +17,8 @@ type ClientData struct {
 	LastUpdatedAt time.Time
 }
 
-func ToDomainClientData(e ent.ClientData) ClientData {
-	return ClientData{
+func ToDomainClientInformation(e ent.ClientInformation) ClientInformation {
+	return ClientInformation{
 		ID:            string(e.ID),
 		Username:      e.Username,
 		APIKey:        e.APIKey,
@@ -28,8 +28,8 @@ func ToDomainClientData(e ent.ClientData) ClientData {
 	}
 }
 
-func ToApiClientData(d ClientData) v1.ClientData {
-	return v1.ClientData{
+func ToApiClientInformation(d ClientInformation) v1.ClientInformation {
+	return v1.ClientInformation{
 		ClientId:      &v1.ULID{Value: d.ID},
 		Username:      d.Username,
 		ApiKey:        &v1.ApiKey{Key: d.APIKey},

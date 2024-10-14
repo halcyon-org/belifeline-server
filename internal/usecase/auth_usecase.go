@@ -10,26 +10,26 @@ import (
 
 type AuthUsecase interface {
 	AuthAdminUser(ctx context.Context, apiKey string) (*domain.AdminUser, error)
-	AuthClientData(ctx context.Context, apiKey string) (*domain.ClientData, error)
+	AuthClientInformation(ctx context.Context, apiKey string) (*domain.ClientInformation, error)
 	AuthKoyoInformation(ctx context.Context, apiKey string) (*domain.KoyoInformation, error)
 	AuthExternalInformation(ctx context.Context, apiKey string) (*domain.ExternalInformation, error)
 }
 
 type authUsecaseImpl struct {
 	adminUserRepository           ent.AdminUserRepository
-	clientDataRepository          ent.ClientDataRepository
+	clientInformationRepository   ent.ClientInformationRepository
 	koyoInformationRepository     ent.KoyoInformationRepository
 	externalInformationRepository ent.ExternalInformationRepository
 }
 
 func NewAuthUsecase(adminUserRepository ent.AdminUserRepository,
-	clientDataRepository ent.ClientDataRepository,
+	clientInformationRepository ent.ClientInformationRepository,
 	koyoInformationRepository ent.KoyoInformationRepository,
 	externalInformationRepository ent.ExternalInformationRepository,
 ) AuthUsecase {
 	return &authUsecaseImpl{
 		adminUserRepository:           adminUserRepository,
-		clientDataRepository:          clientDataRepository,
+		clientInformationRepository:   clientInformationRepository,
 		koyoInformationRepository:     koyoInformationRepository,
 		externalInformationRepository: externalInformationRepository,
 	}
@@ -46,13 +46,13 @@ func (u *authUsecaseImpl) AuthAdminUser(ctx context.Context, apiKey string) (*do
 	return &adminUser, nil
 }
 
-func (u *authUsecaseImpl) AuthClientData(ctx context.Context, apiKey string) (*domain.ClientData, error) {
-	data, err := u.clientDataRepository.GetClientDataByAPIKey(ctx, apiKey)
+func (u *authUsecaseImpl) AuthClientInformation(ctx context.Context, apiKey string) (*domain.ClientInformation, error) {
+	data, err := u.clientInformationRepository.GetClientInformationByAPIKey(ctx, apiKey)
 	if err != nil {
 		return nil, ErrorAuthenticationFailed
 	}
-	clientData := domain.ToDomainClientData(*data)
-	return &clientData, nil
+	clientInformation := domain.ToDomainClientInformation(*data)
+	return &clientInformation, nil
 }
 
 func (u *authUsecaseImpl) AuthKoyoInformation(ctx context.Context, apiKey string) (*domain.KoyoInformation, error) {

@@ -8,7 +8,7 @@ import (
 	"github.com/halcyon-org/kizuna/ent/schema"
 	"github.com/halcyon-org/kizuna/ent/schema/pulid"
 	"github.com/halcyon-org/kizuna/gen/ent/adminuser"
-	"github.com/halcyon-org/kizuna/gen/ent/clientdata"
+	"github.com/halcyon-org/kizuna/gen/ent/clientinformation"
 	"github.com/halcyon-org/kizuna/gen/ent/externalinformation"
 	"github.com/halcyon-org/kizuna/gen/ent/koyodata"
 	"github.com/halcyon-org/kizuna/gen/ent/koyoinformation"
@@ -42,30 +42,30 @@ func init() {
 	adminuserDescID := adminuserFields[0].Descriptor()
 	// adminuser.DefaultID holds the default value on creation for the id field.
 	adminuser.DefaultID = adminuserDescID.Default.(func() pulid.ID)
-	clientdataFields := schema.ClientData{}.Fields()
-	_ = clientdataFields
-	// clientdataDescUsername is the schema descriptor for username field.
-	clientdataDescUsername := clientdataFields[1].Descriptor()
-	// clientdata.UsernameValidator is a validator for the "username" field. It is called by the builders before save.
-	clientdata.UsernameValidator = clientdataDescUsername.Validators[0].(func(string) error)
-	// clientdataDescCreatedAt is the schema descriptor for created_at field.
-	clientdataDescCreatedAt := clientdataFields[3].Descriptor()
-	// clientdata.DefaultCreatedAt holds the default value on creation for the created_at field.
-	clientdata.DefaultCreatedAt = clientdataDescCreatedAt.Default.(func() time.Time)
-	// clientdataDescLastUsedAt is the schema descriptor for last_used_at field.
-	clientdataDescLastUsedAt := clientdataFields[4].Descriptor()
-	// clientdata.DefaultLastUsedAt holds the default value on creation for the last_used_at field.
-	clientdata.DefaultLastUsedAt = clientdataDescLastUsedAt.Default.(func() time.Time)
-	// clientdataDescLastUpdatedAt is the schema descriptor for last_updated_at field.
-	clientdataDescLastUpdatedAt := clientdataFields[5].Descriptor()
-	// clientdata.DefaultLastUpdatedAt holds the default value on creation for the last_updated_at field.
-	clientdata.DefaultLastUpdatedAt = clientdataDescLastUpdatedAt.Default.(func() time.Time)
-	// clientdata.UpdateDefaultLastUpdatedAt holds the default value on update for the last_updated_at field.
-	clientdata.UpdateDefaultLastUpdatedAt = clientdataDescLastUpdatedAt.UpdateDefault.(func() time.Time)
-	// clientdataDescID is the schema descriptor for id field.
-	clientdataDescID := clientdataFields[0].Descriptor()
-	// clientdata.DefaultID holds the default value on creation for the id field.
-	clientdata.DefaultID = clientdataDescID.Default.(func() pulid.ID)
+	clientinformationFields := schema.ClientInformation{}.Fields()
+	_ = clientinformationFields
+	// clientinformationDescUsername is the schema descriptor for username field.
+	clientinformationDescUsername := clientinformationFields[1].Descriptor()
+	// clientinformation.UsernameValidator is a validator for the "username" field. It is called by the builders before save.
+	clientinformation.UsernameValidator = clientinformationDescUsername.Validators[0].(func(string) error)
+	// clientinformationDescCreatedAt is the schema descriptor for created_at field.
+	clientinformationDescCreatedAt := clientinformationFields[3].Descriptor()
+	// clientinformation.DefaultCreatedAt holds the default value on creation for the created_at field.
+	clientinformation.DefaultCreatedAt = clientinformationDescCreatedAt.Default.(func() time.Time)
+	// clientinformationDescLastUsedAt is the schema descriptor for last_used_at field.
+	clientinformationDescLastUsedAt := clientinformationFields[4].Descriptor()
+	// clientinformation.DefaultLastUsedAt holds the default value on creation for the last_used_at field.
+	clientinformation.DefaultLastUsedAt = clientinformationDescLastUsedAt.Default.(func() time.Time)
+	// clientinformationDescLastUpdatedAt is the schema descriptor for last_updated_at field.
+	clientinformationDescLastUpdatedAt := clientinformationFields[5].Descriptor()
+	// clientinformation.DefaultLastUpdatedAt holds the default value on creation for the last_updated_at field.
+	clientinformation.DefaultLastUpdatedAt = clientinformationDescLastUpdatedAt.Default.(func() time.Time)
+	// clientinformation.UpdateDefaultLastUpdatedAt holds the default value on update for the last_updated_at field.
+	clientinformation.UpdateDefaultLastUpdatedAt = clientinformationDescLastUpdatedAt.UpdateDefault.(func() time.Time)
+	// clientinformationDescID is the schema descriptor for id field.
+	clientinformationDescID := clientinformationFields[0].Descriptor()
+	// clientinformation.DefaultID holds the default value on creation for the id field.
+	clientinformation.DefaultID = clientinformationDescID.Default.(func() pulid.ID)
 	externalinformationFields := schema.ExternalInformation{}.Fields()
 	_ = externalinformationFields
 	// externalinformationDescName is the schema descriptor for name field.
