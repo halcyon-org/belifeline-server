@@ -83,7 +83,20 @@ func (s *AdminServiceHandlerImpl) ClientRevoke(ctx context.Context, req *connect
 }
 
 func (s *AdminServiceHandlerImpl) ExternalInformationSet(ctx context.Context, req *connect.Request[mainv1.ExternalInformationSetRequest]) (*connect.Response[mainv1.ExternalInformationSetResponse], error) {
-	return nil, status.Error(codes.Unimplemented, "method ExternalInformationSet not implemented")
+	externalInformation := req.Msg.ExternalInformation
+	if externalInformation.FirstEntryAt != nil || externalInformation.LastUpdatedAt != nil {
+		return nil, status.Error(codes.InvalidArgument, NewValidationError("time should not be set").Error())
+	}
+
+	data, err := s.externalInformationUsecase.SetExternalInformation(ctx, externalInformation)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	apiData := domain.ToAPIExternalInformation(*data)
+	res := connect.NewResponse(&mainv1.ExternalInformationSetResponse{ExternalInformation: &apiData})
+
+	return res, nil
 }
 
 func (s *AdminServiceHandlerImpl) ExternalInformationDelete(ctx context.Context, req *connect.Request[mainv1.ExternalInformationDeleteRequest]) (*connect.Response[mainv1.ExternalInformationDeleteResponse], error) {
