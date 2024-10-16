@@ -46,6 +46,7 @@ var usecaseSet = wire.NewSet(
 	usecase.NewAuthUsecase,
 	usecase.NewKoyoInformationUsecase,
 	usecase.NewClientInformationUsecase,
+	usecase.NewExternalInformationUsecase,
 )
 
 type ControllersSet struct {

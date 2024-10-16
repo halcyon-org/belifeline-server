@@ -30,14 +30,15 @@ func InitializeControllerSet() (*ControllersSet, error) {
 	}
 	clientInformationRepository := ent2.NewClientInformationRepository(client)
 	clientInformationUsecase := usecase.NewClientInformationUsecase(clientInformationRepository)
-	adminServiceHandler := api.NewAdminServiceHandler(clientInformationUsecase)
+	externalInformationRepository := ent2.NewExternalInformationRepository(client)
+	externalInformationUsecase := usecase.NewExternalInformationUsecase(externalInformationRepository)
+	adminServiceHandler := api.NewAdminServiceHandler(clientInformationUsecase, externalInformationUsecase)
 	providerServiceHandler := api.NewProviderServiceHandler()
 	externalInformationServiceHandler := api.NewExternalInformationServiceHandler()
 	koyoServiceHandler := api.NewKoyoServiceHandler()
 	serverServiceHandler := api.NewServerServiceHandler()
 	adminUserRepository := ent2.NewAdminUserRepository(client)
 	koyoInformationRepository := ent2.NewKoyoInformationRepository(client)
-	externalInformationRepository := ent2.NewExternalInformationRepository(client)
 	authUsecase := usecase.NewAuthUsecase(adminUserRepository, clientInformationRepository, koyoInformationRepository, externalInformationRepository)
 	authInterceptorAdapter := interceptor.NewAuthInterceptorAdapter(authUsecase)
 	beLifelineController := controller.NewBeLifelineController(adminServiceHandler, providerServiceHandler, externalInformationServiceHandler, koyoServiceHandler, serverServiceHandler, authInterceptorAdapter, configRepository)
@@ -60,7 +61,7 @@ var controllerSet = wire.NewSet(controller.NewBeLifelineController)
 var infrastructureSet = wire.NewSet(ent.InitDB)
 
 // Usecase
-var usecaseSet = wire.NewSet(usecase.NewAuthUsecase, usecase.NewKoyoInformationUsecase, usecase.NewClientInformationUsecase)
+var usecaseSet = wire.NewSet(usecase.NewAuthUsecase, usecase.NewKoyoInformationUsecase, usecase.NewClientInformationUsecase, usecase.NewExternalInformationUsecase)
 
 type ControllersSet struct {
 	BeLifelineController controller.BeLifelineController
