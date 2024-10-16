@@ -3,7 +3,9 @@ package domain
 import (
 	"time"
 
+	v1 "github.com/halcyon-org/kizuna/gen/belifeline/models/v1"
 	"github.com/halcyon-org/kizuna/gen/ent"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type ExternalInformation struct {
@@ -27,5 +29,18 @@ func ToDomainExternalInformation(e ent.ExternalInformation) ExternalInformation 
 		APIKey:             e.APIKey,
 		FirstEntryAt:       e.FirstEntryAt,
 		LastUpdatedAt:      e.LastUpdatedAt,
+	}
+}
+
+func ToAPIExternalInformation(d ExternalInformation) v1.ExternalInformation {
+	return v1.ExternalInformation{
+		ExternalId:          &v1.ULID{Value: d.ID},
+		ExternalName:        &d.Name,
+		ExternalDescription: &d.Description,
+		License:             &d.License,
+		LicenseDescription:  &d.LicenseDescription,
+		ApiKey:              &v1.ApiKey{Key: d.APIKey},
+		FirstEntryAt:        timestamppb.New(d.FirstEntryAt),
+		LastUpdatedAt:       timestamppb.New(d.LastUpdatedAt),
 	}
 }
