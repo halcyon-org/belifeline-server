@@ -28,7 +28,7 @@ var adapterSet = wire.NewSet(
 	api.NewProviderServiceHandler,
 	api.NewExternalInformationServiceHandler,
 	api.NewKoyoServiceHandler,
-	api.NewServerServiceHandler,
+	api.NewHealthServiceHandler,
 	interceptor.NewAuthInterceptorAdapter,
 	interceptor.NewLoggingInterceptorAdapter,
 )
