@@ -58,8 +58,10 @@ func (c *BeLifelineControllerImpl) Serve() error {
 	mux.Handle(mainv1connect.NewKoyoServiceHandler(c.koyo, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.auth.AuthKoyoServiceInterceptor())))
 	mux.Handle(mainv1connect.NewServerServiceHandler(c.server, connect.WithInterceptors(c.logging.LoggingInterceptor())))
 
+	servAddr := fmt.Sprintf("%s:%d", c.cfg.GetConfig().ListenAddr, c.cfg.GetConfig().Port)
+	fmt.Printf("Listening on %s\n", servAddr)
 	err = http.ListenAndServe(
-		fmt.Sprintf("%s:%d", c.cfg.GetConfig().ListenAddr, c.cfg.GetConfig().Port),
+		servAddr,
 		// Use h2c so we can serve HTTP/2 without TLS.
 		h2c.NewHandler(mux, &http2.Server{}),
 	)
