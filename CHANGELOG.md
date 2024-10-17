@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/halcyon-org/kizuna/compare/v1.0.0...v1.1.0) (2024-10-17)
+
+
+### Features
+
+* Add start message ([#92](https://github.com/halcyon-org/kizuna/issues/92)) ([0b3a701](https://github.com/halcyon-org/kizuna/commit/0b3a7018f1732b2bf3af3757741b6223460cb508))
+
 ## 1.0.0 (2024-10-17)
 
 
