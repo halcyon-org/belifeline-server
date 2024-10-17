@@ -30,6 +30,7 @@ var adapterSet = wire.NewSet(
 	api.NewKoyoServiceHandler,
 	api.NewServerServiceHandler,
 	interceptor.NewAuthInterceptorAdapter,
+	interceptor.NewLoggingInterceptorAdapter,
 )
 
 var controllerSet = wire.NewSet(

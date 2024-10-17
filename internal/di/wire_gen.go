@@ -40,7 +40,8 @@ func InitializeControllerSet() (*ControllersSet, error) {
 	externalInformationRepository := ent2.NewExternalInformationRepository(client)
 	authUsecase := usecase.NewAuthUsecase(adminUserRepository, clientInformationRepository, koyoInformationRepository, externalInformationRepository)
 	authInterceptorAdapter := interceptor.NewAuthInterceptorAdapter(authUsecase)
-	beLifelineController := controller.NewBeLifelineController(adminServiceHandler, providerServiceHandler, externalInformationServiceHandler, koyoServiceHandler, serverServiceHandler, authInterceptorAdapter, configRepository)
+	loggingInterceptorAdapter := interceptor.NewLoggingInterceptorAdapter()
+	beLifelineController := controller.NewBeLifelineController(adminServiceHandler, providerServiceHandler, externalInformationServiceHandler, koyoServiceHandler, serverServiceHandler, authInterceptorAdapter, loggingInterceptorAdapter, configRepository)
 	controllersSet := &ControllersSet{
 		BeLifelineController: beLifelineController,
 	}
@@ -52,7 +53,7 @@ func InitializeControllerSet() (*ControllersSet, error) {
 // Adapter
 var repositorySet = wire.NewSet(config.NewConfigRepository, ent2.NewAdminUserRepository, ent2.NewClientInformationRepository, ent2.NewKoyoInformationRepository, ent2.NewExternalInformationRepository)
 
-var adapterSet = wire.NewSet(api.NewAdminServiceHandler, api.NewProviderServiceHandler, api.NewExternalInformationServiceHandler, api.NewKoyoServiceHandler, api.NewServerServiceHandler, interceptor.NewAuthInterceptorAdapter)
+var adapterSet = wire.NewSet(api.NewAdminServiceHandler, api.NewProviderServiceHandler, api.NewExternalInformationServiceHandler, api.NewKoyoServiceHandler, api.NewServerServiceHandler, interceptor.NewAuthInterceptorAdapter, interceptor.NewLoggingInterceptorAdapter)
 
 var controllerSet = wire.NewSet(controller.NewBeLifelineController)
 
