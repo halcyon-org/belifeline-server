@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/halcyon-org/kizuna/compare/v1.1.0...v1.1.1) (2024-10-17)
+
+
+### Bug Fixes
+
+* **health:** Separate the Health to `Check` and `Watch` ([#96](https://github.com/halcyon-org/kizuna/issues/96)) ([9b69e7f](https://github.com/halcyon-org/kizuna/commit/9b69e7f037e6f6be897ee61865cad558180237ca))
+
 ## [1.1.0](https://github.com/halcyon-org/kizuna/compare/v1.0.0...v1.1.0) (2024-10-17)
 
 
