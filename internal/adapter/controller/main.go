@@ -23,7 +23,8 @@ type BeLifelineControllerImpl struct {
 	koyo     mainv1connect.KoyoServiceHandler
 	server   mainv1connect.ServerServiceHandler
 
-	auth interceptor.AuthInterceptorAdapter
+	auth    interceptor.AuthInterceptorAdapter
+	logging interceptor.LoggingInterceptorAdapter
 
 	cfg config.ConfigRepository
 }
@@ -31,7 +32,7 @@ type BeLifelineControllerImpl struct {
 func NewBeLifelineController(admin mainv1connect.AdminServiceHandler, provider mainv1connect.ProviderServiceHandler,
 	extinfo mainv1connect.ExternalInformationServiceHandler,
 	koyo mainv1connect.KoyoServiceHandler,
-	server mainv1connect.ServerServiceHandler, auth interceptor.AuthInterceptorAdapter, config config.ConfigRepository) BeLifelineController {
+	server mainv1connect.ServerServiceHandler, auth interceptor.AuthInterceptorAdapter, logging interceptor.LoggingInterceptorAdapter, config config.ConfigRepository) BeLifelineController {
 	return &BeLifelineControllerImpl{
 		admin:    admin,
 		provider: provider,
@@ -39,6 +40,7 @@ func NewBeLifelineController(admin mainv1connect.AdminServiceHandler, provider m
 		koyo:     koyo,
 		server:   server,
 		auth:     auth,
+		logging:  logging,
 		cfg:      config,
 	}
 }
@@ -50,11 +52,11 @@ func (c *BeLifelineControllerImpl) Serve() error {
 	}
 
 	mux := http.NewServeMux()
-	mux.Handle(mainv1connect.NewAdminServiceHandler(c.admin, connect.WithInterceptors(c.auth.AuthAdminServiceInterceptor())))
-	mux.Handle(mainv1connect.NewProviderServiceHandler(c.provider, connect.WithInterceptors(c.auth.AuthProviderServiceInterceptor())))
-	mux.Handle(mainv1connect.NewExternalInformationServiceHandler(c.extinfo, connect.WithInterceptors(c.auth.AuthExternalInformationServiceInterceptor())))
-	mux.Handle(mainv1connect.NewKoyoServiceHandler(c.koyo, connect.WithInterceptors(c.auth.AuthKoyoServiceInterceptor())))
-	mux.Handle(mainv1connect.NewServerServiceHandler(c.server))
+	mux.Handle(mainv1connect.NewAdminServiceHandler(c.admin, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.auth.AuthAdminServiceInterceptor())))
+	mux.Handle(mainv1connect.NewProviderServiceHandler(c.provider, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.auth.AuthProviderServiceInterceptor())))
+	mux.Handle(mainv1connect.NewExternalInformationServiceHandler(c.extinfo, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.auth.AuthExternalInformationServiceInterceptor())))
+	mux.Handle(mainv1connect.NewKoyoServiceHandler(c.koyo, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.auth.AuthKoyoServiceInterceptor())))
+	mux.Handle(mainv1connect.NewServerServiceHandler(c.server, connect.WithInterceptors(c.logging.LoggingInterceptor())))
 
 	err = http.ListenAndServe(
 		fmt.Sprintf("%s:%d", c.cfg.GetConfig().ListenAddr, c.cfg.GetConfig().Port),
