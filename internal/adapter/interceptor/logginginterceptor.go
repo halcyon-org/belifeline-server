@@ -3,9 +3,14 @@ package interceptor
 import (
 	"context"
 	"log/slog"
+	"os"
 
 	"connectrpc.com/connect"
+	"github.com/google/uuid"
 )
+
+const HeaderResponseID = "ResponseID"
+const LoggerKey = "logger"
 
 type LoggingInterceptorAdapter interface {
 	LoggingInterceptor() connect.UnaryInterceptorFunc
@@ -24,13 +29,22 @@ func (l *LoggingInterceptorImpl) LoggingInterceptor() connect.UnaryInterceptorFu
 			ctx context.Context,
 			req connect.AnyRequest,
 		) (connect.AnyResponse, error) {
-			slog.Info(
+			resId := uuid.New().String()
+
+			logger := slog.New(slog.NewJSONHandler(os.Stdout, nil)).With(HeaderResponseID, resId)
+
+			nctx := context.WithValue(ctx, LoggerKey, logger)
+
+			logger.Info(
 				"Request",
 				"Procedure", req.Spec().Procedure,
 				"Protocol", req.Peer().Protocol,
 				"Addr", req.Peer().Addr,
 			)
-			return next(ctx, req)
+
+			res, err := next(nctx, req)
+			res.Header().Set(HeaderResponseID, resId)
+			return res, err
 		})
 	}
 	return connect.UnaryInterceptorFunc(interceptor)
