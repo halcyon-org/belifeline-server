@@ -9,8 +9,10 @@ import (
 	"github.com/google/uuid"
 )
 
+type ContextKey string
+
+const LoggerKey ContextKey = "Logger"
 const HeaderResponseID = "ResponseID"
-const LoggerKey = "logger"
 
 type LoggingInterceptorAdapter interface {
 	LoggingInterceptor() connect.UnaryInterceptorFunc
