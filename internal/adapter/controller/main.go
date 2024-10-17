@@ -54,8 +54,8 @@ func (c *BeLifelineControllerImpl) Serve() error {
 
 	mux := http.NewServeMux()
 	reflector := grpcreflect.NewStaticReflector("belifeline.v1")
-	mux.Handle(grpcreflect.NewHandlerV1(reflector))
-	mux.Handle(grpcreflect.NewHandlerV1Alpha(reflector))
+	mux.Handle(grpcreflect.NewHandlerV1(reflector, connect.WithInterceptors(c.logging.LoggingInterceptor())))
+	mux.Handle(grpcreflect.NewHandlerV1Alpha(reflector, connect.WithInterceptors(c.logging.LoggingInterceptor())))
 	mux.Handle(mainv1connect.NewAdminServiceHandler(c.admin, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.auth.AuthAdminServiceInterceptor())))
 	mux.Handle(mainv1connect.NewProviderServiceHandler(c.provider, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.auth.AuthProviderServiceInterceptor())))
 	mux.Handle(mainv1connect.NewExternalInformationServiceHandler(c.extinfo, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.auth.AuthExternalInformationServiceInterceptor())))
