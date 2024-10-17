@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"connectrpc.com/connect"
+	"connectrpc.com/grpcreflect"
 	"github.com/halcyon-org/kizuna/gen/belifeline/v1/mainv1connect"
 	"github.com/halcyon-org/kizuna/internal/adapter/interceptor"
 	"github.com/halcyon-org/kizuna/internal/adapter/repository/config"
@@ -52,6 +53,9 @@ func (c *BeLifelineControllerImpl) Serve() error {
 	}
 
 	mux := http.NewServeMux()
+	reflector := grpcreflect.NewStaticReflector("belifeline.v1")
+	mux.Handle(grpcreflect.NewHandlerV1(reflector))
+	mux.Handle(grpcreflect.NewHandlerV1Alpha(reflector))
 	mux.Handle(mainv1connect.NewAdminServiceHandler(c.admin, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.auth.AuthAdminServiceInterceptor())))
 	mux.Handle(mainv1connect.NewProviderServiceHandler(c.provider, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.auth.AuthProviderServiceInterceptor())))
 	mux.Handle(mainv1connect.NewExternalInformationServiceHandler(c.extinfo, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.auth.AuthExternalInformationServiceInterceptor())))
