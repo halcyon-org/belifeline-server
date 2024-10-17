@@ -1,6 +1,8 @@
 package config
 
 import (
+	"os"
+
 	"github.com/joho/godotenv"
 	"github.com/kelseyhightower/envconfig"
 )
@@ -36,13 +38,16 @@ func NewConfigRepository() (ConfigRepository, error) {
 }
 
 func (c *configRepositoryImpl) LoadConfig() error {
-	err := godotenv.Load()
-	if err != nil {
-		return err
+	env := os.Getenv("ENV")
+	if env != "production" {
+		err := godotenv.Load()
+		if err != nil {
+			return err
+		}
 	}
 
 	psqlConfig := PostgresConfig{}
-	err = envconfig.Process("postgres", &psqlConfig)
+	err := envconfig.Process("postgres", &psqlConfig)
 	if err != nil {
 		return err
 	}
