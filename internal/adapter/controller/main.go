@@ -21,7 +21,7 @@ type BeLifelineControllerImpl struct {
 	provider mainv1connect.ProviderServiceHandler
 	extinfo  mainv1connect.ExternalInformationServiceHandler
 	koyo     mainv1connect.KoyoServiceHandler
-	server   mainv1connect.ServerServiceHandler
+	health   mainv1connect.HealthServiceHandler
 
 	auth    interceptor.AuthInterceptorAdapter
 	logging interceptor.LoggingInterceptorAdapter
@@ -32,13 +32,13 @@ type BeLifelineControllerImpl struct {
 func NewBeLifelineController(admin mainv1connect.AdminServiceHandler, provider mainv1connect.ProviderServiceHandler,
 	extinfo mainv1connect.ExternalInformationServiceHandler,
 	koyo mainv1connect.KoyoServiceHandler,
-	server mainv1connect.ServerServiceHandler, auth interceptor.AuthInterceptorAdapter, logging interceptor.LoggingInterceptorAdapter, config config.ConfigRepository) BeLifelineController {
+	health mainv1connect.HealthServiceHandler, auth interceptor.AuthInterceptorAdapter, logging interceptor.LoggingInterceptorAdapter, config config.ConfigRepository) BeLifelineController {
 	return &BeLifelineControllerImpl{
 		admin:    admin,
 		provider: provider,
 		extinfo:  extinfo,
 		koyo:     koyo,
-		server:   server,
+		health:   health,
 		auth:     auth,
 		logging:  logging,
 		cfg:      config,
@@ -56,7 +56,7 @@ func (c *BeLifelineControllerImpl) Serve() error {
 	mux.Handle(mainv1connect.NewProviderServiceHandler(c.provider, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.auth.AuthProviderServiceInterceptor())))
 	mux.Handle(mainv1connect.NewExternalInformationServiceHandler(c.extinfo, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.auth.AuthExternalInformationServiceInterceptor())))
 	mux.Handle(mainv1connect.NewKoyoServiceHandler(c.koyo, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.auth.AuthKoyoServiceInterceptor())))
-	mux.Handle(mainv1connect.NewServerServiceHandler(c.server, connect.WithInterceptors(c.logging.LoggingInterceptor())))
+	mux.Handle(mainv1connect.NewHealthServiceHandler(c.health, connect.WithInterceptors(c.logging.LoggingInterceptor())))
 
 	servAddr := fmt.Sprintf("%s:%d", c.cfg.GetConfig().ListenAddr, c.cfg.GetConfig().Port)
 	fmt.Printf("Listening on %s\n", servAddr)

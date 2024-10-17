@@ -21,8 +21,8 @@ import (
 const _ = connect.IsAtLeastVersion1_13_0
 
 const (
-	// ServerServiceName is the fully-qualified name of the ServerService service.
-	ServerServiceName = "belifeline.v1.ServerService"
+	// HealthServiceName is the fully-qualified name of the HealthService service.
+	HealthServiceName = "belifeline.v1.HealthService"
 	// AdminServiceName is the fully-qualified name of the AdminService service.
 	AdminServiceName = "belifeline.v1.AdminService"
 	// ProviderServiceName is the fully-qualified name of the ProviderService service.
@@ -42,8 +42,10 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// ServerServiceHealthProcedure is the fully-qualified name of the ServerService's Health RPC.
-	ServerServiceHealthProcedure = "/belifeline.v1.ServerService/Health"
+	// HealthServiceCheckProcedure is the fully-qualified name of the HealthService's Check RPC.
+	HealthServiceCheckProcedure = "/belifeline.v1.HealthService/Check"
+	// HealthServiceWatchProcedure is the fully-qualified name of the HealthService's Watch RPC.
+	HealthServiceWatchProcedure = "/belifeline.v1.HealthService/Watch"
 	// AdminServiceClientSetProcedure is the fully-qualified name of the AdminService's ClientSet RPC.
 	AdminServiceClientSetProcedure = "/belifeline.v1.AdminService/ClientSet"
 	// AdminServiceClientListProcedure is the fully-qualified name of the AdminService's ClientList RPC.
@@ -90,8 +92,9 @@ const (
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
-	serverServiceServiceDescriptor                                                  = v1.File_belifeline_v1_main_proto.Services().ByName("ServerService")
-	serverServiceHealthMethodDescriptor                                             = serverServiceServiceDescriptor.Methods().ByName("Health")
+	healthServiceServiceDescriptor                                                  = v1.File_belifeline_v1_main_proto.Services().ByName("HealthService")
+	healthServiceCheckMethodDescriptor                                              = healthServiceServiceDescriptor.Methods().ByName("Check")
+	healthServiceWatchMethodDescriptor                                              = healthServiceServiceDescriptor.Methods().ByName("Watch")
 	adminServiceServiceDescriptor                                                   = v1.File_belifeline_v1_main_proto.Services().ByName("AdminService")
 	adminServiceClientSetMethodDescriptor                                           = adminServiceServiceDescriptor.Methods().ByName("ClientSet")
 	adminServiceClientListMethodDescriptor                                          = adminServiceServiceDescriptor.Methods().ByName("ClientList")
@@ -114,78 +117,102 @@ var (
 	koyoServiceKoyoDataAddMethodDescriptor                                          = koyoServiceServiceDescriptor.Methods().ByName("KoyoDataAdd")
 )
 
-// ServerServiceClient is a client for the belifeline.v1.ServerService service.
-type ServerServiceClient interface {
-	// *
-	// Health check
-	// Returns the status message of the server
-	Health(context.Context, *connect.Request[v1.HealthRequest]) (*connect.Response[v1.HealthResponse], error)
+// HealthServiceClient is a client for the belifeline.v1.HealthService service.
+type HealthServiceClient interface {
+	// Check the health of the service
+	Check(context.Context, *connect.Request[v1.CheckRequest]) (*connect.Response[v1.CheckResponse], error)
+	// Watch the health of the service
+	Watch(context.Context, *connect.Request[v1.WatchRequest]) (*connect.ServerStreamForClient[v1.WatchResponse], error)
 }
 
-// NewServerServiceClient constructs a client for the belifeline.v1.ServerService service. By
+// NewHealthServiceClient constructs a client for the belifeline.v1.HealthService service. By
 // default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses,
 // and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
 // connect.WithGRPC() or connect.WithGRPCWeb() options.
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewServerServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ServerServiceClient {
+func NewHealthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) HealthServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
-	return &serverServiceClient{
-		health: connect.NewClient[v1.HealthRequest, v1.HealthResponse](
+	return &healthServiceClient{
+		check: connect.NewClient[v1.CheckRequest, v1.CheckResponse](
 			httpClient,
-			baseURL+ServerServiceHealthProcedure,
-			connect.WithSchema(serverServiceHealthMethodDescriptor),
+			baseURL+HealthServiceCheckProcedure,
+			connect.WithSchema(healthServiceCheckMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		watch: connect.NewClient[v1.WatchRequest, v1.WatchResponse](
+			httpClient,
+			baseURL+HealthServiceWatchProcedure,
+			connect.WithSchema(healthServiceWatchMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
 	}
 }
 
-// serverServiceClient implements ServerServiceClient.
-type serverServiceClient struct {
-	health *connect.Client[v1.HealthRequest, v1.HealthResponse]
+// healthServiceClient implements HealthServiceClient.
+type healthServiceClient struct {
+	check *connect.Client[v1.CheckRequest, v1.CheckResponse]
+	watch *connect.Client[v1.WatchRequest, v1.WatchResponse]
 }
 
-// Health calls belifeline.v1.ServerService.Health.
-func (c *serverServiceClient) Health(ctx context.Context, req *connect.Request[v1.HealthRequest]) (*connect.Response[v1.HealthResponse], error) {
-	return c.health.CallUnary(ctx, req)
+// Check calls belifeline.v1.HealthService.Check.
+func (c *healthServiceClient) Check(ctx context.Context, req *connect.Request[v1.CheckRequest]) (*connect.Response[v1.CheckResponse], error) {
+	return c.check.CallUnary(ctx, req)
 }
 
-// ServerServiceHandler is an implementation of the belifeline.v1.ServerService service.
-type ServerServiceHandler interface {
-	// *
-	// Health check
-	// Returns the status message of the server
-	Health(context.Context, *connect.Request[v1.HealthRequest]) (*connect.Response[v1.HealthResponse], error)
+// Watch calls belifeline.v1.HealthService.Watch.
+func (c *healthServiceClient) Watch(ctx context.Context, req *connect.Request[v1.WatchRequest]) (*connect.ServerStreamForClient[v1.WatchResponse], error) {
+	return c.watch.CallServerStream(ctx, req)
 }
 
-// NewServerServiceHandler builds an HTTP handler from the service implementation. It returns the
+// HealthServiceHandler is an implementation of the belifeline.v1.HealthService service.
+type HealthServiceHandler interface {
+	// Check the health of the service
+	Check(context.Context, *connect.Request[v1.CheckRequest]) (*connect.Response[v1.CheckResponse], error)
+	// Watch the health of the service
+	Watch(context.Context, *connect.Request[v1.WatchRequest], *connect.ServerStream[v1.WatchResponse]) error
+}
+
+// NewHealthServiceHandler builds an HTTP handler from the service implementation. It returns the
 // path on which to mount the handler and the handler itself.
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewServerServiceHandler(svc ServerServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	serverServiceHealthHandler := connect.NewUnaryHandler(
-		ServerServiceHealthProcedure,
-		svc.Health,
-		connect.WithSchema(serverServiceHealthMethodDescriptor),
+func NewHealthServiceHandler(svc HealthServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	healthServiceCheckHandler := connect.NewUnaryHandler(
+		HealthServiceCheckProcedure,
+		svc.Check,
+		connect.WithSchema(healthServiceCheckMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
-	return "/belifeline.v1.ServerService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	healthServiceWatchHandler := connect.NewServerStreamHandler(
+		HealthServiceWatchProcedure,
+		svc.Watch,
+		connect.WithSchema(healthServiceWatchMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	return "/belifeline.v1.HealthService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case ServerServiceHealthProcedure:
-			serverServiceHealthHandler.ServeHTTP(w, r)
+		case HealthServiceCheckProcedure:
+			healthServiceCheckHandler.ServeHTTP(w, r)
+		case HealthServiceWatchProcedure:
+			healthServiceWatchHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
 	})
 }
 
-// UnimplementedServerServiceHandler returns CodeUnimplemented from all methods.
-type UnimplementedServerServiceHandler struct{}
+// UnimplementedHealthServiceHandler returns CodeUnimplemented from all methods.
+type UnimplementedHealthServiceHandler struct{}
 
-func (UnimplementedServerServiceHandler) Health(context.Context, *connect.Request[v1.HealthRequest]) (*connect.Response[v1.HealthResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ServerService.Health is not implemented"))
+func (UnimplementedHealthServiceHandler) Check(context.Context, *connect.Request[v1.CheckRequest]) (*connect.Response[v1.CheckResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.HealthService.Check is not implemented"))
+}
+
+func (UnimplementedHealthServiceHandler) Watch(context.Context, *connect.Request[v1.WatchRequest], *connect.ServerStream[v1.WatchResponse]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.HealthService.Watch is not implemented"))
 }
 
 // AdminServiceClient is a client for the belifeline.v1.AdminService service.

@@ -34,14 +34,14 @@ func InitializeControllerSet() (*ControllersSet, error) {
 	providerServiceHandler := api.NewProviderServiceHandler()
 	externalInformationServiceHandler := api.NewExternalInformationServiceHandler()
 	koyoServiceHandler := api.NewKoyoServiceHandler()
-	serverServiceHandler := api.NewServerServiceHandler()
+	healthServiceHandler := api.NewHealthServiceHandler()
 	adminUserRepository := ent2.NewAdminUserRepository(client)
 	koyoInformationRepository := ent2.NewKoyoInformationRepository(client)
 	externalInformationRepository := ent2.NewExternalInformationRepository(client)
 	authUsecase := usecase.NewAuthUsecase(adminUserRepository, clientInformationRepository, koyoInformationRepository, externalInformationRepository)
 	authInterceptorAdapter := interceptor.NewAuthInterceptorAdapter(authUsecase)
 	loggingInterceptorAdapter := interceptor.NewLoggingInterceptorAdapter()
-	beLifelineController := controller.NewBeLifelineController(adminServiceHandler, providerServiceHandler, externalInformationServiceHandler, koyoServiceHandler, serverServiceHandler, authInterceptorAdapter, loggingInterceptorAdapter, configRepository)
+	beLifelineController := controller.NewBeLifelineController(adminServiceHandler, providerServiceHandler, externalInformationServiceHandler, koyoServiceHandler, healthServiceHandler, authInterceptorAdapter, loggingInterceptorAdapter, configRepository)
 	controllersSet := &ControllersSet{
 		BeLifelineController: beLifelineController,
 	}
@@ -53,7 +53,7 @@ func InitializeControllerSet() (*ControllersSet, error) {
 // Adapter
 var repositorySet = wire.NewSet(config.NewConfigRepository, ent2.NewAdminUserRepository, ent2.NewClientInformationRepository, ent2.NewKoyoInformationRepository, ent2.NewExternalInformationRepository)
 
-var adapterSet = wire.NewSet(api.NewAdminServiceHandler, api.NewProviderServiceHandler, api.NewExternalInformationServiceHandler, api.NewKoyoServiceHandler, api.NewServerServiceHandler, interceptor.NewAuthInterceptorAdapter, interceptor.NewLoggingInterceptorAdapter)
+var adapterSet = wire.NewSet(api.NewAdminServiceHandler, api.NewProviderServiceHandler, api.NewExternalInformationServiceHandler, api.NewKoyoServiceHandler, api.NewHealthServiceHandler, interceptor.NewAuthInterceptorAdapter, interceptor.NewLoggingInterceptorAdapter)
 
 var controllerSet = wire.NewSet(controller.NewBeLifelineController)
 
