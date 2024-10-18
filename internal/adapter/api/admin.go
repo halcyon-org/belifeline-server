@@ -84,7 +84,7 @@ func (s *AdminServiceHandlerImpl) ClientRevoke(ctx context.Context, req *connect
 
 func (s *AdminServiceHandlerImpl) ExternalInformationSet(ctx context.Context, req *connect.Request[mainv1.ExternalInformationSetRequest]) (*connect.Response[mainv1.ExternalInformationSetResponse], error) {
 	externalInformation := req.Msg.ExternalInformation
-	if externalInformation.FirstEntryAt != nil || externalInformation.LastUpdatedAt != nil {
+	if externalInformation.FirstEntryAt != nil || externalInformation.LastUpdatedAt != nil || externalInformation.UpdatedHistory != nil {
 		return nil, status.Error(codes.InvalidArgument, NewValidationError("time should not be set").Error())
 	}
 
