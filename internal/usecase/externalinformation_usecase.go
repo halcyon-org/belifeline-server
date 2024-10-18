@@ -28,43 +28,19 @@ func NewExternalInformationUsecase(externalInformationRepository entrepo.Externa
 }
 
 func (u *externalInformationUsecaseImpl) SetExternalInformation(ctx context.Context, externalInformation *v1.ExternalInformation) (*domain.ExternalInformation, error) {
+	var (
+		data *ent.ExternalInformation
+		err  error
+	)
+
 	if externalInformation.ExternalId == nil {
 		if externalInformation.ExternalName == nil || externalInformation.ExternalDescription == nil || externalInformation.License == nil || externalInformation.LicenseDescription == nil {
 			return nil, errors.New("property not set")
 		}
-		data, err := u.externalInformationRepository.CreateExternalInformation(ctx, *externalInformation.ExternalName, *externalInformation.ExternalDescription, *externalInformation.License, *externalInformation.LicenseDescription, util.GenApiKey())
-		if err != nil {
-			return nil, err
-		}
-
-		domainData := domain.ToDomainExternalInformation(*data)
-		return &domainData, nil
+		data, err = u.externalInformationRepository.CreateExternalInformation(ctx, *externalInformation.ExternalName, *externalInformation.ExternalDescription, *externalInformation.License, *externalInformation.LicenseDescription, util.GenApiKey())
+	} else {
+		data, err = u.externalInformationRepository.UpdateExternalInformation(ctx, pulid.ID(externalInformation.ExternalId.Value), externalInformation.ExternalName, externalInformation.ExternalDescription, externalInformation.License, externalInformation.LicenseDescription)
 	}
-
-	information, err := u.externalInformationRepository.GetExternalInformationByID(ctx, pulid.ID(externalInformation.ExternalId.Value))
-	if err != nil {
-		return nil, err
-	}
-
-	name := information.Name
-	description := information.Description
-	license := information.License
-	licenseDescription := information.LicenseDescription
-
-	if externalInformation.ExternalName != nil {
-		name = *externalInformation.ExternalName
-	}
-	if externalInformation.ExternalDescription != nil {
-		description = *externalInformation.ExternalDescription
-	}
-	if externalInformation.License != nil {
-		license = *externalInformation.License
-	}
-	if externalInformation.LicenseDescription != nil {
-		licenseDescription = *externalInformation.LicenseDescription
-	}
-
-	data, err := u.externalInformationRepository.UpdateExternalInformation(ctx, pulid.ID(information.ID), name, description, license, licenseDescription)
 	if err != nil {
 		return nil, err
 	}
