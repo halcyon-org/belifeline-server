@@ -63,3 +63,8 @@ jobs:
             asia.gcr.io/vaulted-zodiac-431004-s7/kizuna:latest
             asia.gcr.io/vaulted-zodiac-431004-s7/kizuna:${{ needs.release-please.outputs.tag-name }}
             asia.gcr.io/vaulted-zodiac-431004-s7/kizuna:${{ steps.vars.outputs.sha_short }}
+      - name: Deploy
+        uses: google-github-actions/deploy-cloudrun@v2.7.1
+        with:
+          service: kizuna
+          image: asia.gcr.io/vaulted-zodiac-431004-s7/kizuna:${{ needs.release-please.outputs.tag-name }}
