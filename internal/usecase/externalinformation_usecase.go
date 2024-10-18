@@ -6,6 +6,7 @@ import (
 
 	"github.com/halcyon-org/kizuna/ent/schema/pulid"
 	v1 "github.com/halcyon-org/kizuna/gen/belifeline/models/v1"
+	"github.com/halcyon-org/kizuna/gen/ent"
 	entrepo "github.com/halcyon-org/kizuna/internal/adapter/repository/ent"
 	"github.com/halcyon-org/kizuna/internal/domain/domain"
 
@@ -14,7 +15,6 @@ import (
 
 type ExternalInformationUsecase interface {
 	SetExternalInformation(ctx context.Context, externalInformation *v1.ExternalInformation) (*domain.ExternalInformation, error)
-	GetExternalInformation(ctx context.Context, id string) (*domain.ExternalInformation, error)
 }
 
 type externalInformationUsecaseImpl struct {
@@ -41,16 +41,6 @@ func (u *externalInformationUsecaseImpl) SetExternalInformation(ctx context.Cont
 	} else {
 		data, err = u.externalInformationRepository.UpdateExternalInformation(ctx, pulid.ID(externalInformation.ExternalId.Value), externalInformation.ExternalName, externalInformation.ExternalDescription, externalInformation.License, externalInformation.LicenseDescription)
 	}
-	if err != nil {
-		return nil, err
-	}
-
-	domainData := domain.ToDomainExternalInformation(*data)
-	return &domainData, nil
-}
-
-func (u *externalInformationUsecaseImpl) GetExternalInformation(ctx context.Context, id string) (*domain.ExternalInformation, error) {
-	data, err := u.externalInformationRepository.GetExternalInformationByID(ctx, pulid.ID(id))
 	if err != nil {
 		return nil, err
 	}
