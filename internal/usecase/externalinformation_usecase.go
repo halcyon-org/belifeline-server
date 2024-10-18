@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"errors"
 
 	"github.com/halcyon-org/kizuna/ent/schema/pulid"
 	v1 "github.com/halcyon-org/kizuna/gen/belifeline/models/v1"
@@ -28,6 +29,9 @@ func NewExternalInformationUsecase(externalInformationRepository entrepo.Externa
 
 func (u *externalInformationUsecaseImpl) SetExternalInformation(ctx context.Context, externalInformation *v1.ExternalInformation) (*domain.ExternalInformation, error) {
 	if externalInformation.ExternalId == nil {
+		if externalInformation.ExternalName == nil || externalInformation.ExternalDescription == nil || externalInformation.License == nil || externalInformation.LicenseDescription == nil {
+			return nil, errors.New("property not set")
+		}
 		data, err := u.externalInformationRepository.CreateExternalInformation(ctx, *externalInformation.ExternalName, *externalInformation.ExternalDescription, *externalInformation.License, *externalInformation.LicenseDescription, util.GenApiKey())
 		if err != nil {
 			return nil, err
