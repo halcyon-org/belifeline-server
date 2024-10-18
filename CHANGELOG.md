@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/halcyon-org/kizuna/compare/v1.1.1...v1.2.0) (2024-10-18)
+
+
+### Features
+
+* add logger to reflect ([#99](https://github.com/halcyon-org/kizuna/issues/99)) ([e6f405c](https://github.com/halcyon-org/kizuna/commit/e6f405c9ed957490a8f998459ad4e4dc6f9ef2d1))
+
 ## [1.1.1](https://github.com/halcyon-org/kizuna/compare/v1.1.0...v1.1.1) (2024-10-17)
 
 
