@@ -28,8 +28,9 @@ type BeLifelineControllerImpl struct {
 	koyo     mainv1connect.KoyoServiceHandler
 	health   mainv1connect.HealthServiceHandler
 
-	auth    interceptor.AuthInterceptorAdapter
-	logging interceptor.LoggingInterceptorAdapter
+	auth       interceptor.AuthInterceptorAdapter
+	logging    interceptor.LoggingInterceptorAdapter
+	validation interceptor.ValidationInterceptorAdapter
 
 	cfg config.ConfigRepository
 }
@@ -37,16 +38,17 @@ type BeLifelineControllerImpl struct {
 func NewBeLifelineController(admin mainv1connect.AdminServiceHandler, provider mainv1connect.ProviderServiceHandler,
 	extinfo mainv1connect.ExternalInformationServiceHandler,
 	koyo mainv1connect.KoyoServiceHandler,
-	health mainv1connect.HealthServiceHandler, auth interceptor.AuthInterceptorAdapter, logging interceptor.LoggingInterceptorAdapter, config config.ConfigRepository) BeLifelineController {
+	health mainv1connect.HealthServiceHandler, auth interceptor.AuthInterceptorAdapter, logging interceptor.LoggingInterceptorAdapter, validation interceptor.ValidationInterceptorAdapter, config config.ConfigRepository) BeLifelineController {
 	return &BeLifelineControllerImpl{
-		admin:    admin,
-		provider: provider,
-		extinfo:  extinfo,
-		koyo:     koyo,
-		health:   health,
-		auth:     auth,
-		logging:  logging,
-		cfg:      config,
+		admin:      admin,
+		provider:   provider,
+		extinfo:    extinfo,
+		koyo:       koyo,
+		health:     health,
+		auth:       auth,
+		logging:    logging,
+		validation: validation,
+		cfg:        config,
 	}
 }
 
@@ -54,14 +56,13 @@ func (c *BeLifelineControllerImpl) makeMux() *http.ServeMux {
 	mux := http.NewServeMux()
 
 	reflector := grpcreflect.NewStaticReflector("belifeline.v1")
-
-	mux.Handle(grpcreflect.NewHandlerV1(reflector, connect.WithInterceptors(c.logging.LoggingInterceptor())))
-	mux.Handle(grpcreflect.NewHandlerV1Alpha(reflector, connect.WithInterceptors(c.logging.LoggingInterceptor())))
-	mux.Handle(mainv1connect.NewAdminServiceHandler(c.admin, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.auth.AuthAdminServiceInterceptor())))
-	mux.Handle(mainv1connect.NewProviderServiceHandler(c.provider, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.auth.AuthProviderServiceInterceptor())))
-	mux.Handle(mainv1connect.NewExternalInformationServiceHandler(c.extinfo, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.auth.AuthExternalInformationServiceInterceptor())))
-	mux.Handle(mainv1connect.NewKoyoServiceHandler(c.koyo, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.auth.AuthKoyoServiceInterceptor())))
-	mux.Handle(mainv1connect.NewHealthServiceHandler(c.health, connect.WithInterceptors(c.logging.LoggingInterceptor())))
+	mux.Handle(grpcreflect.NewHandlerV1(reflector, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.validation.ValidationInterceptor())))
+	mux.Handle(grpcreflect.NewHandlerV1Alpha(reflector, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.validation.ValidationInterceptor())))
+	mux.Handle(mainv1connect.NewAdminServiceHandler(c.admin, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.validation.ValidationInterceptor(), c.auth.AuthAdminServiceInterceptor())))
+	mux.Handle(mainv1connect.NewProviderServiceHandler(c.provider, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.validation.ValidationInterceptor(), c.auth.AuthProviderServiceInterceptor())))
+	mux.Handle(mainv1connect.NewExternalInformationServiceHandler(c.extinfo, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.validation.ValidationInterceptor(), c.auth.AuthExternalInformationServiceInterceptor())))
+	mux.Handle(mainv1connect.NewKoyoServiceHandler(c.koyo, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.validation.ValidationInterceptor(), c.auth.AuthKoyoServiceInterceptor())))
+	mux.Handle(mainv1connect.NewHealthServiceHandler(c.health, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.validation.ValidationInterceptor())))
 
 	return mux
 }

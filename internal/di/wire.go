@@ -31,6 +31,7 @@ var adapterSet = wire.NewSet(
 	api.NewHealthServiceHandler,
 	interceptor.NewAuthInterceptorAdapter,
 	interceptor.NewLoggingInterceptorAdapter,
+	interceptor.NewValidationInterceptorAdapter,
 )
 
 var controllerSet = wire.NewSet(
