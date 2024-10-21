@@ -516,7 +516,7 @@ func (UnimplementedAdminServiceHandler) KoyoApiRevoke(context.Context, *connect.
 // ProviderServiceClient is a client for the belifeline.v1.ProviderService service.
 type ProviderServiceClient interface {
 	// List all external information
-	ExternalInformationList(context.Context, *connect.Request[v1.ExternalInformationListRequest]) (*connect.ServerStreamForClient[v1.ExternalInformationListResponse], error)
+	ExternalInformationList(context.Context, *connect.Request[v1.ExternalInformationListRequest]) (*connect.Response[v1.ExternalInformationListResponse], error)
 	// List all koyo information
 	KoyoList(context.Context, *connect.Request[v1.KoyoListRequest]) (*connect.ServerStreamForClient[v1.KoyoListResponse], error)
 	// Get basic information about External Information
@@ -571,8 +571,8 @@ type providerServiceClient struct {
 }
 
 // ExternalInformationList calls belifeline.v1.ProviderService.ExternalInformationList.
-func (c *providerServiceClient) ExternalInformationList(ctx context.Context, req *connect.Request[v1.ExternalInformationListRequest]) (*connect.ServerStreamForClient[v1.ExternalInformationListResponse], error) {
-	return c.externalInformationList.CallServerStream(ctx, req)
+func (c *providerServiceClient) ExternalInformationList(ctx context.Context, req *connect.Request[v1.ExternalInformationListRequest]) (*connect.Response[v1.ExternalInformationListResponse], error) {
+	return c.externalInformationList.CallUnary(ctx, req)
 }
 
 // KoyoList calls belifeline.v1.ProviderService.KoyoList.
@@ -593,7 +593,7 @@ func (c *providerServiceClient) KoyoDataGet(ctx context.Context, req *connect.Re
 // ProviderServiceHandler is an implementation of the belifeline.v1.ProviderService service.
 type ProviderServiceHandler interface {
 	// List all external information
-	ExternalInformationList(context.Context, *connect.Request[v1.ExternalInformationListRequest], *connect.ServerStream[v1.ExternalInformationListResponse]) error
+	ExternalInformationList(context.Context, *connect.Request[v1.ExternalInformationListRequest]) (*connect.Response[v1.ExternalInformationListResponse], error)
 	// List all koyo information
 	KoyoList(context.Context, *connect.Request[v1.KoyoListRequest], *connect.ServerStream[v1.KoyoListResponse]) error
 	// Get basic information about External Information
@@ -608,7 +608,7 @@ type ProviderServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewProviderServiceHandler(svc ProviderServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	providerServiceExternalInformationListHandler := connect.NewServerStreamHandler(
+	providerServiceExternalInformationListHandler := connect.NewUnaryHandler(
 		ProviderServiceExternalInformationListProcedure,
 		svc.ExternalInformationList,
 		connect.WithSchema(providerServiceExternalInformationListMethodDescriptor),
@@ -651,8 +651,8 @@ func NewProviderServiceHandler(svc ProviderServiceHandler, opts ...connect.Handl
 // UnimplementedProviderServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedProviderServiceHandler struct{}
 
-func (UnimplementedProviderServiceHandler) ExternalInformationList(context.Context, *connect.Request[v1.ExternalInformationListRequest], *connect.ServerStream[v1.ExternalInformationListResponse]) error {
-	return connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ProviderService.ExternalInformationList is not implemented"))
+func (UnimplementedProviderServiceHandler) ExternalInformationList(context.Context, *connect.Request[v1.ExternalInformationListRequest]) (*connect.Response[v1.ExternalInformationListResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.ProviderService.ExternalInformationList is not implemented"))
 }
 
 func (UnimplementedProviderServiceHandler) KoyoList(context.Context, *connect.Request[v1.KoyoListRequest], *connect.ServerStream[v1.KoyoListResponse]) error {

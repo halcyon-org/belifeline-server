@@ -17,8 +17,8 @@ func NewProviderServiceHandler() mainv1connect.ProviderServiceHandler {
 	return &ProviderServiceHandlerImpl{}
 }
 
-func (s *ProviderServiceHandlerImpl) ExternalInformationList(ctx context.Context, req *connect.Request[mainv1.ExternalInformationListRequest], stream *connect.ServerStream[mainv1.ExternalInformationListResponse]) error {
-	return status.Error(codes.Unimplemented, "method ExternalInformationList not implemented")
+func (s *ProviderServiceHandlerImpl) ExternalInformationList(ctx context.Context, req *connect.Request[mainv1.ExternalInformationListRequest]) (*connect.Response[mainv1.ExternalInformationListResponse], error) {
+	return nil, status.Error(codes.Unimplemented, "method ExternalInformationList not implemented")
 }
 
 func (s *ProviderServiceHandlerImpl) KoyoList(ctx context.Context, req *connect.Request[mainv1.KoyoListRequest], stream *connect.ServerStream[mainv1.KoyoListResponse]) error {
