@@ -45,6 +45,10 @@ func (l *LoggingInterceptorImpl) LoggingInterceptor() connect.UnaryInterceptorFu
 			)
 
 			res, err := next(nctx, req)
+			if res == nil {
+				return res, err
+			}
+
 			res.Header().Set(HeaderResponseID, resId)
 			return res, err
 		})
