@@ -16,12 +16,14 @@ import (
 
 type AdminServiceHandlerImpl struct {
 	clientInformationUsecase   usecase.ClientInformationUsecase
+	koyoInformationUsecase     usecase.KoyoInformationUsecase
 	externalInformationUsecase usecase.ExternalInformationUsecase
 }
 
-func NewAdminServiceHandler(clientInformationUsecase usecase.ClientInformationUsecase, externalInformationUsecase usecase.ExternalInformationUsecase) mainv1connect.AdminServiceHandler {
+func NewAdminServiceHandler(clientInformationUsecase usecase.ClientInformationUsecase, koyoInformationUsecase usecase.KoyoInformationUsecase, externalInformationUsecase usecase.ExternalInformationUsecase) mainv1connect.AdminServiceHandler {
 	return &AdminServiceHandlerImpl{
 		clientInformationUsecase:   clientInformationUsecase,
+		koyoInformationUsecase:     koyoInformationUsecase,
 		externalInformationUsecase: externalInformationUsecase,
 	}
 }
