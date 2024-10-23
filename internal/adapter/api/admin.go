@@ -106,7 +106,20 @@ func (s *AdminServiceHandlerImpl) ExternalInformationDelete(ctx context.Context,
 }
 
 func (s *AdminServiceHandlerImpl) KoyoCreate(ctx context.Context, req *connect.Request[mainv1.KoyoCreateRequest]) (*connect.Response[mainv1.KoyoCreateResponse], error) {
-	return nil, status.Error(codes.Unimplemented, "method KoyoSet not implemented")
+	koyoInformation := req.Msg.KoyoInformation
+	if koyoInformation.FirstEntryAt != nil || koyoInformation.LastUpdatedAt != nil || koyoInformation.LastEntryAt != nil {
+		return nil, status.Error(codes.InvalidArgument, NewValidationError("time should not be set").Error())
+	}
+
+	data, err := s.koyoInformationUsecase.CreateKoyoInformation(ctx, koyoInformation)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	apiData := domain.ToAPIKoyoInformation(*data)
+	res := connect.NewResponse(&mainv1.KoyoCreateResponse{KoyoInformation: &apiData})
+
+	return res, nil
 }
 
 func (s *AdminServiceHandlerImpl) KoyoDelete(ctx context.Context, req *connect.Request[mainv1.KoyoDeleteRequest]) (*connect.Response[mainv1.KoyoDeleteResponse], error) {
