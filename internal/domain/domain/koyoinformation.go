@@ -8,6 +8,15 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+type DataType string
+
+const (
+	DataTypeUnspecified DataType = "unspecified"
+	DataTypeImage       DataType = "image"
+	DataTypeCsv         DataType = "csv"
+	DataTypeJSON        DataType = "json"
+)
+
 type KoyoInformation struct {
 	ID           string
 	Name         string
@@ -16,7 +25,7 @@ type KoyoInformation struct {
 	Scales       []float64
 	Version      string
 	License      string
-	DataType     string
+	DataType     DataType
 	APIKey       string
 	FirstEntryAt time.Time
 	LastEntryAt  time.Time
@@ -32,7 +41,7 @@ func ToDomainKoyoInformation(e ent.KoyoInformation) KoyoInformation {
 		Scales:       e.Scales,
 		Version:      e.Version,
 		License:      e.License,
-		DataType:     string(e.DataType),
+		DataType:     DataType(e.DataType),
 		APIKey:       e.APIKey,
 		FirstEntryAt: e.FirstEntryAt,
 		LastEntryAt:  e.LastEntryAt,
@@ -48,14 +57,14 @@ func ToAPIKoyoInformation(d KoyoInformation) v1.KoyoInformation {
 
 	var dataType v1.DataType
 	switch d.DataType {
-	case "image":
-		dataType = v1.DataType_DATA_TYPE_IMAGE
-	case "csv":
-		dataType = v1.DataType_DATA_TYPE_CSV
-	case "json":
-		dataType = v1.DataType_DATA_TYPE_JSON
-	default:
+	case DataTypeUnspecified:
 		dataType = v1.DataType_DATA_TYPE_UNSPECIFIED
+	case DataTypeImage:
+		dataType = v1.DataType_DATA_TYPE_IMAGE
+	case DataTypeCsv:
+		dataType = v1.DataType_DATA_TYPE_CSV
+	case DataTypeJSON:
+		dataType = v1.DataType_DATA_TYPE_JSON
 	}
 
 	return v1.KoyoInformation{
