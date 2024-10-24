@@ -104,6 +104,16 @@ Requires: init, gen
 go build -o bin/kizuna cmd/kizuna/main.go
 ```
 
+### build:v
+
+Build golang code.
+
+Requires: init, gen
+
+```bash
+go build -v -o bin/kizuna cmd/kizuna/main.go
+```
+
 ### gen
 
 Generate golang code.
