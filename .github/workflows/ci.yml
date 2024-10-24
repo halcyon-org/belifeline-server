@@ -162,6 +162,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
       - uses: ./.github/actions/setup-golang
       - name: Run go build
         run: xc build:v
