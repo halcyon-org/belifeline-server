@@ -15,10 +15,26 @@
 >
 > See <https://xcfile.dev/getting-started/#installation> for installation instructions
 
+### install
+
+Install the dependencies.
+
+Run: once
+
+```bash
+go mod tidy
+go install golang.org/x/tools/go/analysis/passes/defers/cmd/defers@latest
+go install golang.org/x/tools/go/analysis/passes/fieldalignment/cmd/fieldalignment@latest
+go install golang.org/x/tools/go/analysis/passes/findcall/cmd/findcall@latest
+go install golang.org/x/tools/go/analysis/passes/nilness/cmd/nilness@latest
+go install golang.org/x/tools/go/analysis/passes/shadow/cmd/shadow@latest
+```
+
 ### init
 
 Init development environment.
 
+Requires: install
 Run: once
 
 ```bash
@@ -62,6 +78,10 @@ Requires: init
 
 ```bash
 go vet ./...
+go vet -vettool=$(command -v defers) ./...
+go vet -vettool=$(command -v fieldalignment) ./...
+go vet -vettool=$(command -v nilness) ./...
+go vet -vettool=$(command -v shadow) ./...
 ```
 
 ### test
