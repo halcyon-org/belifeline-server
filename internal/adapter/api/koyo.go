@@ -4,6 +4,7 @@ import (
 	"context"
 
 	connect "connectrpc.com/connect"
+	v1 "github.com/halcyon-org/kizuna/gen/belifeline/models/v1"
 	mainv1 "github.com/halcyon-org/kizuna/gen/belifeline/v1"
 	"github.com/halcyon-org/kizuna/gen/belifeline/v1/mainv1connect"
 	"github.com/halcyon-org/kizuna/internal/usecase"
@@ -25,6 +26,13 @@ func (s *KoyoServiceHandlerImpl) KoyoUpdate(context.Context, *connect.Request[ma
 	return nil, status.Error(codes.Unimplemented, "method KoyoUpdate not implemented")
 }
 
-func (s *KoyoServiceHandlerImpl) KoyoDataAdd(context.Context, *connect.Request[mainv1.KoyoDataAddRequest]) (*connect.Response[mainv1.KoyoDataAddResponse], error) {
-	return nil, status.Error(codes.Unimplemented, "method KoyoDataAdd not implemented")
+func (s *KoyoServiceHandlerImpl) KoyoDataAdd(ctx context.Context, req *connect.Request[mainv1.KoyoDataAddRequest]) (*connect.Response[mainv1.KoyoDataAddResponse], error) {
+	id, err := s.koyoDataUsecase.CreateKoyoData(ctx, req.Msg.KoyoData)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	res := connect.NewResponse(&mainv1.KoyoDataAddResponse{KoyoData: &v1.ULID{Value: id}})
+
+	return res, nil
 }
