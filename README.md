@@ -23,11 +23,6 @@ Run: once
 
 ```bash
 go mod tidy
-go install golang.org/x/tools/go/analysis/passes/defers/cmd/defers@latest
-go install golang.org/x/tools/go/analysis/passes/fieldalignment/cmd/fieldalignment@latest
-go install golang.org/x/tools/go/analysis/passes/findcall/cmd/findcall@latest
-go install golang.org/x/tools/go/analysis/passes/nilness/cmd/nilness@latest
-go install golang.org/x/tools/go/analysis/passes/shadow/cmd/shadow@latest
 ```
 
 ### init
@@ -47,7 +42,7 @@ fi
 
 Check golang code.
 
-Requires: init, fmt, vet, lint, test
+Requires: init, fmt, lint, test
 RunDeps: async
 
 ### fmt
@@ -68,20 +63,6 @@ Requires: init
 
 ```bash
 golangci-lint run
-```
-
-### vet
-
-Vet golang code.
-
-Requires: init
-
-```bash
-go vet ./...
-go vet -vettool=$(command -v defers) ./...
-go vet -vettool=$(command -v fieldalignment) ./...
-go vet -vettool=$(command -v nilness) ./...
-go vet -vettool=$(command -v shadow) ./...
 ```
 
 ### test

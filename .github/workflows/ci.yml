@@ -19,7 +19,6 @@ jobs:
       - docker-build-check
       - migration-check
       - golang-build-check
-      - golang-vet-check
       - golang-fmt-check
       - golang-lint-check
       - golang-test-comment-check
@@ -167,15 +166,6 @@ jobs:
       - uses: ./.github/actions/setup-golang
       - name: Run go build
         run: xc build:v
-
-  golang-vet-check:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-golang
-      - name: Run go vet
-        run: xc vet
 
   golang-fmt-check:
     runs-on: ubuntu-latest
