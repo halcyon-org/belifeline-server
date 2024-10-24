@@ -6,15 +6,19 @@ import (
 	connect "connectrpc.com/connect"
 	mainv1 "github.com/halcyon-org/kizuna/gen/belifeline/v1"
 	"github.com/halcyon-org/kizuna/gen/belifeline/v1/mainv1connect"
+	"github.com/halcyon-org/kizuna/internal/usecase"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 type KoyoServiceHandlerImpl struct {
+	koyoDataUsecase usecase.KoyoDataUsecase
 }
 
-func NewKoyoServiceHandler() mainv1connect.KoyoServiceHandler {
-	return &KoyoServiceHandlerImpl{}
+func NewKoyoServiceHandler(koyoDataUsecase usecase.KoyoDataUsecase) mainv1connect.KoyoServiceHandler {
+	return &KoyoServiceHandlerImpl{
+		koyoDataUsecase: koyoDataUsecase,
+	}
 }
 
 func (s *KoyoServiceHandlerImpl) KoyoUpdate(context.Context, *connect.Request[mainv1.KoyoUpdateRequest]) (*connect.Response[mainv1.KoyoUpdateResponse], error) {
