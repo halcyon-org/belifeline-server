@@ -10,13 +10,15 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-type ExternalInformationServiceHandlerImpl struct {
-}
+type ExternalInformationServiceHandlerImpl struct{}
 
 func NewExternalInformationServiceHandler() mainv1connect.ExternalInformationServiceHandler {
 	return &ExternalInformationServiceHandlerImpl{}
 }
 
-func (s *ExternalInformationServiceHandlerImpl) ExternalInformationUpdateNotification(context.Context, *connect.Request[mainv1.ExternalInformationUpdateNotificationRequest]) (*connect.Response[mainv1.ExternalInformationUpdateNotificationResponse], error) {
+func (s *ExternalInformationServiceHandlerImpl) ExternalInformationUpdateNotification(
+	context.Context,
+	*connect.Request[mainv1.ExternalInformationUpdateNotificationRequest],
+) (*connect.Response[mainv1.ExternalInformationUpdateNotificationResponse], error) {
 	return nil, status.Error(codes.Unimplemented, "method ExternalInformationRevoke not implemented")
 }

@@ -35,40 +35,51 @@ func NewAuthUsecase(adminUserRepository ent.AdminUserRepository,
 	}
 }
 
-var ErrorAuthenticationFailed = errors.New("Authentication failed")
+var ErrAuthenticationFailed = errors.New("authentication failed")
 
 func (u *authUsecaseImpl) AuthAdminUser(ctx context.Context, apiKey string) (*domain.AdminUser, error) {
 	user, err := u.adminUserRepository.GetAdminUserByAPIKey(ctx, apiKey)
 	if err != nil {
-		return nil, ErrorAuthenticationFailed
+		return nil, ErrAuthenticationFailed
 	}
+
 	adminUser := domain.ToDomainAdminUser(*user)
+
 	return &adminUser, nil
 }
 
 func (u *authUsecaseImpl) AuthClientInformation(ctx context.Context, apiKey string) (*domain.ClientInformation, error) {
 	data, err := u.clientInformationRepository.GetClientInformationByAPIKey(ctx, apiKey)
 	if err != nil {
-		return nil, ErrorAuthenticationFailed
+		return nil, ErrAuthenticationFailed
 	}
+
 	clientInformation := domain.ToDomainClientInformation(*data)
+
 	return &clientInformation, nil
 }
 
 func (u *authUsecaseImpl) AuthKoyoInformation(ctx context.Context, apiKey string) (*domain.KoyoInformation, error) {
 	info, err := u.koyoInformationRepository.GetKoyoInformationByAPIKey(ctx, apiKey)
 	if err != nil {
-		return nil, ErrorAuthenticationFailed
+		return nil, ErrAuthenticationFailed
 	}
+
 	koyoInformation := domain.ToDomainKoyoInformation(*info)
+
 	return &koyoInformation, nil
 }
 
-func (u *authUsecaseImpl) AuthExternalInformation(ctx context.Context, apiKey string) (*domain.ExternalInformation, error) {
+func (u *authUsecaseImpl) AuthExternalInformation(
+	ctx context.Context,
+	apiKey string,
+) (*domain.ExternalInformation, error) {
 	info, err := u.externalInformationRepository.GetExternalInformationByAPIKey(ctx, apiKey)
 	if err != nil {
-		return nil, ErrorAuthenticationFailed
+		return nil, ErrAuthenticationFailed
 	}
+
 	externalInformation := domain.ToDomainExternalInformation(*info)
+
 	return &externalInformation, nil
 }

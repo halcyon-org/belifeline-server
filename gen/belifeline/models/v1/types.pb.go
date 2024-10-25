@@ -221,7 +221,7 @@ func (x *Version) GetValue() string {
 }
 
 // API Key
-type ApiKey struct {
+type APIKey struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -229,20 +229,20 @@ type ApiKey struct {
 	Key string `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
 }
 
-func (x *ApiKey) Reset() {
-	*x = ApiKey{}
+func (x *APIKey) Reset() {
+	*x = APIKey{}
 	mi := &file_belifeline_models_v1_types_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ApiKey) String() string {
+func (x *APIKey) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ApiKey) ProtoMessage() {}
+func (*APIKey) ProtoMessage() {}
 
-func (x *ApiKey) ProtoReflect() protoreflect.Message {
+func (x *APIKey) ProtoReflect() protoreflect.Message {
 	mi := &file_belifeline_models_v1_types_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -254,12 +254,12 @@ func (x *ApiKey) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ApiKey.ProtoReflect.Descriptor instead.
-func (*ApiKey) Descriptor() ([]byte, []int) {
+// Deprecated: Use APIKey.ProtoReflect.Descriptor instead.
+func (*APIKey) Descriptor() ([]byte, []int) {
 	return file_belifeline_models_v1_types_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *ApiKey) GetKey() string {
+func (x *APIKey) GetKey() string {
 	if x != nil {
 		return x.Key
 	}
@@ -470,7 +470,7 @@ var file_belifeline_models_v1_types_proto_rawDesc = []byte{
 	0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x1f, 0x0a, 0x07, 0x56, 0x65,
 	0x72, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x01,
 	0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x1a, 0x0a, 0x06, 0x41,
-	0x70, 0x69, 0x4b, 0x65, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01,
+	0x50, 0x49, 0x4b, 0x65, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x22, 0x29, 0x0a, 0x05, 0x50, 0x6f, 0x69, 0x6e, 0x74,
 	0x12, 0x20, 0x0a, 0x0b, 0x63, 0x6f, 0x6f, 0x72, 0x64, 0x69, 0x6e, 0x61, 0x74, 0x65, 0x73, 0x18,
 	0x01, 0x20, 0x03, 0x28, 0x01, 0x52, 0x0b, 0x63, 0x6f, 0x6f, 0x72, 0x64, 0x69, 0x6e, 0x61, 0x74,
@@ -521,7 +521,7 @@ var file_belifeline_models_v1_types_proto_goTypes = []any{
 	(*DateUntil)(nil),             // 1: belifeline.models.v1.DateUntil
 	(*ULID)(nil),                  // 2: belifeline.models.v1.ULID
 	(*Version)(nil),               // 3: belifeline.models.v1.Version
-	(*ApiKey)(nil),                // 4: belifeline.models.v1.ApiKey
+	(*APIKey)(nil),                // 4: belifeline.models.v1.APIKey
 	(*Point)(nil),                 // 5: belifeline.models.v1.Point
 	(*MultiPoint)(nil),            // 6: belifeline.models.v1.MultiPoint
 	(*Polygon)(nil),               // 7: belifeline.models.v1.Polygon

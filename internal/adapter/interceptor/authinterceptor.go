@@ -9,14 +9,14 @@ import (
 )
 
 const (
-	AUTH_TYPE_NO_AUTH = iota
-	AUTH_TYPE_ADMIN
-	AUTH_TYPE_CLIENT
-	AUTH_TYPE_KOYO
-	AUTH_TYPE_EXTINFO
+	authTypeNoAuth = iota
+	authTypeAdmin
+	authTypeClient
+	authTypeKoyo
+	authTypeExitInfo
 )
 
-const AuthAPIKeyHeader = "X-API-Key"
+const AuthAPIHeader = "X-API-Key"
 
 type AuthHeaderType string
 
@@ -38,7 +38,7 @@ type AuthInterceptorImpl struct {
 	authUsecase usecase.AuthUsecase
 }
 
-var ErrMissingAPIKey = fmt.Errorf("missing %s header", AuthAPIKeyHeader)
+var ErrMissingAPIKey = fmt.Errorf("missing %s header", AuthAPIHeader)
 
 func NewAuthInterceptorAdapter(authUsecase usecase.AuthUsecase) AuthInterceptorAdapter {
 	return &AuthInterceptorImpl{
@@ -53,7 +53,7 @@ func (a *AuthInterceptorImpl) AuthAdminServiceInterceptor() connect.UnaryInterce
 				return next(ctx, req)
 			}
 
-			apiKey := req.Header().Get(AuthAPIKeyHeader)
+			apiKey := req.Header().Get(AuthAPIHeader)
 			if apiKey == "" {
 				return nil, connect.NewError(connect.CodePermissionDenied, ErrMissingAPIKey)
 			}
@@ -62,10 +62,13 @@ func (a *AuthInterceptorImpl) AuthAdminServiceInterceptor() connect.UnaryInterce
 			if err != nil {
 				return nil, connect.NewError(connect.CodePermissionDenied, err)
 			}
+
 			ctx = context.WithValue(ctx, AdminUserKey, user)
+
 			return next(ctx, req)
 		})
 	}
+
 	return connect.UnaryInterceptorFunc(interceptor)
 }
 
@@ -76,7 +79,7 @@ func (a *AuthInterceptorImpl) AuthProviderServiceInterceptor() connect.UnaryInte
 				return next(ctx, req)
 			}
 
-			apiKey := req.Header().Get(AuthAPIKeyHeader)
+			apiKey := req.Header().Get(AuthAPIHeader)
 			if apiKey == "" {
 				return nil, connect.NewError(connect.CodePermissionDenied, ErrMissingAPIKey)
 			}
@@ -85,10 +88,13 @@ func (a *AuthInterceptorImpl) AuthProviderServiceInterceptor() connect.UnaryInte
 			if err != nil {
 				return nil, connect.NewError(connect.CodePermissionDenied, err)
 			}
+
 			ctx = context.WithValue(ctx, ClientInformationKey, client)
+
 			return next(ctx, req)
 		})
 	}
+
 	return connect.UnaryInterceptorFunc(interceptor)
 }
 
@@ -99,7 +105,7 @@ func (a *AuthInterceptorImpl) AuthKoyoServiceInterceptor() connect.UnaryIntercep
 				return next(ctx, req)
 			}
 
-			apiKey := req.Header().Get(AuthAPIKeyHeader)
+			apiKey := req.Header().Get(AuthAPIHeader)
 			if apiKey == "" {
 				return nil, connect.NewError(connect.CodePermissionDenied, ErrMissingAPIKey)
 			}
@@ -108,10 +114,13 @@ func (a *AuthInterceptorImpl) AuthKoyoServiceInterceptor() connect.UnaryIntercep
 			if err != nil {
 				return nil, connect.NewError(connect.CodePermissionDenied, err)
 			}
+
 			ctx = context.WithValue(ctx, KoyoInfoKey, koyo)
+
 			return next(ctx, req)
 		})
 	}
+
 	return connect.UnaryInterceptorFunc(interceptor)
 }
 
@@ -122,7 +131,7 @@ func (a *AuthInterceptorImpl) AuthExternalInformationServiceInterceptor() connec
 				return next(ctx, req)
 			}
 
-			apiKey := req.Header().Get(AuthAPIKeyHeader)
+			apiKey := req.Header().Get(AuthAPIHeader)
 			if apiKey == "" {
 				return nil, connect.NewError(connect.CodePermissionDenied, ErrMissingAPIKey)
 			}
@@ -131,9 +140,12 @@ func (a *AuthInterceptorImpl) AuthExternalInformationServiceInterceptor() connec
 			if err != nil {
 				return nil, connect.NewError(connect.CodePermissionDenied, err)
 			}
+
 			ctx = context.WithValue(ctx, ExternalInformationKey, ext)
+
 			return next(ctx, req)
 		})
 	}
+
 	return connect.UnaryInterceptorFunc(interceptor)
 }

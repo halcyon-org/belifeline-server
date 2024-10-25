@@ -19,28 +19,28 @@ type ExternalInformation struct {
 	LastUpdatedAt      time.Time
 }
 
-func ToDomainExternalInformation(e ent.ExternalInformation) ExternalInformation {
+func ToDomainExternalInformation(ent ent.ExternalInformation) ExternalInformation {
 	return ExternalInformation{
-		ID:                 string(e.ID),
-		Name:               e.Name,
-		Description:        e.Description,
-		License:            e.License,
-		LicenseDescription: e.LicenseDescription,
-		APIKey:             e.APIKey,
-		FirstEntryAt:       e.FirstEntryAt,
-		LastUpdatedAt:      e.LastUpdatedAt,
+		ID:                 string(ent.ID),
+		Name:               ent.Name,
+		Description:        ent.Description,
+		License:            ent.License,
+		LicenseDescription: ent.LicenseDescription,
+		APIKey:             ent.APIKey,
+		FirstEntryAt:       ent.FirstEntryAt,
+		LastUpdatedAt:      ent.LastUpdatedAt,
 	}
 }
 
-func ToAPIExternalInformation(d ExternalInformation) v1.ExternalInformation {
+func ToAPIExternalInformation(domain ExternalInformation) v1.ExternalInformation {
 	return v1.ExternalInformation{
-		ExternalId:          &v1.ULID{Value: d.ID},
-		ExternalName:        &d.Name,
-		ExternalDescription: &d.Description,
-		License:             &d.License,
-		LicenseDescription:  &d.LicenseDescription,
-		ApiKey:              &v1.ApiKey{Key: d.APIKey},
-		FirstEntryAt:        timestamppb.New(d.FirstEntryAt),
-		LastUpdatedAt:       timestamppb.New(d.LastUpdatedAt),
+		ExternalId:          &v1.ULID{Value: domain.ID},
+		ExternalName:        &domain.Name,
+		ExternalDescription: &domain.Description,
+		License:             &domain.License,
+		LicenseDescription:  &domain.LicenseDescription,
+		ApiKey:              &v1.APIKey{Key: domain.APIKey},
+		FirstEntryAt:        timestamppb.New(domain.FirstEntryAt),
+		LastUpdatedAt:       timestamppb.New(domain.LastUpdatedAt),
 	}
 }

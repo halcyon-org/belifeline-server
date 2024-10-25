@@ -20,11 +20,11 @@ import (
 // Injectors from wire.go:
 
 func InitializeControllerSet() (*ControllersSet, error) {
-	configRepository, err := config.NewConfigRepository()
+	repository, err := config.NewConfigRepository()
 	if err != nil {
 		return nil, err
 	}
-	client, err := ent.InitDB(configRepository)
+	client, err := ent.InitDB(repository)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func InitializeControllerSet() (*ControllersSet, error) {
 	authUsecase := usecase.NewAuthUsecase(adminUserRepository, clientInformationRepository, koyoInformationRepository, externalInformationRepository)
 	authInterceptorAdapter := interceptor.NewAuthInterceptorAdapter(authUsecase)
 	loggingInterceptorAdapter := interceptor.NewLoggingInterceptorAdapter()
-	beLifelineController := controller.NewBeLifelineController(adminServiceHandler, providerServiceHandler, externalInformationServiceHandler, koyoServiceHandler, healthServiceHandler, authInterceptorAdapter, loggingInterceptorAdapter, configRepository)
+	beLifelineController := controller.NewBeLifelineController(adminServiceHandler, providerServiceHandler, externalInformationServiceHandler, koyoServiceHandler, healthServiceHandler, authInterceptorAdapter, loggingInterceptorAdapter, repository)
 	controllersSet := &ControllersSet{
 		BeLifelineController: beLifelineController,
 	}

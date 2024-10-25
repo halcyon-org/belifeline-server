@@ -11,15 +11,16 @@ import (
 
 type ContextKey string
 
-const LoggerKey ContextKey = "Logger"
-const HeaderResponseID = "ResponseID"
+const (
+	LoggerKey        ContextKey = "Logger"
+	HeaderResponseID string     = "ResponseID"
+)
 
 type LoggingInterceptorAdapter interface {
 	LoggingInterceptor() connect.UnaryInterceptorFunc
 }
 
-type LoggingInterceptorImpl struct {
-}
+type LoggingInterceptorImpl struct{}
 
 func NewLoggingInterceptorAdapter() LoggingInterceptorAdapter {
 	return &LoggingInterceptorImpl{}
@@ -31,9 +32,9 @@ func (l *LoggingInterceptorImpl) LoggingInterceptor() connect.UnaryInterceptorFu
 			ctx context.Context,
 			req connect.AnyRequest,
 		) (connect.AnyResponse, error) {
-			resId := uuid.New().String()
+			resID := uuid.New().String()
 
-			logger := slog.New(slog.NewJSONHandler(os.Stdout, nil)).With(HeaderResponseID, resId)
+			logger := slog.New(slog.NewJSONHandler(os.Stdout, nil)).With(HeaderResponseID, resID)
 
 			nctx := context.WithValue(ctx, LoggerKey, logger)
 
@@ -49,9 +50,11 @@ func (l *LoggingInterceptorImpl) LoggingInterceptor() connect.UnaryInterceptorFu
 				return res, err
 			}
 
-			res.Header().Set(HeaderResponseID, resId)
+			res.Header().Set(HeaderResponseID, resID)
+
 			return res, err
 		})
 	}
+
 	return connect.UnaryInterceptorFunc(interceptor)
 }

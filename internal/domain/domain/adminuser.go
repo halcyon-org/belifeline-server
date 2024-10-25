@@ -15,13 +15,13 @@ type AdminUser struct {
 	LastUpdatedAt time.Time
 }
 
-func ToDomainAdminUser(e ent.AdminUser) AdminUser {
+func ToDomainAdminUser(ent ent.AdminUser) AdminUser {
 	return AdminUser{
-		ID:            string(e.ID),
-		Name:          e.Name,
-		APIKey:        e.APIKey,
-		CreatedAt:     e.CreatedAt,
-		LastUsedAt:    e.LastUsedAt,
-		LastUpdatedAt: e.LastUpdatedAt,
+		ID:            string(ent.ID),
+		Name:          ent.Name,
+		APIKey:        ent.APIKey,
+		CreatedAt:     ent.CreatedAt,
+		LastUsedAt:    ent.LastUsedAt,
+		LastUpdatedAt: ent.LastUpdatedAt,
 	}
 }

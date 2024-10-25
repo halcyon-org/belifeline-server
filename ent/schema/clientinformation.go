@@ -16,7 +16,11 @@ type ClientInformation struct {
 // Fields of the ClientInformation.
 func (ClientInformation) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("id").GoType(pulid.ID("")).Unique().Immutable().DefaultFunc(func() pulid.ID { return pulid.MustNew("US") }),
+		field.String("id").
+			GoType(pulid.ID("")).
+			Unique().
+			Immutable().
+			DefaultFunc(func() pulid.ID { return pulid.MustNew("US") }),
 		field.String("username").NotEmpty(),
 		field.String("api_key"),
 		field.Time("created_at").Default(time.Now).Immutable(),

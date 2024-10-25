@@ -98,7 +98,7 @@ type ExternalInformation struct {
 	License             *string                `protobuf:"bytes,4,opt,name=license,proto3,oneof" json:"license,omitempty"` // External Information's license type
 	LicenseDescription  *string                `protobuf:"bytes,5,opt,name=license_description,json=licenseDescription,proto3,oneof" json:"license_description,omitempty"`
 	ExternalDataIds     []*ULID                `protobuf:"bytes,6,rep,name=external_data_ids,json=externalDataIds,proto3" json:"external_data_ids,omitempty"` // External Information's data list
-	ApiKey              *ApiKey                `protobuf:"bytes,7,opt,name=api_key,json=apiKey,proto3,oneof" json:"api_key,omitempty"`                        // Required for update notification for this ExternalInformation
+	ApiKey              *APIKey                `protobuf:"bytes,7,opt,name=api_key,json=apiKey,proto3,oneof" json:"api_key,omitempty"`                        // Required for update notification for this ExternalInformation
 	FirstEntryAt        *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=first_entry_at,json=firstEntryAt,proto3,oneof" json:"first_entry_at,omitempty"`    // Immutable at the date and time External Information is registered in the belifeline
 	LastUpdatedAt       *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=last_updated_at,json=lastUpdatedAt,proto3,oneof" json:"last_updated_at,omitempty"` // Time External Information last updated
 	UpdatedHistory      []string               `protobuf:"bytes,10,rep,name=updated_history,json=updatedHistory,proto3" json:"updated_history,omitempty"`     // History of updates to External Information
@@ -176,7 +176,7 @@ func (x *ExternalInformation) GetExternalDataIds() []*ULID {
 	return nil
 }
 
-func (x *ExternalInformation) GetApiKey() *ApiKey {
+func (x *ExternalInformation) GetApiKey() *APIKey {
 	if x != nil {
 		return x.ApiKey
 	}
@@ -249,7 +249,7 @@ var file_belifeline_models_v1_extinfo_proto_rawDesc = []byte{
 	0x49, 0x44, 0x52, 0x0f, 0x65, 0x78, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x44, 0x61, 0x74, 0x61,
 	0x49, 0x64, 0x73, 0x12, 0x3a, 0x0a, 0x07, 0x61, 0x70, 0x69, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x07,
 	0x20, 0x01, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x62, 0x65, 0x6c, 0x69, 0x66, 0x65, 0x6c, 0x69, 0x6e,
-	0x65, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x70, 0x69, 0x4b,
+	0x65, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x50, 0x49, 0x4b,
 	0x65, 0x79, 0x48, 0x05, 0x52, 0x06, 0x61, 0x70, 0x69, 0x4b, 0x65, 0x79, 0x88, 0x01, 0x01, 0x12,
 	0x45, 0x0a, 0x0e, 0x66, 0x69, 0x72, 0x73, 0x74, 0x5f, 0x65, 0x6e, 0x74, 0x72, 0x79, 0x5f, 0x61,
 	0x74, 0x18, 0x08, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65,
@@ -297,7 +297,7 @@ var file_belifeline_models_v1_extinfo_proto_goTypes = []any{
 	(*ExternalInformation)(nil),    // 1: belifeline.models.v1.ExternalInformation
 	(*ULID)(nil),                   // 2: belifeline.models.v1.ULID
 	(*MultiPolygon)(nil),           // 3: belifeline.models.v1.MultiPolygon
-	(*ApiKey)(nil),                 // 4: belifeline.models.v1.ApiKey
+	(*APIKey)(nil),                 // 4: belifeline.models.v1.APIKey
 	(*timestamppb.Timestamp)(nil),  // 5: google.protobuf.Timestamp
 }
 var file_belifeline_models_v1_extinfo_proto_depIdxs = []int32{
@@ -305,7 +305,7 @@ var file_belifeline_models_v1_extinfo_proto_depIdxs = []int32{
 	3, // 1: belifeline.models.v1.ExampleInfoExampleData.area:type_name -> belifeline.models.v1.MultiPolygon
 	2, // 2: belifeline.models.v1.ExternalInformation.external_id:type_name -> belifeline.models.v1.ULID
 	2, // 3: belifeline.models.v1.ExternalInformation.external_data_ids:type_name -> belifeline.models.v1.ULID
-	4, // 4: belifeline.models.v1.ExternalInformation.api_key:type_name -> belifeline.models.v1.ApiKey
+	4, // 4: belifeline.models.v1.ExternalInformation.api_key:type_name -> belifeline.models.v1.APIKey
 	5, // 5: belifeline.models.v1.ExternalInformation.first_entry_at:type_name -> google.protobuf.Timestamp
 	5, // 6: belifeline.models.v1.ExternalInformation.last_updated_at:type_name -> google.protobuf.Timestamp
 	7, // [7:7] is the sub-list for method output_type

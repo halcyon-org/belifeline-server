@@ -7,7 +7,7 @@ import (
 	"github.com/kelseyhightower/envconfig"
 )
 
-type ConfigRepository interface {
+type Repository interface {
 	LoadConfig() error
 	GetConfig() Config
 }
@@ -31,9 +31,10 @@ type PostgresConfig struct {
 	Port     int
 }
 
-func NewConfigRepository() (ConfigRepository, error) {
+func NewConfigRepository() (Repository, error) {
 	c := &configRepositoryImpl{}
 	err := c.LoadConfig()
+
 	return c, err
 }
 
@@ -47,17 +48,16 @@ func (c *configRepositoryImpl) LoadConfig() error {
 	}
 
 	psqlConfig := PostgresConfig{}
-	err := envconfig.Process("postgres", &psqlConfig)
-	if err != nil {
+	if err := envconfig.Process("postgres", &psqlConfig); err != nil {
 		return err
 	}
 
-	err = envconfig.Process("kizuna", &c.config)
-	if err != nil {
+	if err := envconfig.Process("kizuna", &c.config); err != nil {
 		return err
 	}
 
 	c.config.Postgres = psqlConfig
+
 	return nil
 }
 

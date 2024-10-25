@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"flag"
-	"fmt"
 	"log"
+	"net/url"
 	"os"
 
 	"github.com/halcyon-org/kizuna/gen/ent"
@@ -23,7 +23,18 @@ func main() {
 
 	config := cfg.GetConfig()
 
-	client, err := ent.Open("postgres", fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable", config.Postgres.User, config.Postgres.Password, config.Postgres.Host, config.Postgres.Port, config.Postgres.DB))
+	dataSource := url.URL{
+		Scheme:   "postgres",
+		User:     url.UserPassword(config.Postgres.User, config.Postgres.Password),
+		Host:     config.Postgres.Host,
+		Path:     config.Postgres.DB,
+		RawQuery: "sslmode=disable",
+	}
+
+	client, err := ent.Open(
+		"postgres",
+		dataSource.String(),
+	)
 	if err != nil {
 		log.Fatalf("failed opening connection to postgres: %v", err)
 	}
