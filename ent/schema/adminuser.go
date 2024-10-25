@@ -16,7 +16,11 @@ type AdminUser struct {
 // Fields of the AdminUser.
 func (AdminUser) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("id").GoType(pulid.ID("")).Unique().Immutable().DefaultFunc(func() pulid.ID { return pulid.MustNew("US") }),
+		field.String("id").
+			GoType(pulid.ID("")).
+			Unique().
+			Immutable().
+			DefaultFunc(func() pulid.ID { return pulid.MustNew("US") }),
 		field.String("name").NotEmpty(),
 		field.String("api_key"),
 		field.Time("created_at").Default(time.Now).Immutable(),

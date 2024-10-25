@@ -10,25 +10,37 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-type ProviderServiceHandlerImpl struct {
-}
+type ProviderServiceHandlerImpl struct{}
 
 func NewProviderServiceHandler() mainv1connect.ProviderServiceHandler {
 	return &ProviderServiceHandlerImpl{}
 }
 
-func (s *ProviderServiceHandlerImpl) ExternalInformationList(ctx context.Context, req *connect.Request[mainv1.ExternalInformationListRequest]) (*connect.Response[mainv1.ExternalInformationListResponse], error) {
+func (s *ProviderServiceHandlerImpl) ExternalInformationList(
+	context.Context,
+	*connect.Request[mainv1.ExternalInformationListRequest],
+) (*connect.Response[mainv1.ExternalInformationListResponse], error) {
 	return nil, status.Error(codes.Unimplemented, "method ExternalInformationList not implemented")
 }
 
-func (s *ProviderServiceHandlerImpl) KoyoList(ctx context.Context, req *connect.Request[mainv1.KoyoListRequest], stream *connect.ServerStream[mainv1.KoyoListResponse]) error {
+func (s *ProviderServiceHandlerImpl) KoyoList(
+	context.Context,
+	*connect.Request[mainv1.KoyoListRequest],
+	*connect.ServerStream[mainv1.KoyoListResponse],
+) error {
 	return status.Error(codes.Unimplemented, "method KoyoList not implemented")
 }
 
-func (s *ProviderServiceHandlerImpl) ExternalInformationGet(context.Context, *connect.Request[mainv1.ExternalInformationGetRequest]) (*connect.Response[mainv1.ExternalInformationGetResponse], error) {
+func (s *ProviderServiceHandlerImpl) ExternalInformationGet(
+	context.Context,
+	*connect.Request[mainv1.ExternalInformationGetRequest],
+) (*connect.Response[mainv1.ExternalInformationGetResponse], error) {
 	return nil, status.Error(codes.Unimplemented, "method ExternalInformationGet not implemented")
 }
 
-func (s *ProviderServiceHandlerImpl) KoyoDataGet(context.Context, *connect.Request[mainv1.KoyoDataGetRequest]) (*connect.Response[mainv1.KoyoDataGetResponse], error) {
+func (s *ProviderServiceHandlerImpl) KoyoDataGet(
+	context.Context,
+	*connect.Request[mainv1.KoyoDataGetRequest],
+) (*connect.Response[mainv1.KoyoDataGetResponse], error) {
 	return nil, status.Error(codes.Unimplemented, "method KoyoDataGet not implemented")
 }

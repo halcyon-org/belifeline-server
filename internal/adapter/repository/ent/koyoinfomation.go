@@ -9,8 +9,23 @@ import (
 )
 
 type KoyoInformationRepository interface {
-	CreateKoyoInformation(ctx context.Context, name string, description string, external []pulid.ID, params map[string]string, scales []float64, dataIds []pulid.ID, version string, license string, dataType koyoinformation.DataType, apiKey string) (*ent.KoyoInformation, error)
-	GetKoyoInformationByAPIKey(ctx context.Context, apiKey string) (*ent.KoyoInformation, error)
+	CreateKoyoInformation(
+		ctx context.Context,
+		name string,
+		description string,
+		external []pulid.ID,
+		params map[string]string,
+		scales []float64,
+		dataIds []pulid.ID,
+		version string,
+		license string,
+		dataType koyoinformation.DataType,
+		apiKey string,
+	) (*ent.KoyoInformation, error)
+	GetKoyoInformationByAPIKey(
+		ctx context.Context,
+		apiKey string,
+	) (*ent.KoyoInformation, error)
 }
 
 type koyoInformationRepositoryImpl struct {
@@ -23,7 +38,19 @@ func NewKoyoInformationRepository(db *ent.Client) KoyoInformationRepository {
 	}
 }
 
-func (r *koyoInformationRepositoryImpl) CreateKoyoInformation(ctx context.Context, name string, description string, external []pulid.ID, params map[string]string, scales []float64, dataIds []pulid.ID, version string, license string, dataType koyoinformation.DataType, apiKey string) (*ent.KoyoInformation, error) {
+func (r *koyoInformationRepositoryImpl) CreateKoyoInformation(
+	ctx context.Context,
+	name string,
+	description string,
+	external []pulid.ID,
+	params map[string]string,
+	scales []float64,
+	dataIds []pulid.ID,
+	version string,
+	license string,
+	dataType koyoinformation.DataType,
+	apiKey string,
+) (*ent.KoyoInformation, error) {
 	return r.DB.KoyoInformation.Create().
 		SetName(name).
 		SetDescription(description).
@@ -38,6 +65,9 @@ func (r *koyoInformationRepositoryImpl) CreateKoyoInformation(ctx context.Contex
 		Save(ctx)
 }
 
-func (r *koyoInformationRepositoryImpl) GetKoyoInformationByAPIKey(ctx context.Context, apiKey string) (*ent.KoyoInformation, error) {
+func (r *koyoInformationRepositoryImpl) GetKoyoInformationByAPIKey(
+	ctx context.Context,
+	apiKey string,
+) (*ent.KoyoInformation, error) {
 	return r.DB.KoyoInformation.Query().Where(koyoinformation.APIKey(apiKey)).Only(ctx)
 }

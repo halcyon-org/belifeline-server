@@ -85,11 +85,11 @@ var file_belifeline_v1_main_proto_rawDesc = []byte{
 	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x21, 0x2e,
 	0x62, 0x65, 0x6c, 0x69, 0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x4b, 0x6f,
 	0x79, 0x6f, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x22, 0x00, 0x12, 0x5c, 0x0a, 0x0d, 0x4b, 0x6f, 0x79, 0x6f, 0x41, 0x70, 0x69, 0x52, 0x65, 0x76,
+	0x22, 0x00, 0x12, 0x5c, 0x0a, 0x0d, 0x4b, 0x6f, 0x79, 0x6f, 0x41, 0x50, 0x49, 0x52, 0x65, 0x76,
 	0x6f, 0x6b, 0x65, 0x12, 0x23, 0x2e, 0x62, 0x65, 0x6c, 0x69, 0x66, 0x65, 0x6c, 0x69, 0x6e, 0x65,
-	0x2e, 0x76, 0x31, 0x2e, 0x4b, 0x6f, 0x79, 0x6f, 0x41, 0x70, 0x69, 0x52, 0x65, 0x76, 0x6f, 0x6b,
+	0x2e, 0x76, 0x31, 0x2e, 0x4b, 0x6f, 0x79, 0x6f, 0x41, 0x50, 0x49, 0x52, 0x65, 0x76, 0x6f, 0x6b,
 	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x24, 0x2e, 0x62, 0x65, 0x6c, 0x69, 0x66,
-	0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x4b, 0x6f, 0x79, 0x6f, 0x41, 0x70, 0x69,
+	0x65, 0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x4b, 0x6f, 0x79, 0x6f, 0x41, 0x50, 0x49,
 	0x52, 0x65, 0x76, 0x6f, 0x6b, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00,
 	0x32, 0xaf, 0x03, 0x0a, 0x0f, 0x50, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72, 0x53, 0x65, 0x72,
 	0x76, 0x69, 0x63, 0x65, 0x12, 0x7a, 0x0a, 0x17, 0x45, 0x78, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c,
@@ -160,7 +160,7 @@ var file_belifeline_v1_main_proto_goTypes = []any{
 	(*ExternalInformationDeleteRequest)(nil),              // 7: belifeline.v1.ExternalInformationDeleteRequest
 	(*KoyoCreateRequest)(nil),                             // 8: belifeline.v1.KoyoCreateRequest
 	(*KoyoDeleteRequest)(nil),                             // 9: belifeline.v1.KoyoDeleteRequest
-	(*KoyoApiRevokeRequest)(nil),                          // 10: belifeline.v1.KoyoApiRevokeRequest
+	(*KoyoAPIRevokeRequest)(nil),                          // 10: belifeline.v1.KoyoAPIRevokeRequest
 	(*ExternalInformationListRequest)(nil),                // 11: belifeline.v1.ExternalInformationListRequest
 	(*KoyoListRequest)(nil),                               // 12: belifeline.v1.KoyoListRequest
 	(*ExternalInformationGetRequest)(nil),                 // 13: belifeline.v1.ExternalInformationGetRequest
@@ -178,7 +178,7 @@ var file_belifeline_v1_main_proto_goTypes = []any{
 	(*ExternalInformationDeleteResponse)(nil),             // 25: belifeline.v1.ExternalInformationDeleteResponse
 	(*KoyoCreateResponse)(nil),                            // 26: belifeline.v1.KoyoCreateResponse
 	(*KoyoDeleteResponse)(nil),                            // 27: belifeline.v1.KoyoDeleteResponse
-	(*KoyoApiRevokeResponse)(nil),                         // 28: belifeline.v1.KoyoApiRevokeResponse
+	(*KoyoAPIRevokeResponse)(nil),                         // 28: belifeline.v1.KoyoAPIRevokeResponse
 	(*ExternalInformationListResponse)(nil),               // 29: belifeline.v1.ExternalInformationListResponse
 	(*KoyoListResponse)(nil),                              // 30: belifeline.v1.KoyoListResponse
 	(*ExternalInformationGetResponse)(nil),                // 31: belifeline.v1.ExternalInformationGetResponse
@@ -198,7 +198,7 @@ var file_belifeline_v1_main_proto_depIdxs = []int32{
 	7,  // 7: belifeline.v1.AdminService.ExternalInformationDelete:input_type -> belifeline.v1.ExternalInformationDeleteRequest
 	8,  // 8: belifeline.v1.AdminService.KoyoCreate:input_type -> belifeline.v1.KoyoCreateRequest
 	9,  // 9: belifeline.v1.AdminService.KoyoDelete:input_type -> belifeline.v1.KoyoDeleteRequest
-	10, // 10: belifeline.v1.AdminService.KoyoApiRevoke:input_type -> belifeline.v1.KoyoApiRevokeRequest
+	10, // 10: belifeline.v1.AdminService.KoyoAPIRevoke:input_type -> belifeline.v1.KoyoAPIRevokeRequest
 	11, // 11: belifeline.v1.ProviderService.ExternalInformationList:input_type -> belifeline.v1.ExternalInformationListRequest
 	12, // 12: belifeline.v1.ProviderService.KoyoList:input_type -> belifeline.v1.KoyoListRequest
 	13, // 13: belifeline.v1.ProviderService.ExternalInformationGet:input_type -> belifeline.v1.ExternalInformationGetRequest
@@ -216,7 +216,7 @@ var file_belifeline_v1_main_proto_depIdxs = []int32{
 	25, // 25: belifeline.v1.AdminService.ExternalInformationDelete:output_type -> belifeline.v1.ExternalInformationDeleteResponse
 	26, // 26: belifeline.v1.AdminService.KoyoCreate:output_type -> belifeline.v1.KoyoCreateResponse
 	27, // 27: belifeline.v1.AdminService.KoyoDelete:output_type -> belifeline.v1.KoyoDeleteResponse
-	28, // 28: belifeline.v1.AdminService.KoyoApiRevoke:output_type -> belifeline.v1.KoyoApiRevokeResponse
+	28, // 28: belifeline.v1.AdminService.KoyoAPIRevoke:output_type -> belifeline.v1.KoyoAPIRevokeResponse
 	29, // 29: belifeline.v1.ProviderService.ExternalInformationList:output_type -> belifeline.v1.ExternalInformationListResponse
 	30, // 30: belifeline.v1.ProviderService.KoyoList:output_type -> belifeline.v1.KoyoListResponse
 	31, // 31: belifeline.v1.ProviderService.ExternalInformationGet:output_type -> belifeline.v1.ExternalInformationGetResponse

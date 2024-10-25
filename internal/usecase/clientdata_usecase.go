@@ -12,46 +12,57 @@ import (
 type ClientInformationUsecase interface {
 	CreateClientInformation(ctx context.Context, username string) (*domain.ClientInformation, error)
 	ListClientInformation(ctx context.Context, limit int32) ([]*domain.ClientInformation, error)
-	DeleteClientInformation(ctx context.Context, client_id string) (string, error)
-	RevokeApiKey(ctx context.Context, client_id string) (string, string, error)
+	DeleteClientInformation(ctx context.Context, clientID string) (string, error)
+	RevokeAPIKey(ctx context.Context, clientID string) (string, string, error)
 }
 
 type clientInformationUsecaseImpl struct {
 	clientInformationRepository entrepo.ClientInformationRepository
 }
 
-func NewClientInformationUsecase(clientInformationRepository entrepo.ClientInformationRepository) ClientInformationUsecase {
+func NewClientInformationUsecase(
+	clientInformationRepository entrepo.ClientInformationRepository,
+) ClientInformationUsecase {
 	return &clientInformationUsecaseImpl{
 		clientInformationRepository: clientInformationRepository,
 	}
 }
 
-func (u *clientInformationUsecaseImpl) CreateClientInformation(ctx context.Context, username string) (*domain.ClientInformation, error) {
-	data, err := u.clientInformationRepository.CreateClientInformation(ctx, username, util.GenApiKey())
+func (u *clientInformationUsecaseImpl) CreateClientInformation(
+	ctx context.Context,
+	username string,
+) (*domain.ClientInformation, error) {
+	data, err := u.clientInformationRepository.CreateClientInformation(ctx, username, util.GenAPIKey())
 	if err != nil {
 		return nil, err
 	}
 
 	domainData := domain.ToDomainClientInformation(*data)
+
 	return &domainData, nil
 }
 
-func (u *clientInformationUsecaseImpl) ListClientInformation(ctx context.Context, limit int32) ([]*domain.ClientInformation, error) {
+func (u *clientInformationUsecaseImpl) ListClientInformation(
+	ctx context.Context,
+	limit int32,
+) ([]*domain.ClientInformation, error) {
 	dataList, err := u.clientInformationRepository.GetAllClientInformation(ctx, limit)
 	if err != nil {
 		return nil, err
 	}
 
-	var domainDataList = make([]*domain.ClientInformation, len(dataList))
+	domainDataList := make([]*domain.ClientInformation, len(dataList))
+
 	for i, data := range dataList {
 		domainData := domain.ToDomainClientInformation(*data)
 		domainDataList[i] = &domainData
 	}
+
 	return domainDataList, nil
 }
 
-func (u *clientInformationUsecaseImpl) DeleteClientInformation(ctx context.Context, client_id string) (string, error) {
-	id, err := u.clientInformationRepository.DeleteClientInformation(ctx, pulid.ID(client_id))
+func (u *clientInformationUsecaseImpl) DeleteClientInformation(ctx context.Context, clientID string) (string, error) {
+	id, err := u.clientInformationRepository.DeleteClientInformation(ctx, pulid.ID(clientID))
 	if err != nil {
 		return "", err
 	}
@@ -59,8 +70,8 @@ func (u *clientInformationUsecaseImpl) DeleteClientInformation(ctx context.Conte
 	return string(*id), nil
 }
 
-func (u *clientInformationUsecaseImpl) RevokeApiKey(ctx context.Context, client_id string) (string, string, error) {
-	id, apiKey, err := u.clientInformationRepository.UpdateAPIKey(ctx, pulid.ID(client_id), util.GenApiKey())
+func (u *clientInformationUsecaseImpl) RevokeAPIKey(ctx context.Context, clientID string) (string, string, error) {
+	id, apiKey, err := u.clientInformationRepository.UpdateAPIKey(ctx, pulid.ID(clientID), util.GenAPIKey())
 	if err != nil {
 		return "", "", err
 	}

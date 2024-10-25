@@ -16,7 +16,11 @@ type ExternalInformation struct {
 // Fields of the ExternalInformation.
 func (ExternalInformation) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("id").GoType(pulid.ID("")).Unique().Immutable().DefaultFunc(func() pulid.ID { return pulid.MustNew("US") }),
+		field.String("id").
+			GoType(pulid.ID("")).
+			Unique().
+			Immutable().
+			DefaultFunc(func() pulid.ID { return pulid.MustNew("US") }),
 		field.String("name").NotEmpty(),
 		field.String("description").NotEmpty(),
 		field.String("license").NotEmpty(),

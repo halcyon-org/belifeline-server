@@ -10,8 +10,22 @@ import (
 )
 
 type ExternalInformationRepository interface {
-	CreateExternalInformation(ctx context.Context, name string, description string, license string, licenseDescription string, apiKey string) (*ent.ExternalInformation, error)
-	UpdateExternalInformation(ctx context.Context, external_id pulid.ID, name *string, description *string, license *string, licenseDescription *string) (*ent.ExternalInformation, error)
+	CreateExternalInformation(
+		ctx context.Context,
+		name string,
+		description string,
+		license string,
+		licenseDescription string,
+		apiKey string,
+	) (*ent.ExternalInformation, error)
+	UpdateExternalInformation(
+		ctx context.Context,
+		externalID pulid.ID,
+		name *string,
+		description *string,
+		license *string,
+		licenseDescription *string,
+	) (*ent.ExternalInformation, error)
 	GetExternalInformationByAPIKey(ctx context.Context, apiKey string) (*ent.ExternalInformation, error)
 }
 
@@ -25,7 +39,14 @@ func NewExternalInformationRepository(db *ent.Client) ExternalInformationReposit
 	}
 }
 
-func (r *externalInformationRepositoryImpl) CreateExternalInformation(ctx context.Context, name string, description string, license string, licenseDescription string, apiKey string) (*ent.ExternalInformation, error) {
+func (r *externalInformationRepositoryImpl) CreateExternalInformation(
+	ctx context.Context,
+	name string,
+	description string,
+	license string,
+	licenseDescription string,
+	apiKey string,
+) (*ent.ExternalInformation, error) {
 	externalInformation, err := r.DB.ExternalInformation.Create().
 		SetName(name).
 		SetDescription(description).
@@ -36,30 +57,46 @@ func (r *externalInformationRepositoryImpl) CreateExternalInformation(ctx contex
 	if err != nil {
 		return nil, err
 	}
+
 	return externalInformation, nil
 }
 
-func (r *externalInformationRepositoryImpl) UpdateExternalInformation(ctx context.Context, external_id pulid.ID, name *string, description *string, license *string, licenseDescription *string) (*ent.ExternalInformation, error) {
-	u := r.DB.ExternalInformation.UpdateOneID(external_id)
+func (r *externalInformationRepositoryImpl) UpdateExternalInformation(
+	ctx context.Context,
+	externalID pulid.ID,
+	name *string,
+	description *string,
+	license *string,
+	licenseDescription *string,
+) (*ent.ExternalInformation, error) {
+	update := r.DB.ExternalInformation.UpdateOneID(externalID)
 	if name != nil {
-		u.SetName(*name)
+		update.SetName(*name)
 	}
+
 	if description != nil {
-		u.SetDescription(*description)
+		update.SetDescription(*description)
 	}
+
 	if license != nil {
-		u.SetLicense(*license)
+		update.SetLicense(*license)
 	}
+
 	if licenseDescription != nil {
-		u.SetLicenseDescription(*licenseDescription)
+		update.SetLicenseDescription(*licenseDescription)
 	}
-	externalInformation, err := u.SetLastUpdatedAt(time.Now()).Save(ctx)
+
+	externalInformation, err := update.SetLastUpdatedAt(time.Now()).Save(ctx)
 	if err != nil {
 		return nil, err
 	}
+
 	return externalInformation, nil
 }
 
-func (r *externalInformationRepositoryImpl) GetExternalInformationByAPIKey(ctx context.Context, apiKey string) (*ent.ExternalInformation, error) {
+func (r *externalInformationRepositoryImpl) GetExternalInformationByAPIKey(
+	ctx context.Context,
+	apiKey string,
+) (*ent.ExternalInformation, error) {
 	return r.DB.ExternalInformation.Query().Where(externalinformation.APIKey(apiKey)).Only(ctx)
 }

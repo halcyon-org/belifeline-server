@@ -32,20 +32,20 @@ type KoyoInformation struct {
 	UpdatedAt    time.Time
 }
 
-func ToDomainKoyoInformation(e ent.KoyoInformation) KoyoInformation {
+func ToDomainKoyoInformation(ent ent.KoyoInformation) KoyoInformation {
 	return KoyoInformation{
-		ID:           string(e.ID),
-		Name:         e.Name,
-		Description:  e.Description,
-		Params:       e.Params,
-		Scales:       e.Scales,
-		Version:      e.Version,
-		License:      e.License,
-		DataType:     DataType(e.DataType),
-		APIKey:       e.APIKey,
-		FirstEntryAt: e.FirstEntryAt,
-		LastEntryAt:  e.LastEntryAt,
-		UpdatedAt:    e.UpdatedAt,
+		ID:           string(ent.ID),
+		Name:         ent.Name,
+		Description:  ent.Description,
+		Params:       ent.Params,
+		Scales:       ent.Scales,
+		Version:      ent.Version,
+		License:      ent.License,
+		DataType:     DataType(ent.DataType),
+		APIKey:       ent.APIKey,
+		FirstEntryAt: ent.FirstEntryAt,
+		LastEntryAt:  ent.LastEntryAt,
+		UpdatedAt:    ent.UpdatedAt,
 	}
 }
 
@@ -56,6 +56,7 @@ func ToAPIKoyoInformation(d KoyoInformation) v1.KoyoInformation {
 	}
 
 	var dataType v1.DataType
+
 	switch d.DataType {
 	case DataTypeUnspecified:
 		dataType = v1.DataType_DATA_TYPE_UNSPECIFIED
@@ -76,7 +77,7 @@ func ToAPIKoyoInformation(d KoyoInformation) v1.KoyoInformation {
 		Version:         &v1.Version{Value: d.Version},
 		License:         &d.License,
 		DataType:        &dataType,
-		ApiKey:          &v1.ApiKey{Key: d.APIKey},
+		ApiKey:          &v1.APIKey{Key: d.APIKey},
 		FirstEntryAt:    timestamppb.New(d.FirstEntryAt),
 		LastEntryAt:     timestamppb.New(d.LastEntryAt),
 		LastUpdatedAt:   timestamppb.New(d.UpdatedAt),

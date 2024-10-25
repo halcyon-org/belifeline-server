@@ -40,7 +40,7 @@ type KoyoInformation struct {
 	License         *string                `protobuf:"bytes,10,opt,name=license,proto3,oneof" json:"license,omitempty"`                                                       // Koyo's license type
 	ExtLicenses     []string               `protobuf:"bytes,11,rep,name=ext_licenses,json=extLicenses,proto3" json:"ext_licenses,omitempty"`                                  // List of licenses on which Koyo depends
 	DataType        *DataType              `protobuf:"varint,12,opt,name=data_type,json=dataType,proto3,enum=belifeline.models.v1.DataType,oneof" json:"data_type,omitempty"` // Format of data returned by Koyo (in KoyoData)
-	ApiKey          *ApiKey                `protobuf:"bytes,13,opt,name=api_key,json=apiKey,proto3,oneof" json:"api_key,omitempty"`
+	ApiKey          *APIKey                `protobuf:"bytes,13,opt,name=api_key,json=apiKey,proto3,oneof" json:"api_key,omitempty"`
 	FirstEntryAt    *timestamppb.Timestamp `protobuf:"bytes,14,opt,name=first_entry_at,json=firstEntryAt,proto3,oneof" json:"first_entry_at,omitempty"`    // Immutable at the date and time Koyo is registered in the belifeline
 	LastEntryAt     *timestamppb.Timestamp `protobuf:"bytes,15,opt,name=last_entry_at,json=lastEntryAt,proto3,oneof" json:"last_entry_at,omitempty"`       // Time koyo last added data
 	LastUpdatedAt   *timestamppb.Timestamp `protobuf:"bytes,16,opt,name=last_updated_at,json=lastUpdatedAt,proto3,oneof" json:"last_updated_at,omitempty"` // Time koyo information last updated
@@ -153,7 +153,7 @@ func (x *KoyoInformation) GetDataType() DataType {
 	return DataType_DATA_TYPE_UNSPECIFIED
 }
 
-func (x *KoyoInformation) GetApiKey() *ApiKey {
+func (x *KoyoInformation) GetApiKey() *APIKey {
 	if x != nil {
 		return x.ApiKey
 	}
@@ -328,7 +328,7 @@ var file_belifeline_models_v1_koyo_proto_rawDesc = []byte{
 	0x79, 0x70, 0x65, 0x88, 0x01, 0x01, 0x12, 0x3a, 0x0a, 0x07, 0x61, 0x70, 0x69, 0x5f, 0x6b, 0x65,
 	0x79, 0x18, 0x0d, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x62, 0x65, 0x6c, 0x69, 0x66, 0x65,
 	0x6c, 0x69, 0x6e, 0x65, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x41,
-	0x70, 0x69, 0x4b, 0x65, 0x79, 0x48, 0x06, 0x52, 0x06, 0x61, 0x70, 0x69, 0x4b, 0x65, 0x79, 0x88,
+	0x50, 0x49, 0x4b, 0x65, 0x79, 0x48, 0x06, 0x52, 0x06, 0x61, 0x70, 0x69, 0x4b, 0x65, 0x79, 0x88,
 	0x01, 0x01, 0x12, 0x45, 0x0a, 0x0e, 0x66, 0x69, 0x72, 0x73, 0x74, 0x5f, 0x65, 0x6e, 0x74, 0x72,
 	0x79, 0x5f, 0x61, 0x74, 0x18, 0x0e, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f,
 	0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d,
@@ -420,7 +420,7 @@ var file_belifeline_models_v1_koyo_proto_goTypes = []any{
 	(*ULID)(nil),                  // 4: belifeline.models.v1.ULID
 	(*Version)(nil),               // 5: belifeline.models.v1.Version
 	(DataType)(0),                 // 6: belifeline.models.v1.DataType
-	(*ApiKey)(nil),                // 7: belifeline.models.v1.ApiKey
+	(*APIKey)(nil),                // 7: belifeline.models.v1.APIKey
 	(*timestamppb.Timestamp)(nil), // 8: google.protobuf.Timestamp
 }
 var file_belifeline_models_v1_koyo_proto_depIdxs = []int32{
@@ -430,7 +430,7 @@ var file_belifeline_models_v1_koyo_proto_depIdxs = []int32{
 	4,  // 3: belifeline.models.v1.KoyoInformation.koyo_data_ids:type_name -> belifeline.models.v1.ULID
 	5,  // 4: belifeline.models.v1.KoyoInformation.version:type_name -> belifeline.models.v1.Version
 	6,  // 5: belifeline.models.v1.KoyoInformation.data_type:type_name -> belifeline.models.v1.DataType
-	7,  // 6: belifeline.models.v1.KoyoInformation.api_key:type_name -> belifeline.models.v1.ApiKey
+	7,  // 6: belifeline.models.v1.KoyoInformation.api_key:type_name -> belifeline.models.v1.APIKey
 	8,  // 7: belifeline.models.v1.KoyoInformation.first_entry_at:type_name -> google.protobuf.Timestamp
 	8,  // 8: belifeline.models.v1.KoyoInformation.last_entry_at:type_name -> google.protobuf.Timestamp
 	8,  // 9: belifeline.models.v1.KoyoInformation.last_updated_at:type_name -> google.protobuf.Timestamp

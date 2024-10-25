@@ -6,10 +6,11 @@ import (
 	"io"
 )
 
-func GenApiKey() string {
-	randBytes := make([]byte, 64)
-	_, err := io.ReadFull(rand.Reader, randBytes)
-	if err != nil {
+const length = 64
+
+func GenAPIKey() string {
+	randBytes := make([]byte, length)
+	if _, err := io.ReadFull(rand.Reader, randBytes); err != nil {
 		panic(err)
 	}
 

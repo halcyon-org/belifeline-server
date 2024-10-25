@@ -15,10 +15,21 @@
 >
 > See <https://xcfile.dev/getting-started/#installation> for installation instructions
 
+### install
+
+Install the dependencies.
+
+Run: once
+
+```bash
+go mod tidy
+```
+
 ### init
 
 Init development environment.
 
+Requires: install
 Run: once
 
 ```bash
@@ -31,7 +42,7 @@ fi
 
 Check golang code.
 
-Requires: init, fmt, vet, lint, test
+Requires: init, fmt, lint, test
 RunDeps: async
 
 ### fmt
@@ -54,16 +65,6 @@ Requires: init
 golangci-lint run
 ```
 
-### vet
-
-Vet golang code.
-
-Requires: init
-
-```bash
-go vet ./...
-```
-
 ### test
 
 Test golang code.
@@ -82,6 +83,16 @@ Requires: init, gen
 
 ```bash
 go build -o bin/kizuna cmd/kizuna/main.go
+```
+
+### build:v
+
+Build golang code.
+
+Requires: init, gen
+
+```bash
+go build -v -o bin/kizuna cmd/kizuna/main.go
 ```
 
 ### gen

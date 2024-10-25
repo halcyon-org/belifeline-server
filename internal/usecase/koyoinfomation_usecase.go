@@ -25,29 +25,50 @@ func NewKoyoInformationUsecase(koyoInformationRepository entrepo.KoyoInformation
 	}
 }
 
-func (u *koyoInformationUsecaseImpl) CreateKoyoInformation(ctx context.Context, koyoInformation *v1.KoyoInformation) (*domain.KoyoInformation, error) {
-	if koyoInformation.KoyoName == nil || koyoInformation.KoyoDescription == nil || koyoInformation.KoyoScales == nil || koyoInformation.License == nil {
-		return nil, ErrorPropertyNotSet
+func (u *koyoInformationUsecaseImpl) CreateKoyoInformation(
+	ctx context.Context,
+	koyoInformation *v1.KoyoInformation,
+) (*domain.KoyoInformation, error) {
+	if koyoInformation.KoyoName == nil ||
+		koyoInformation.KoyoDescription == nil ||
+		koyoInformation.KoyoScales == nil ||
+		koyoInformation.License == nil {
+		return nil, ErrPropertyNotSet
 	}
 
-	externalIds := make([]pulid.ID, len(koyoInformation.NeedExternal))
-	for i, externalId := range koyoInformation.NeedExternal {
-		externalIds[i] = pulid.ID(externalId.Value)
+	externalIds := make([]pulid.ID, len(koyoInformation.GetNeedExternal()))
+	for i, externalId := range koyoInformation.GetNeedExternal() {
+		externalIds[i] = pulid.ID(externalId.GetValue())
 	}
-	scales := make([]float64, len(koyoInformation.KoyoScales))
-	for i, scale := range koyoInformation.KoyoScales {
+
+	scales := make([]float64, len(koyoInformation.GetKoyoScales()))
+	for i, scale := range koyoInformation.GetKoyoScales() {
 		scales[i] = float64(scale)
 	}
-	dataIds := make([]pulid.ID, len(koyoInformation.KoyoDataIds))
-	for i, dataId := range koyoInformation.KoyoDataIds {
-		dataIds[i] = pulid.ID(dataId.Value)
+
+	dataIds := make([]pulid.ID, len(koyoInformation.GetKoyoDataIds()))
+	for i, dataId := range koyoInformation.GetKoyoDataIds() {
+		dataIds[i] = pulid.ID(dataId.GetValue())
 	}
 
-	data, err := u.koyoInformationRepository.CreateKoyoInformation(ctx, *koyoInformation.KoyoName, *koyoInformation.KoyoDescription, externalIds, koyoInformation.KoyoParams, scales, dataIds, koyoInformation.Version.Value, *koyoInformation.License, koyoinformation.DataType(koyoInformation.DataType.String()), util.GenApiKey())
+	data, err := u.koyoInformationRepository.CreateKoyoInformation(
+		ctx,
+		koyoInformation.GetKoyoName(),
+		koyoInformation.GetKoyoDescription(),
+		externalIds,
+		koyoInformation.GetKoyoParams(),
+		scales,
+		dataIds,
+		koyoInformation.GetVersion().GetValue(),
+		koyoInformation.GetLicense(),
+		koyoinformation.DataType(koyoInformation.GetDataType().String()),
+		util.GenAPIKey(),
+	)
 	if err != nil {
 		return nil, err
 	}
 
 	domainData := domain.ToDomainKoyoInformation(*data)
+
 	return &domainData, nil
 }

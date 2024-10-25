@@ -20,7 +20,11 @@ type AdminServiceHandlerImpl struct {
 	externalInformationUsecase usecase.ExternalInformationUsecase
 }
 
-func NewAdminServiceHandler(clientInformationUsecase usecase.ClientInformationUsecase, koyoInformationUsecase usecase.KoyoInformationUsecase, externalInformationUsecase usecase.ExternalInformationUsecase) mainv1connect.AdminServiceHandler {
+func NewAdminServiceHandler(
+	clientInformationUsecase usecase.ClientInformationUsecase,
+	koyoInformationUsecase usecase.KoyoInformationUsecase,
+	externalInformationUsecase usecase.ExternalInformationUsecase,
+) mainv1connect.AdminServiceHandler {
 	return &AdminServiceHandlerImpl{
 		clientInformationUsecase:   clientInformationUsecase,
 		koyoInformationUsecase:     koyoInformationUsecase,
@@ -28,14 +32,17 @@ func NewAdminServiceHandler(clientInformationUsecase usecase.ClientInformationUs
 	}
 }
 
-func (s *AdminServiceHandlerImpl) ClientSet(ctx context.Context, req *connect.Request[mainv1.ClientSetRequest]) (*connect.Response[mainv1.ClientSetResponse], error) {
+func (s *AdminServiceHandlerImpl) ClientSet(
+	ctx context.Context,
+	req *connect.Request[mainv1.ClientSetRequest],
+) (*connect.Response[mainv1.ClientSetResponse], error) {
 	// FIXME: Create and Set
-	user, err := s.clientInformationUsecase.CreateClientInformation(ctx, req.Msg.Username)
+	user, err := s.clientInformationUsecase.CreateClientInformation(ctx, req.Msg.GetUsername())
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	apiData := domain.ToApiClientInformation(*user)
+	apiData := domain.ToAPIClientInformation(*user)
 	res := connect.NewResponse(&mainv1.ClientSetResponse{ClientInformation: &apiData})
 
 	return res, nil
@@ -43,50 +50,70 @@ func (s *AdminServiceHandlerImpl) ClientSet(ctx context.Context, req *connect.Re
 
 const limit = 100
 
-func (s *AdminServiceHandlerImpl) ClientList(ctx context.Context, req *connect.Request[mainv1.ClientListRequest]) (*connect.Response[mainv1.ClientListResponse], error) {
+func (s *AdminServiceHandlerImpl) ClientList(
+	ctx context.Context,
+	_ *connect.Request[mainv1.ClientListRequest],
+) (*connect.Response[mainv1.ClientListResponse], error) {
 	dataList, err := s.clientInformationUsecase.ListClientInformation(ctx, limit)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
+
 	if len(dataList) >= limit {
 		return nil, status.Error(codes.Internal, fmt.Sprintf("might have more data than %d\n", limit))
 	}
 
-	var apiDataList = make([]*v1.ClientInformation, len(dataList))
+	apiDataList := make([]*v1.ClientInformation, len(dataList))
+
 	for i, data := range dataList {
-		apiData := domain.ToApiClientInformation(*data)
+		apiData := domain.ToAPIClientInformation(*data)
 		apiDataList[i] = &apiData
 	}
+
 	res := connect.NewResponse(&mainv1.ClientListResponse{ClientInformationList: apiDataList})
 
 	return res, nil
 }
 
-func (s *AdminServiceHandlerImpl) ClientDelete(ctx context.Context, req *connect.Request[mainv1.ClientDeleteRequest]) (*connect.Response[mainv1.ClientDeleteResponse], error) {
-	id, err := s.clientInformationUsecase.DeleteClientInformation(ctx, req.Msg.ClientId.Value)
+func (s *AdminServiceHandlerImpl) ClientDelete(
+	ctx context.Context,
+	req *connect.Request[mainv1.ClientDeleteRequest],
+) (*connect.Response[mainv1.ClientDeleteResponse], error) {
+	clientID, err := s.clientInformationUsecase.DeleteClientInformation(ctx, req.Msg.GetClientId().GetValue())
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	res := connect.NewResponse(&mainv1.ClientDeleteResponse{ClientId: &v1.ULID{Value: id}})
+	res := connect.NewResponse(&mainv1.ClientDeleteResponse{ClientId: &v1.ULID{Value: clientID}})
 
 	return res, nil
 }
 
-func (s *AdminServiceHandlerImpl) ClientRevoke(ctx context.Context, req *connect.Request[mainv1.ClientRevokeRequest]) (*connect.Response[mainv1.ClientRevokeResponse], error) {
-	id, apiKey, err := s.clientInformationUsecase.RevokeApiKey(ctx, req.Msg.ClientId.Value)
+func (s *AdminServiceHandlerImpl) ClientRevoke(
+	ctx context.Context,
+	req *connect.Request[mainv1.ClientRevokeRequest],
+) (*connect.Response[mainv1.ClientRevokeResponse], error) {
+	clientID, apiKey, err := s.clientInformationUsecase.RevokeAPIKey(ctx, req.Msg.GetClientId().GetValue())
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	res := connect.NewResponse(&mainv1.ClientRevokeResponse{ClientId: &v1.ULID{Value: id}, ApiKey: &v1.ApiKey{Key: apiKey}})
+	res := connect.NewResponse(&mainv1.ClientRevokeResponse{
+		ClientId: &v1.ULID{Value: clientID},
+		ApiKey:   &v1.APIKey{Key: apiKey},
+	})
 
 	return res, nil
 }
 
-func (s *AdminServiceHandlerImpl) ExternalInformationSet(ctx context.Context, req *connect.Request[mainv1.ExternalInformationSetRequest]) (*connect.Response[mainv1.ExternalInformationSetResponse], error) {
-	externalInformation := req.Msg.ExternalInformation
-	if externalInformation.FirstEntryAt != nil || externalInformation.LastUpdatedAt != nil || externalInformation.UpdatedHistory != nil {
+func (s *AdminServiceHandlerImpl) ExternalInformationSet(
+	ctx context.Context,
+	req *connect.Request[mainv1.ExternalInformationSetRequest],
+) (*connect.Response[mainv1.ExternalInformationSetResponse], error) {
+	externalInformation := req.Msg.GetExternalInformation()
+	if externalInformation.GetFirstEntryAt() != nil ||
+		externalInformation.GetLastUpdatedAt() != nil ||
+		externalInformation.UpdatedHistory != nil {
 		return nil, status.Error(codes.InvalidArgument, NewValidationError("time should not be set").Error())
 	}
 
@@ -101,31 +128,30 @@ func (s *AdminServiceHandlerImpl) ExternalInformationSet(ctx context.Context, re
 	return res, nil
 }
 
-func (s *AdminServiceHandlerImpl) ExternalInformationDelete(ctx context.Context, req *connect.Request[mainv1.ExternalInformationDeleteRequest]) (*connect.Response[mainv1.ExternalInformationDeleteResponse], error) {
+func (s *AdminServiceHandlerImpl) ExternalInformationDelete(
+	context.Context,
+	*connect.Request[mainv1.ExternalInformationDeleteRequest],
+) (*connect.Response[mainv1.ExternalInformationDeleteResponse], error) {
 	return nil, status.Error(codes.Unimplemented, "method ExternalInformationDelete not implemented")
 }
 
-func (s *AdminServiceHandlerImpl) KoyoCreate(ctx context.Context, req *connect.Request[mainv1.KoyoCreateRequest]) (*connect.Response[mainv1.KoyoCreateResponse], error) {
-	koyoInformation := req.Msg.KoyoInformation
-	if koyoInformation.FirstEntryAt != nil || koyoInformation.LastUpdatedAt != nil || koyoInformation.LastEntryAt != nil {
-		return nil, status.Error(codes.InvalidArgument, NewValidationError("time should not be set").Error())
-	}
-
-	data, err := s.koyoInformationUsecase.CreateKoyoInformation(ctx, koyoInformation)
-	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
-	}
-
-	apiData := domain.ToAPIKoyoInformation(*data)
-	res := connect.NewResponse(&mainv1.KoyoCreateResponse{KoyoInformation: &apiData})
-
-	return res, nil
+func (s *AdminServiceHandlerImpl) KoyoCreate(
+	context.Context,
+	*connect.Request[mainv1.KoyoCreateRequest],
+) (*connect.Response[mainv1.KoyoCreateResponse], error) {
+	return nil, status.Error(codes.Unimplemented, "method KoyoSet not implemented")
 }
 
-func (s *AdminServiceHandlerImpl) KoyoDelete(ctx context.Context, req *connect.Request[mainv1.KoyoDeleteRequest]) (*connect.Response[mainv1.KoyoDeleteResponse], error) {
+func (s *AdminServiceHandlerImpl) KoyoDelete(
+	context.Context,
+	*connect.Request[mainv1.KoyoDeleteRequest],
+) (*connect.Response[mainv1.KoyoDeleteResponse], error) {
 	return nil, status.Error(codes.Unimplemented, "method KoyoDelete not implemented")
 }
 
-func (s *AdminServiceHandlerImpl) KoyoApiRevoke(ctx context.Context, req *connect.Request[mainv1.KoyoApiRevokeRequest]) (*connect.Response[mainv1.KoyoApiRevokeResponse], error) {
-	return nil, status.Error(codes.Unimplemented, "method KoyoApiRevoke not implemented")
+func (s *AdminServiceHandlerImpl) KoyoAPIRevoke(
+	context.Context,
+	*connect.Request[mainv1.KoyoAPIRevokeRequest],
+) (*connect.Response[mainv1.KoyoAPIRevokeResponse], error) {
+	return nil, status.Error(codes.Unimplemented, "method KoyoAPIRevoke not implemented")
 }

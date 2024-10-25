@@ -16,7 +16,11 @@ type KoyoData struct {
 // Fields of the KoyoData.
 func (KoyoData) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("id").GoType(pulid.ID("")).Unique().Immutable().DefaultFunc(func() pulid.ID { return pulid.MustNew("US") }),
+		field.String("id").
+			GoType(pulid.ID("")).
+			Unique().
+			Immutable().
+			DefaultFunc(func() pulid.ID { return pulid.MustNew("US") }),
 		field.String("koyo_id").GoType(pulid.ID("")).Unique(),
 		field.Float("scale"),
 		field.JSON("params", map[string]string{}),

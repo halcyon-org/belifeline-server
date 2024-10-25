@@ -17,24 +17,24 @@ type ClientInformation struct {
 	LastUpdatedAt time.Time
 }
 
-func ToDomainClientInformation(e ent.ClientInformation) ClientInformation {
+func ToDomainClientInformation(ent ent.ClientInformation) ClientInformation {
 	return ClientInformation{
-		ID:            string(e.ID),
-		Username:      e.Username,
-		APIKey:        e.APIKey,
-		CreatedAt:     e.CreatedAt,
-		LastUsedAt:    e.LastUsedAt,
-		LastUpdatedAt: e.LastUpdatedAt,
+		ID:            string(ent.ID),
+		Username:      ent.Username,
+		APIKey:        ent.APIKey,
+		CreatedAt:     ent.CreatedAt,
+		LastUsedAt:    ent.LastUsedAt,
+		LastUpdatedAt: ent.LastUpdatedAt,
 	}
 }
 
-func ToApiClientInformation(d ClientInformation) v1.ClientInformation {
+func ToAPIClientInformation(domain ClientInformation) v1.ClientInformation {
 	return v1.ClientInformation{
-		ClientId:      &v1.ULID{Value: d.ID},
-		Username:      &d.Username,
-		ApiKey:        &v1.ApiKey{Key: d.APIKey},
-		CreatedAt:     timestamppb.New(d.CreatedAt),
-		LastUsedAt:    timestamppb.New(d.LastUsedAt),
-		LastUpdatedAt: timestamppb.New(d.LastUpdatedAt),
+		ClientId:      &v1.ULID{Value: domain.ID},
+		Username:      &domain.Username,
+		ApiKey:        &v1.APIKey{Key: domain.APIKey},
+		CreatedAt:     timestamppb.New(domain.CreatedAt),
+		LastUsedAt:    timestamppb.New(domain.LastUsedAt),
+		LastUpdatedAt: timestamppb.New(domain.LastUpdatedAt),
 	}
 }
