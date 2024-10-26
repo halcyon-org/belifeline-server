@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"net/http"
+	"net/http/httptest"
 
 	"connectrpc.com/connect"
 	"connectrpc.com/grpcreflect"
@@ -14,7 +15,10 @@ import (
 )
 
 type BeLifelineController interface {
+	makeMux() *http.ServeMux
+
 	Serve() error
+	TestServe() (*httptest.Server, error)
 }
 
 type BeLifelineControllerImpl struct {
@@ -46,14 +50,11 @@ func NewBeLifelineController(admin mainv1connect.AdminServiceHandler, provider m
 	}
 }
 
-func (c *BeLifelineControllerImpl) Serve() error {
-	err := c.cfg.LoadConfig()
-	if err != nil {
-		return err
-	}
-
+func (c *BeLifelineControllerImpl) makeMux() *http.ServeMux {
 	mux := http.NewServeMux()
+
 	reflector := grpcreflect.NewStaticReflector("belifeline.v1")
+
 	mux.Handle(grpcreflect.NewHandlerV1(reflector, connect.WithInterceptors(c.logging.LoggingInterceptor())))
 	mux.Handle(grpcreflect.NewHandlerV1Alpha(reflector, connect.WithInterceptors(c.logging.LoggingInterceptor())))
 	mux.Handle(mainv1connect.NewAdminServiceHandler(c.admin, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.auth.AuthAdminServiceInterceptor())))
@@ -62,6 +63,16 @@ func (c *BeLifelineControllerImpl) Serve() error {
 	mux.Handle(mainv1connect.NewKoyoServiceHandler(c.koyo, connect.WithInterceptors(c.logging.LoggingInterceptor(), c.auth.AuthKoyoServiceInterceptor())))
 	mux.Handle(mainv1connect.NewHealthServiceHandler(c.health, connect.WithInterceptors(c.logging.LoggingInterceptor())))
 
+	return mux
+}
+
+func (c *BeLifelineControllerImpl) Serve() error {
+	err := c.cfg.LoadConfig()
+	if err != nil {
+		return err
+	}
+
+	mux := c.makeMux()
 	servAddr := fmt.Sprintf("%s:%d", c.cfg.GetConfig().ListenAddr, c.cfg.GetConfig().Port)
 	fmt.Printf("Listening on %s\n", servAddr)
 	err = http.ListenAndServe(
@@ -71,4 +82,17 @@ func (c *BeLifelineControllerImpl) Serve() error {
 	)
 
 	return err
+}
+
+func (c *BeLifelineControllerImpl) TestServe() (*httptest.Server, error) {
+	err := c.cfg.LoadConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	mux := c.makeMux()
+	server := httptest.NewUnstartedServer(mux)
+	server.EnableHTTP2 = true
+	server.StartTLS()
+	return server, nil
 }

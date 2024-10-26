@@ -154,6 +154,16 @@ Requires: init, up, migrate:apply
 go run cmd/kizuna/main.go
 ```
 
+### test
+
+Test the development environment.
+
+Requires: init, up, migrate:apply
+
+```bash
+go test ./...
+```
+
 ### cli
 
 Run the cli.
