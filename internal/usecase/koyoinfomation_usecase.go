@@ -13,6 +13,7 @@ import (
 
 type KoyoInformationUsecase interface {
 	CreateKoyoInformation(ctx context.Context, koyoInformation *v1.KoyoInformation) (*domain.KoyoInformation, error)
+	UpdateKoyoInformation(ctx context.Context, koyoInformation *v1.KoyoInformation) (*domain.KoyoInformation, error)
 }
 
 type koyoInformationUsecaseImpl struct {
@@ -44,6 +45,42 @@ func (u *koyoInformationUsecaseImpl) CreateKoyoInformation(ctx context.Context, 
 	}
 
 	data, err := u.koyoInformationRepository.CreateKoyoInformation(ctx, *koyoInformation.KoyoName, *koyoInformation.KoyoDescription, externalIds, koyoInformation.KoyoParams, scales, dataIds, koyoInformation.Version.Value, *koyoInformation.License, koyoinformation.DataType(koyoInformation.DataType.String()), util.GenApiKey())
+	if err != nil {
+		return nil, err
+	}
+
+	domainData := domain.ToDomainKoyoInformation(*data)
+	return &domainData, nil
+}
+
+func (u *koyoInformationUsecaseImpl) UpdateKoyoInformation(ctx context.Context, koyoInformation *v1.KoyoInformation) (*domain.KoyoInformation, error) {
+	var externalIds []pulid.ID
+	if koyoInformation.KoyoScales != nil {
+		externalIds = make([]pulid.ID, len(koyoInformation.NeedExternal))
+		for i, externalId := range koyoInformation.NeedExternal {
+			externalIds[i] = pulid.ID(externalId.Value)
+		}
+	}
+	var scales []float64
+	if koyoInformation.KoyoScales != nil {
+		scales = make([]float64, len(koyoInformation.KoyoScales))
+		for i, scale := range koyoInformation.KoyoScales {
+			scales[i] = float64(scale)
+		}
+	}
+	var dataIds []pulid.ID
+	if koyoInformation.KoyoScales != nil {
+		dataIds := make([]pulid.ID, len(koyoInformation.KoyoDataIds))
+		for i, dataId := range koyoInformation.KoyoDataIds {
+			dataIds[i] = pulid.ID(dataId.Value)
+		}
+	}
+	var dataType koyoinformation.DataType
+	if koyoInformation.DataType != nil {
+		dataType = koyoinformation.DataType(koyoInformation.DataType.String())
+	}
+
+	data, err := u.koyoInformationRepository.UpdateKoyoInformation(ctx, pulid.ID(koyoInformation.KoyoId.Value), koyoInformation.KoyoName, koyoInformation.KoyoDescription, &externalIds, &koyoInformation.KoyoParams, &scales, &dataIds, &koyoInformation.Version.Value, koyoInformation.License, &dataType)
 	if err != nil {
 		return nil, err
 	}
