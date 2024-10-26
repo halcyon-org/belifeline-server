@@ -28,6 +28,10 @@ func (s *KoyoServiceHandlerImpl) KoyoUpdate(ctx context.Context, req *connect.Re
 		return nil, status.Error(codes.InvalidArgument, NewValidationError("time should not be set").Error())
 	}
 
+	if koyoInformation.KoyoId != nil {
+		return nil, status.Error(codes.InvalidArgument, NewValidationError("koyo id should not be set").Error())
+	}
+
 	data, err := s.KoyoInformationUsecase.UpdateKoyoInformation(ctx, koyoInformation)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
