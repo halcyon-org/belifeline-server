@@ -39,7 +39,15 @@ func NewConfigRepository() (ConfigRepository, error) {
 
 func (c *configRepositoryImpl) LoadConfig() error {
 	env := os.Getenv("ENV")
-	if env != "production" {
+	switch env {
+	case "test":
+		err := godotenv.Load("../../../.env.test")
+		if err != nil {
+			return err
+		}
+	case "production":
+		break
+	default:
 		err := godotenv.Load()
 		if err != nil {
 			return err
