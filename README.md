@@ -25,6 +25,9 @@ Run: once
 if [ ! -f .env ]; then
   cp .env.example .env
 fi
+if [ ! -f .env.test ]; then
+  cp .env.test.example .env.test
+fi
 ```
 
 ### check
@@ -68,7 +71,7 @@ go vet ./...
 
 Test golang code.
 
-Requires: init
+Requires: init, up, migrate:apply
 
 ```bash
 go test ./...
@@ -162,4 +165,10 @@ Requires: init, up, migrate:apply
 
 ```bash
 echo "RUN: go run cmd/kizuna-cli/main.go"
+```
+
+### clean
+
+```bash
+go clean -testcache
 ```

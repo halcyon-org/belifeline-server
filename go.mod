@@ -4,13 +4,15 @@ go 1.23.2
 
 require (
 	connectrpc.com/connect v1.17.0
+	connectrpc.com/grpcreflect v1.2.0
 	entgo.io/ent v0.14.1
 	github.com/bufbuild/buf v1.45.0
-	github.com/bufbuild/connect-go v1.10.0
 	github.com/google/wire v0.6.0
 	github.com/joho/godotenv v1.5.1
 	github.com/oklog/ulid/v2 v2.1.0
+	github.com/stretchr/testify v1.9.0
 	golang.org/x/net v0.30.0
+	golang.org/x/sync v0.8.0
 	google.golang.org/grpc v1.67.1
 	google.golang.org/protobuf v1.34.3-0.20240906163944-03df6c145d96
 )
@@ -24,7 +26,6 @@ require (
 	buf.build/go/bufplugin v0.5.0 // indirect
 	buf.build/go/protoyaml v0.2.0 // indirect
 	buf.build/go/spdx v0.2.0 // indirect
-	connectrpc.com/grpcreflect v1.2.0 // indirect
 	connectrpc.com/otelconnect v0.7.1 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
@@ -43,6 +44,7 @@ require (
 	github.com/containerd/ttrpc v1.2.5 // indirect
 	github.com/containerd/typeurl/v2 v2.2.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.5 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
 	github.com/docker/cli v27.3.1+incompatible // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
@@ -57,7 +59,6 @@ require (
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
 	github.com/gofrs/flock v0.12.1 // indirect
-	github.com/gofrs/uuid/v5 v5.3.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/cel-go v0.21.0 // indirect
@@ -118,7 +119,6 @@ require (
 	go.uber.org/zap/exp v0.1.1-0.20240913022758-ede8e1888f83 // indirect
 	golang.org/x/crypto v0.28.0 // indirect
 	golang.org/x/exp v0.0.0-20241004190924-225e2abe05e6 // indirect
-	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/term v0.25.0 // indirect
 	golang.org/x/tools v0.26.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240930140551-af27646dc61f // indirect
@@ -132,7 +132,7 @@ require (
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/go-openapi/inflect v0.19.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/uuid v1.6.0 // indirect
+	github.com/google/uuid v1.6.0
 	github.com/hashicorp/hcl/v2 v2.13.0 // indirect
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/lib/pq v1.10.9
