@@ -7,18 +7,21 @@ import (
 	v1 "github.com/halcyon-org/kizuna/gen/belifeline/models/v1"
 	mainv1 "github.com/halcyon-org/kizuna/gen/belifeline/v1"
 	"github.com/halcyon-org/kizuna/gen/belifeline/v1/mainv1connect"
+	"github.com/halcyon-org/kizuna/internal/domain/domain"
 	"github.com/halcyon-org/kizuna/internal/usecase"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 type KoyoServiceHandlerImpl struct {
-	koyoDataUsecase usecase.KoyoDataUsecase
+	koyoInformationUsecase usecase.KoyoInformationUsecase
+	koyoDataUsecase        usecase.KoyoDataUsecase
 }
 
-func NewKoyoServiceHandler(koyoDataUsecase usecase.KoyoDataUsecase) mainv1connect.KoyoServiceHandler {
+func NewKoyoServiceHandler(koyoInformationUsecase usecase.KoyoInformationUsecase, koyoDataUsecase usecase.KoyoDataUsecase) mainv1connect.KoyoServiceHandler {
 	return &KoyoServiceHandlerImpl{
-		koyoDataUsecase: koyoDataUsecase,
+		koyoInformationUsecase: koyoInformationUsecase,
+		koyoDataUsecase:        koyoDataUsecase,
 	}
 }
 
@@ -32,7 +35,7 @@ func (s *KoyoServiceHandlerImpl) KoyoUpdate(ctx context.Context, req *connect.Re
 		return nil, status.Error(codes.InvalidArgument, NewValidationError("koyo id should not be set").Error())
 	}
 
-	data, err := s.KoyoInformationUsecase.UpdateKoyoInformation(ctx, koyoInformation)
+	data, err := s.koyoInformationUsecase.UpdateKoyoInformation(ctx, koyoInformation)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
