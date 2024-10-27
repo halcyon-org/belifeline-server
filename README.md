@@ -25,6 +25,9 @@ Run: once
 if [ ! -f .env ]; then
   cp .env.example .env
 fi
+if [ ! -f .env.test ]; then
+  cp .env.test.example .env.test
+fi
 ```
 
 ### check
