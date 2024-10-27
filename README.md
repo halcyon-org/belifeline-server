@@ -68,7 +68,7 @@ go vet ./...
 
 Test golang code.
 
-Requires: init
+Requires: init, up, migrate:apply
 
 ```bash
 go test ./...
@@ -154,16 +154,6 @@ Requires: init, up, migrate:apply
 go run cmd/kizuna/main.go
 ```
 
-### test
-
-Test the development environment.
-
-Requires: init, up, migrate:apply
-
-```bash
-go test ./...
-```
-
 ### cli
 
 Run the cli.
@@ -172,4 +162,10 @@ Requires: init, up, migrate:apply
 
 ```bash
 echo "RUN: go run cmd/kizuna-cli/main.go"
+```
+
+### clean
+
+```bash
+go clean -testcache
 ```
