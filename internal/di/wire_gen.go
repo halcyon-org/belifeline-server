@@ -37,7 +37,9 @@ func InitializeControllerSet() (*ControllersSet, error) {
 	adminServiceHandler := api.NewAdminServiceHandler(clientInformationUsecase, koyoInformationUsecase, externalInformationUsecase)
 	providerServiceHandler := api.NewProviderServiceHandler()
 	externalInformationServiceHandler := api.NewExternalInformationServiceHandler()
-	koyoServiceHandler := api.NewKoyoServiceHandler(koyoInformationUsecase)
+	koyoDataRepository := ent2.NewKoyoDataRepository(client)
+	koyoDataUsecase := usecase.NewKoyoDataUsecase(koyoDataRepository)
+	koyoServiceHandler := api.NewKoyoServiceHandler(koyoInformationUsecase, koyoDataUsecase)
 	healthServiceHandler := api.NewHealthServiceHandler()
 	adminUserRepository := ent2.NewAdminUserRepository(client)
 	authUsecase := usecase.NewAuthUsecase(adminUserRepository, clientInformationRepository, koyoInformationRepository, externalInformationRepository)
@@ -53,7 +55,7 @@ func InitializeControllerSet() (*ControllersSet, error) {
 // wire.go:
 
 // Adapter
-var repositorySet = wire.NewSet(config.NewConfigRepository, ent2.NewAdminUserRepository, ent2.NewClientInformationRepository, ent2.NewKoyoInformationRepository, ent2.NewExternalInformationRepository)
+var repositorySet = wire.NewSet(config.NewConfigRepository, ent2.NewAdminUserRepository, ent2.NewClientInformationRepository, ent2.NewKoyoDataRepository, ent2.NewKoyoInformationRepository, ent2.NewExternalInformationRepository)
 
 var adapterSet = wire.NewSet(api.NewAdminServiceHandler, api.NewProviderServiceHandler, api.NewExternalInformationServiceHandler, api.NewKoyoServiceHandler, api.NewHealthServiceHandler, interceptor.NewAuthInterceptorAdapter, interceptor.NewLoggingInterceptorAdapter)
 
@@ -63,7 +65,7 @@ var controllerSet = wire.NewSet(controller.NewBeLifelineController)
 var infrastructureSet = wire.NewSet(ent.InitDB)
 
 // Usecase
-var usecaseSet = wire.NewSet(usecase.NewAuthUsecase, usecase.NewKoyoInformationUsecase, usecase.NewClientInformationUsecase, usecase.NewExternalInformationUsecase)
+var usecaseSet = wire.NewSet(usecase.NewAuthUsecase, usecase.NewKoyoInformationUsecase, usecase.NewKoyoDataUsecase, usecase.NewClientInformationUsecase, usecase.NewExternalInformationUsecase)
 
 type ControllersSet struct {
 	BeLifelineController controller.BeLifelineController

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	connect "connectrpc.com/connect"
+	v1 "github.com/halcyon-org/kizuna/gen/belifeline/models/v1"
 	mainv1 "github.com/halcyon-org/kizuna/gen/belifeline/v1"
 	"github.com/halcyon-org/kizuna/gen/belifeline/v1/mainv1connect"
 	"github.com/halcyon-org/kizuna/internal/domain/domain"
@@ -13,12 +14,14 @@ import (
 )
 
 type KoyoServiceHandlerImpl struct {
-	KoyoInformationUsecase usecase.KoyoInformationUsecase
+	koyoInformationUsecase usecase.KoyoInformationUsecase
+	koyoDataUsecase        usecase.KoyoDataUsecase
 }
 
-func NewKoyoServiceHandler(KoyoInformationUsecase usecase.KoyoInformationUsecase) mainv1connect.KoyoServiceHandler {
+func NewKoyoServiceHandler(koyoInformationUsecase usecase.KoyoInformationUsecase, koyoDataUsecase usecase.KoyoDataUsecase) mainv1connect.KoyoServiceHandler {
 	return &KoyoServiceHandlerImpl{
-		KoyoInformationUsecase: KoyoInformationUsecase,
+		koyoInformationUsecase: koyoInformationUsecase,
+		koyoDataUsecase:        koyoDataUsecase,
 	}
 }
 
@@ -32,7 +35,7 @@ func (s *KoyoServiceHandlerImpl) KoyoUpdate(ctx context.Context, req *connect.Re
 		return nil, status.Error(codes.InvalidArgument, NewValidationError("koyo id should not be set").Error())
 	}
 
-	data, err := s.KoyoInformationUsecase.UpdateKoyoInformation(ctx, koyoInformation)
+	data, err := s.koyoInformationUsecase.UpdateKoyoInformation(ctx, koyoInformation)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
@@ -43,6 +46,13 @@ func (s *KoyoServiceHandlerImpl) KoyoUpdate(ctx context.Context, req *connect.Re
 	return res, nil
 }
 
-func (s *KoyoServiceHandlerImpl) KoyoDataAdd(context.Context, *connect.Request[mainv1.KoyoDataAddRequest]) (*connect.Response[mainv1.KoyoDataAddResponse], error) {
-	return nil, status.Error(codes.Unimplemented, "method KoyoDataAdd not implemented")
+func (s *KoyoServiceHandlerImpl) KoyoDataAdd(ctx context.Context, req *connect.Request[mainv1.KoyoDataAddRequest]) (*connect.Response[mainv1.KoyoDataAddResponse], error) {
+	id, err := s.koyoDataUsecase.CreateKoyoData(ctx, req.Msg.KoyoData)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	res := connect.NewResponse(&mainv1.KoyoDataAddResponse{KoyoData: &v1.ULID{Value: id}})
+
+	return res, nil
 }
