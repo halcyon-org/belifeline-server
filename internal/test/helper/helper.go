@@ -12,7 +12,7 @@ import (
 func NewClients(t *testing.T) ([]mainv1connect.AdminServiceClient, []mainv1connect.ProviderServiceClient, []mainv1connect.ExternalInformationServiceClient, []mainv1connect.KoyoServiceClient) {
 	t.Helper()
 
-	server := newServer(t)
+	server := NewServer(t)
 
 	adminServiceClients := newAdminServiceClient(t, server)
 	providerServiceClients := newProviderServiceClient(t, server)
@@ -22,7 +22,7 @@ func NewClients(t *testing.T) ([]mainv1connect.AdminServiceClient, []mainv1conne
 	return adminServiceClients, providerServiceClients, externalInformationServiceClients, koyoServiceClients
 }
 
-func newServer(t *testing.T) *httptest.Server {
+func NewServer(t *testing.T) *httptest.Server {
 	t.Helper()
 
 	controllers, err := di.InitializeControllerSet()
