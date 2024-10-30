@@ -35,7 +35,7 @@ func (s *AdminServiceHandlerImpl) ClientSet(ctx context.Context, req *connect.Re
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	apiData := domain.ToApiClientInformation(*user)
+	apiData := domain.ToAPIClientInformation(*user)
 	res := connect.NewResponse(&mainv1.ClientSetResponse{ClientInformation: &apiData})
 
 	return res, nil
@@ -54,7 +54,7 @@ func (s *AdminServiceHandlerImpl) ClientList(ctx context.Context, req *connect.R
 
 	var apiDataList = make([]*v1.ClientInformation, len(dataList))
 	for i, data := range dataList {
-		apiData := domain.ToApiClientInformation(*data)
+		apiData := domain.ToAPIClientInformation(*data)
 		apiDataList[i] = &apiData
 	}
 	res := connect.NewResponse(&mainv1.ClientListResponse{ClientInformationList: apiDataList})
@@ -74,12 +74,12 @@ func (s *AdminServiceHandlerImpl) ClientDelete(ctx context.Context, req *connect
 }
 
 func (s *AdminServiceHandlerImpl) ClientRevoke(ctx context.Context, req *connect.Request[mainv1.ClientRevokeRequest]) (*connect.Response[mainv1.ClientRevokeResponse], error) {
-	id, apiKey, err := s.clientInformationUsecase.RevokeApiKey(ctx, req.Msg.ClientId.Value)
+	id, apiKey, err := s.clientInformationUsecase.RevokeAPIKey(ctx, req.Msg.ClientId.Value)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	res := connect.NewResponse(&mainv1.ClientRevokeResponse{ClientId: &v1.ULID{Value: id}, ApiKey: &v1.ApiKey{Key: apiKey}})
+	res := connect.NewResponse(&mainv1.ClientRevokeResponse{ClientId: &v1.ULID{Value: id}, ApiKey: &v1.APIKey{Key: apiKey}})
 
 	return res, nil
 }
@@ -126,6 +126,6 @@ func (s *AdminServiceHandlerImpl) KoyoDelete(ctx context.Context, req *connect.R
 	return nil, status.Error(codes.Unimplemented, "method KoyoDelete not implemented")
 }
 
-func (s *AdminServiceHandlerImpl) KoyoApiRevoke(ctx context.Context, req *connect.Request[mainv1.KoyoApiRevokeRequest]) (*connect.Response[mainv1.KoyoApiRevokeResponse], error) {
-	return nil, status.Error(codes.Unimplemented, "method KoyoApiRevoke not implemented")
+func (s *AdminServiceHandlerImpl) KoyoAPIRevoke(ctx context.Context, req *connect.Request[mainv1.KoyoAPIRevokeRequest]) (*connect.Response[mainv1.KoyoAPIRevokeResponse], error) {
+	return nil, status.Error(codes.Unimplemented, "method KoyoAPIRevoke not implemented")
 }

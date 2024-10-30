@@ -52,7 +52,7 @@ func (s *KoyoServiceHandlerImpl) KoyoDataAdd(ctx context.Context, req *connect.R
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	res := connect.NewResponse(&mainv1.KoyoDataAddResponse{KoyoData: &v1.ULID{Value: id}})
+	res := connect.NewResponse(&mainv1.KoyoDataAddResponse{KoyoDataId: &v1.ULID{Value: id}})
 
 	return res, nil
 }

@@ -66,9 +66,9 @@ const (
 	AdminServiceKoyoCreateProcedure = "/belifeline.v1.AdminService/KoyoCreate"
 	// AdminServiceKoyoDeleteProcedure is the fully-qualified name of the AdminService's KoyoDelete RPC.
 	AdminServiceKoyoDeleteProcedure = "/belifeline.v1.AdminService/KoyoDelete"
-	// AdminServiceKoyoApiRevokeProcedure is the fully-qualified name of the AdminService's
-	// KoyoApiRevoke RPC.
-	AdminServiceKoyoApiRevokeProcedure = "/belifeline.v1.AdminService/KoyoApiRevoke"
+	// AdminServiceKoyoAPIRevokeProcedure is the fully-qualified name of the AdminService's
+	// KoyoAPIRevoke RPC.
+	AdminServiceKoyoAPIRevokeProcedure = "/belifeline.v1.AdminService/KoyoAPIRevoke"
 	// ProviderServiceExternalInformationListProcedure is the fully-qualified name of the
 	// ProviderService's ExternalInformationList RPC.
 	ProviderServiceExternalInformationListProcedure = "/belifeline.v1.ProviderService/ExternalInformationList"
@@ -104,7 +104,7 @@ var (
 	adminServiceExternalInformationDeleteMethodDescriptor                           = adminServiceServiceDescriptor.Methods().ByName("ExternalInformationDelete")
 	adminServiceKoyoCreateMethodDescriptor                                          = adminServiceServiceDescriptor.Methods().ByName("KoyoCreate")
 	adminServiceKoyoDeleteMethodDescriptor                                          = adminServiceServiceDescriptor.Methods().ByName("KoyoDelete")
-	adminServiceKoyoApiRevokeMethodDescriptor                                       = adminServiceServiceDescriptor.Methods().ByName("KoyoApiRevoke")
+	adminServiceKoyoAPIRevokeMethodDescriptor                                       = adminServiceServiceDescriptor.Methods().ByName("KoyoAPIRevoke")
 	providerServiceServiceDescriptor                                                = v1.File_belifeline_v1_main_proto.Services().ByName("ProviderService")
 	providerServiceExternalInformationListMethodDescriptor                          = providerServiceServiceDescriptor.Methods().ByName("ExternalInformationList")
 	providerServiceKoyoListMethodDescriptor                                         = providerServiceServiceDescriptor.Methods().ByName("KoyoList")
@@ -236,7 +236,7 @@ type AdminServiceClient interface {
 	// Delete a koyo
 	KoyoDelete(context.Context, *connect.Request[v1.KoyoDeleteRequest]) (*connect.Response[v1.KoyoDeleteResponse], error)
 	// Revoke and renew the koyo's API key. The koyo's API key is automatically generated and returned
-	KoyoApiRevoke(context.Context, *connect.Request[v1.KoyoApiRevokeRequest]) (*connect.Response[v1.KoyoApiRevokeResponse], error)
+	KoyoAPIRevoke(context.Context, *connect.Request[v1.KoyoAPIRevokeRequest]) (*connect.Response[v1.KoyoAPIRevokeResponse], error)
 }
 
 // NewAdminServiceClient constructs a client for the belifeline.v1.AdminService service. By default,
@@ -297,10 +297,10 @@ func NewAdminServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(adminServiceKoyoDeleteMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		koyoApiRevoke: connect.NewClient[v1.KoyoApiRevokeRequest, v1.KoyoApiRevokeResponse](
+		koyoAPIRevoke: connect.NewClient[v1.KoyoAPIRevokeRequest, v1.KoyoAPIRevokeResponse](
 			httpClient,
-			baseURL+AdminServiceKoyoApiRevokeProcedure,
-			connect.WithSchema(adminServiceKoyoApiRevokeMethodDescriptor),
+			baseURL+AdminServiceKoyoAPIRevokeProcedure,
+			connect.WithSchema(adminServiceKoyoAPIRevokeMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -316,7 +316,7 @@ type adminServiceClient struct {
 	externalInformationDelete *connect.Client[v1.ExternalInformationDeleteRequest, v1.ExternalInformationDeleteResponse]
 	koyoCreate                *connect.Client[v1.KoyoCreateRequest, v1.KoyoCreateResponse]
 	koyoDelete                *connect.Client[v1.KoyoDeleteRequest, v1.KoyoDeleteResponse]
-	koyoApiRevoke             *connect.Client[v1.KoyoApiRevokeRequest, v1.KoyoApiRevokeResponse]
+	koyoAPIRevoke             *connect.Client[v1.KoyoAPIRevokeRequest, v1.KoyoAPIRevokeResponse]
 }
 
 // ClientSet calls belifeline.v1.AdminService.ClientSet.
@@ -359,9 +359,9 @@ func (c *adminServiceClient) KoyoDelete(ctx context.Context, req *connect.Reques
 	return c.koyoDelete.CallUnary(ctx, req)
 }
 
-// KoyoApiRevoke calls belifeline.v1.AdminService.KoyoApiRevoke.
-func (c *adminServiceClient) KoyoApiRevoke(ctx context.Context, req *connect.Request[v1.KoyoApiRevokeRequest]) (*connect.Response[v1.KoyoApiRevokeResponse], error) {
-	return c.koyoApiRevoke.CallUnary(ctx, req)
+// KoyoAPIRevoke calls belifeline.v1.AdminService.KoyoAPIRevoke.
+func (c *adminServiceClient) KoyoAPIRevoke(ctx context.Context, req *connect.Request[v1.KoyoAPIRevokeRequest]) (*connect.Response[v1.KoyoAPIRevokeResponse], error) {
+	return c.koyoAPIRevoke.CallUnary(ctx, req)
 }
 
 // AdminServiceHandler is an implementation of the belifeline.v1.AdminService service.
@@ -385,7 +385,7 @@ type AdminServiceHandler interface {
 	// Delete a koyo
 	KoyoDelete(context.Context, *connect.Request[v1.KoyoDeleteRequest]) (*connect.Response[v1.KoyoDeleteResponse], error)
 	// Revoke and renew the koyo's API key. The koyo's API key is automatically generated and returned
-	KoyoApiRevoke(context.Context, *connect.Request[v1.KoyoApiRevokeRequest]) (*connect.Response[v1.KoyoApiRevokeResponse], error)
+	KoyoAPIRevoke(context.Context, *connect.Request[v1.KoyoAPIRevokeRequest]) (*connect.Response[v1.KoyoAPIRevokeResponse], error)
 }
 
 // NewAdminServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -442,10 +442,10 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(adminServiceKoyoDeleteMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
-	adminServiceKoyoApiRevokeHandler := connect.NewUnaryHandler(
-		AdminServiceKoyoApiRevokeProcedure,
-		svc.KoyoApiRevoke,
-		connect.WithSchema(adminServiceKoyoApiRevokeMethodDescriptor),
+	adminServiceKoyoAPIRevokeHandler := connect.NewUnaryHandler(
+		AdminServiceKoyoAPIRevokeProcedure,
+		svc.KoyoAPIRevoke,
+		connect.WithSchema(adminServiceKoyoAPIRevokeMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
 	return "/belifeline.v1.AdminService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -466,8 +466,8 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 			adminServiceKoyoCreateHandler.ServeHTTP(w, r)
 		case AdminServiceKoyoDeleteProcedure:
 			adminServiceKoyoDeleteHandler.ServeHTTP(w, r)
-		case AdminServiceKoyoApiRevokeProcedure:
-			adminServiceKoyoApiRevokeHandler.ServeHTTP(w, r)
+		case AdminServiceKoyoAPIRevokeProcedure:
+			adminServiceKoyoAPIRevokeHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -509,8 +509,8 @@ func (UnimplementedAdminServiceHandler) KoyoDelete(context.Context, *connect.Req
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.AdminService.KoyoDelete is not implemented"))
 }
 
-func (UnimplementedAdminServiceHandler) KoyoApiRevoke(context.Context, *connect.Request[v1.KoyoApiRevokeRequest]) (*connect.Response[v1.KoyoApiRevokeResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.AdminService.KoyoApiRevoke is not implemented"))
+func (UnimplementedAdminServiceHandler) KoyoAPIRevoke(context.Context, *connect.Request[v1.KoyoAPIRevokeRequest]) (*connect.Response[v1.KoyoAPIRevokeResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("belifeline.v1.AdminService.KoyoAPIRevoke is not implemented"))
 }
 
 // ProviderServiceClient is a client for the belifeline.v1.ProviderService service.
@@ -670,7 +670,7 @@ func (UnimplementedProviderServiceHandler) KoyoDataGet(context.Context, *connect
 // ExternalInformationServiceClient is a client for the belifeline.v1.ExternalInformationService
 // service.
 type ExternalInformationServiceClient interface {
-	// rpc to inform kizuna that extinfo (external api and other information) has been updated
+	// rpc to inform kizuna that extinfo (External API and other information) has been updated
 	ExternalInformationUpdateNotification(context.Context, *connect.Request[v1.ExternalInformationUpdateNotificationRequest]) (*connect.Response[v1.ExternalInformationUpdateNotificationResponse], error)
 }
 
@@ -707,7 +707,7 @@ func (c *externalInformationServiceClient) ExternalInformationUpdateNotification
 // ExternalInformationServiceHandler is an implementation of the
 // belifeline.v1.ExternalInformationService service.
 type ExternalInformationServiceHandler interface {
-	// rpc to inform kizuna that extinfo (external api and other information) has been updated
+	// rpc to inform kizuna that extinfo (External API and other information) has been updated
 	ExternalInformationUpdateNotification(context.Context, *connect.Request[v1.ExternalInformationUpdateNotificationRequest]) (*connect.Response[v1.ExternalInformationUpdateNotificationResponse], error)
 }
 

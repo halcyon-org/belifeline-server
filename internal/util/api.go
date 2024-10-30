@@ -6,7 +6,7 @@ import (
 	"io"
 )
 
-func GenApiKey() string {
+func GenAPIKey() string {
 	randBytes := make([]byte, 64)
 	_, err := io.ReadFull(rand.Reader, randBytes)
 	if err != nil {

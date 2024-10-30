@@ -44,10 +44,10 @@ func genAPIKey(t *testing.T) string {
 	return user.APIKey
 }
 func addAdminUser(client *ent.Client, name string) (*ent.AdminUser, error) {
-	return client.AdminUser.Create().SetName(name).SetAPIKey(genApikey()).Save(context.Background())
+	return client.AdminUser.Create().SetName(name).SetAPIKey(genAPIkey()).Save(context.Background())
 }
 
-func genApikey() string {
+func genAPIkey() string {
 	randBytes := make([]byte, 64)
 	_, err := io.ReadFull(rand.Reader, randBytes)
 	if err != nil {

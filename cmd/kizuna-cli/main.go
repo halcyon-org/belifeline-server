@@ -47,10 +47,10 @@ func main() {
 }
 
 func AddAdminUser(client *ent.Client, name string) (*ent.AdminUser, error) {
-	return client.AdminUser.Create().SetName(name).SetAPIKey(genApikey()).Save(context.Background())
+	return client.AdminUser.Create().SetName(name).SetAPIKey(genAPIkey()).Save(context.Background())
 }
 
-func genApikey() string {
+func genAPIkey() string {
 	randBytes := make([]byte, 64)
 	_, err := io.ReadFull(rand.Reader, randBytes)
 	if err != nil {
@@ -60,7 +60,7 @@ func genApikey() string {
 	return base64.RawURLEncoding.WithPadding(base64.NoPadding).EncodeToString(randBytes)
 }
 
-func HashApiKey(apiKey string) string {
+func HashAPIKey(apiKey string) string {
 	hash := sha256.Sum256([]byte(apiKey))
 	return hex.EncodeToString(hash[:])
 }

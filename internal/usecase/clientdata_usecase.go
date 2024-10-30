@@ -13,7 +13,7 @@ type ClientInformationUsecase interface {
 	CreateClientInformation(ctx context.Context, username string) (*domain.ClientInformation, error)
 	ListClientInformation(ctx context.Context, limit int32) ([]*domain.ClientInformation, error)
 	DeleteClientInformation(ctx context.Context, client_id string) (string, error)
-	RevokeApiKey(ctx context.Context, client_id string) (string, string, error)
+	RevokeAPIKey(ctx context.Context, client_id string) (string, string, error)
 }
 
 type clientInformationUsecaseImpl struct {
@@ -27,7 +27,7 @@ func NewClientInformationUsecase(clientInformationRepository entrepo.ClientInfor
 }
 
 func (u *clientInformationUsecaseImpl) CreateClientInformation(ctx context.Context, username string) (*domain.ClientInformation, error) {
-	data, err := u.clientInformationRepository.CreateClientInformation(ctx, username, util.GenApiKey())
+	data, err := u.clientInformationRepository.CreateClientInformation(ctx, username, util.GenAPIKey())
 	if err != nil {
 		return nil, err
 	}
@@ -59,8 +59,8 @@ func (u *clientInformationUsecaseImpl) DeleteClientInformation(ctx context.Conte
 	return string(*id), nil
 }
 
-func (u *clientInformationUsecaseImpl) RevokeApiKey(ctx context.Context, client_id string) (string, string, error) {
-	id, apiKey, err := u.clientInformationRepository.UpdateAPIKey(ctx, pulid.ID(client_id), util.GenApiKey())
+func (u *clientInformationUsecaseImpl) RevokeAPIKey(ctx context.Context, client_id string) (string, string, error) {
+	id, apiKey, err := u.clientInformationRepository.UpdateAPIKey(ctx, pulid.ID(client_id), util.GenAPIKey())
 	if err != nil {
 		return "", "", err
 	}

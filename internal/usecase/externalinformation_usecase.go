@@ -39,7 +39,7 @@ func (u *externalInformationUsecaseImpl) SetExternalInformation(ctx context.Cont
 		if externalInformation.ExternalName == nil || externalInformation.ExternalDescription == nil || externalInformation.License == nil || externalInformation.LicenseDescription == nil {
 			return nil, ErrorPropertyNotSet
 		}
-		data, err = u.externalInformationRepository.CreateExternalInformation(ctx, *externalInformation.ExternalName, *externalInformation.ExternalDescription, *externalInformation.License, *externalInformation.LicenseDescription, util.GenApiKey())
+		data, err = u.externalInformationRepository.CreateExternalInformation(ctx, *externalInformation.ExternalName, *externalInformation.ExternalDescription, *externalInformation.License, *externalInformation.LicenseDescription, util.GenAPIKey())
 	} else {
 		data, err = u.externalInformationRepository.UpdateExternalInformation(ctx, pulid.ID(externalInformation.ExternalId.Value), externalInformation.ExternalName, externalInformation.ExternalDescription, externalInformation.License, externalInformation.LicenseDescription)
 	}

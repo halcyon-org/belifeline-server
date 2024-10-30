@@ -28,11 +28,11 @@ func ToDomainClientInformation(e ent.ClientInformation) ClientInformation {
 	}
 }
 
-func ToApiClientInformation(d ClientInformation) v1.ClientInformation {
+func ToAPIClientInformation(d ClientInformation) v1.ClientInformation {
 	return v1.ClientInformation{
 		ClientId:      &v1.ULID{Value: d.ID},
 		Username:      &d.Username,
-		ApiKey:        &v1.ApiKey{Key: d.APIKey},
+		ApiKey:        &v1.APIKey{Key: d.APIKey},
 		CreatedAt:     timestamppb.New(d.CreatedAt),
 		LastUsedAt:    timestamppb.New(d.LastUsedAt),
 		LastUpdatedAt: timestamppb.New(d.LastUpdatedAt),
