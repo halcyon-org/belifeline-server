@@ -76,7 +76,7 @@ func ToAPIKoyoInformation(d KoyoInformation) v1.KoyoInformation {
 		Version:         &v1.Version{Value: d.Version},
 		License:         &d.License,
 		DataType:        &dataType,
-		ApiKey:          &v1.ApiKey{Key: d.APIKey},
+		ApiKey:          &v1.APIKey{Key: d.APIKey},
 		FirstEntryAt:    timestamppb.New(d.FirstEntryAt),
 		LastEntryAt:     timestamppb.New(d.LastEntryAt),
 		LastUpdatedAt:   timestamppb.New(d.UpdatedAt),

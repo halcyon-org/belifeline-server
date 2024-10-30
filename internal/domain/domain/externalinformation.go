@@ -39,7 +39,7 @@ func ToAPIExternalInformation(d ExternalInformation) v1.ExternalInformation {
 		ExternalDescription: &d.Description,
 		License:             &d.License,
 		LicenseDescription:  &d.LicenseDescription,
-		ApiKey:              &v1.ApiKey{Key: d.APIKey},
+		ApiKey:              &v1.APIKey{Key: d.APIKey},
 		FirstEntryAt:        timestamppb.New(d.FirstEntryAt),
 		LastUpdatedAt:       timestamppb.New(d.LastUpdatedAt),
 	}

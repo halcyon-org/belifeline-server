@@ -44,7 +44,7 @@ func (u *koyoInformationUsecaseImpl) CreateKoyoInformation(ctx context.Context, 
 		dataIds[i] = pulid.ID(dataId.Value)
 	}
 
-	data, err := u.koyoInformationRepository.CreateKoyoInformation(ctx, *koyoInformation.KoyoName, *koyoInformation.KoyoDescription, externalIds, koyoInformation.KoyoParams, scales, dataIds, koyoInformation.Version.Value, *koyoInformation.License, koyoinformation.DataType(koyoInformation.DataType.String()), util.GenApiKey())
+	data, err := u.koyoInformationRepository.CreateKoyoInformation(ctx, *koyoInformation.KoyoName, *koyoInformation.KoyoDescription, externalIds, koyoInformation.KoyoParams, scales, dataIds, koyoInformation.Version.Value, *koyoInformation.License, koyoinformation.DataType(koyoInformation.DataType.String()), util.GenAPIKey())
 	if err != nil {
 		return nil, err
 	}
