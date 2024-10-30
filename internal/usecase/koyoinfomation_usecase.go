@@ -14,6 +14,7 @@ import (
 type KoyoInformationUsecase interface {
 	CreateKoyoInformation(ctx context.Context, koyoInformation *v1.KoyoInformation) (*domain.KoyoInformation, error)
 	UpdateKoyoInformation(ctx context.Context, koyoInformation *v1.KoyoInformation) (*domain.KoyoInformation, error)
+	ListKoyoInformation(ctx context.Context, limit int32) ([]*domain.KoyoInformation, error)
 }
 
 type koyoInformationUsecaseImpl struct {
@@ -87,4 +88,18 @@ func (u *koyoInformationUsecaseImpl) UpdateKoyoInformation(ctx context.Context, 
 
 	domainData := domain.ToDomainKoyoInformation(*data)
 	return &domainData, nil
+}
+
+func (u *koyoInformationUsecaseImpl) ListKoyoInformation(ctx context.Context, limit int32) ([]*domain.KoyoInformation, error) {
+	dataList, err := u.koyoInformationRepository.GetAllKoyoInformation(ctx, limit)
+	if err != nil {
+		return nil, err
+	}
+
+	var domainDataList = make([]*domain.KoyoInformation, len(dataList))
+	for i, data := range dataList {
+		domainData := domain.ToDomainKoyoInformation(*data)
+		domainDataList[i] = &domainData
+	}
+	return domainDataList, nil
 }

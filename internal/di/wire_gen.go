@@ -35,7 +35,7 @@ func InitializeControllerSet() (*ControllersSet, error) {
 	externalInformationRepository := ent2.NewExternalInformationRepository(client)
 	externalInformationUsecase := usecase.NewExternalInformationUsecase(externalInformationRepository)
 	adminServiceHandler := api.NewAdminServiceHandler(clientInformationUsecase, koyoInformationUsecase, externalInformationUsecase)
-	providerServiceHandler := api.NewProviderServiceHandler()
+	providerServiceHandler := api.NewProviderServiceHandler(koyoInformationUsecase)
 	externalInformationServiceHandler := api.NewExternalInformationServiceHandler()
 	koyoDataRepository := ent2.NewKoyoDataRepository(client)
 	koyoDataUsecase := usecase.NewKoyoDataUsecase(koyoDataRepository)
