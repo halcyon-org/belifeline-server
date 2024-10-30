@@ -4,12 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"os"
 	"path/filepath"
 
 	"github.com/halcyon-org/kizuna/ent/schema/pulid"
 	"github.com/halcyon-org/kizuna/gen/ent"
 	"github.com/halcyon-org/kizuna/internal/domain/domain"
+	"github.com/halcyon-org/kizuna/internal/infrastructure/infra"
 )
 
 type KoyoDataRepository interface {
@@ -23,12 +23,14 @@ type KoyoDataRepository interface {
 }
 
 type koyoDataRepositoryImpl struct {
-	DB *ent.Client
+	DB   *ent.Client
+	File infra.FilesInterface
 }
 
-func NewKoyoDataRepository(db *ent.Client) KoyoDataRepository {
+func NewKoyoDataRepository(db *ent.Client, file infra.FilesInterface) KoyoDataRepository {
 	return &koyoDataRepositoryImpl{
-		DB: db,
+		DB:   db,
+		File: file,
 	}
 }
 
@@ -37,7 +39,7 @@ func (r *koyoDataRepositoryImpl) CreateKoyoData(
 	koyoId pulid.ID,
 	scale float64,
 	params map[string]string,
-	value []domain.Value,
+	values []domain.Value,
 ) (*pulid.ID, error) {
 	data, err := r.DB.KoyoData.Create().
 		SetKoyoID(koyoId).
@@ -48,21 +50,22 @@ func (r *koyoDataRepositoryImpl) CreateKoyoData(
 		return nil, err
 	}
 
-	path, err := filepath.Abs(fmt.Sprintf("./%s/%s.json", koyoId, data.ID))
+	wd, err := r.File.GetWD()
+	if err != nil {
+		return nil, err
+	}
+	path := filepath.Join(wd, string(koyoId), fmt.Sprintf("%s.json", string(data.ID)))
+
+	content, err := json.Marshal(domain.Content{ID: data.ID, Values: values})
 	if err != nil {
 		return nil, err
 	}
 
-	content, err := json.Marshal(domain.Content{ID: data.ID, Values: value})
-	if err != nil {
+	if err := r.File.MkdirAll(filepath.Dir(path), 0755); err != nil {
 		return nil, err
 	}
 
-	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
-		return nil, err
-	}
-
-	if err := os.WriteFile(path, content, 0644); err != nil {
+	if err := r.File.WriteFile(path, content, 0644); err != nil {
 		return nil, err
 	}
 
