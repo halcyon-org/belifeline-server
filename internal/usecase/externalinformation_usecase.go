@@ -15,6 +15,7 @@ import (
 
 type ExternalInformationUsecase interface {
 	SetExternalInformation(ctx context.Context, externalInformation *v1.ExternalInformation) (*domain.ExternalInformation, error)
+	DeleteExternalInformation(ctx context.Context, externalId string) (string, error)
 }
 
 type externalInformationUsecaseImpl struct {
@@ -49,4 +50,13 @@ func (u *externalInformationUsecaseImpl) SetExternalInformation(ctx context.Cont
 
 	domainData := domain.ToDomainExternalInformation(*data)
 	return &domainData, nil
+}
+
+func (u *externalInformationUsecaseImpl) DeleteExternalInformation(ctx context.Context, externalId string) (string, error) {
+	id, err := u.externalInformationRepository.DeleteExternalInformation(ctx, pulid.ID(externalId))
+	if err != nil {
+		return "", err
+	}
+
+	return string(*id), err
 }

@@ -102,7 +102,14 @@ func (s *AdminServiceHandlerImpl) ExternalInformationSet(ctx context.Context, re
 }
 
 func (s *AdminServiceHandlerImpl) ExternalInformationDelete(ctx context.Context, req *connect.Request[mainv1.ExternalInformationDeleteRequest]) (*connect.Response[mainv1.ExternalInformationDeleteResponse], error) {
-	return nil, status.Error(codes.Unimplemented, "method ExternalInformationDelete not implemented")
+	id, err := s.externalInformationUsecase.DeleteExternalInformation(ctx, req.Msg.ExtinfoId.Value)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	res := connect.NewResponse(&mainv1.ExternalInformationDeleteResponse{ExtinfoId: &v1.ULID{Value: id}})
+
+	return res, nil
 }
 
 func (s *AdminServiceHandlerImpl) KoyoCreate(ctx context.Context, req *connect.Request[mainv1.KoyoCreateRequest]) (*connect.Response[mainv1.KoyoCreateResponse], error) {
