@@ -127,5 +127,12 @@ func (s *AdminServiceHandlerImpl) KoyoDelete(ctx context.Context, req *connect.R
 }
 
 func (s *AdminServiceHandlerImpl) KoyoAPIRevoke(ctx context.Context, req *connect.Request[mainv1.KoyoAPIRevokeRequest]) (*connect.Response[mainv1.KoyoAPIRevokeResponse], error) {
-	return nil, status.Error(codes.Unimplemented, "method KoyoAPIRevoke not implemented")
+	id, apiKey, err := s.koyoInformationUsecase.RevokeAPIKey(ctx, req.Msg.KoyoId.Value, req.Msg.ApiKey.Key)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	res := connect.NewResponse(&mainv1.KoyoAPIRevokeResponse{KoyoId: &v1.ULID{Value: id}, ApiKey: &v1.APIKey{Key: apiKey}})
+
+	return res, nil
 }
