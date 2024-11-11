@@ -14,6 +14,7 @@ import (
 type KoyoInformationUsecase interface {
 	CreateKoyoInformation(ctx context.Context, koyoInformation *v1.KoyoInformation) (*domain.KoyoInformation, error)
 	UpdateKoyoInformation(ctx context.Context, koyoInformation *v1.KoyoInformation) (*domain.KoyoInformation, error)
+	DeleteKoyoInformation(ctx context.Context, koyoId string) (string, error)
 }
 
 type koyoInformationUsecaseImpl struct {
@@ -87,4 +88,13 @@ func (u *koyoInformationUsecaseImpl) UpdateKoyoInformation(ctx context.Context, 
 
 	domainData := domain.ToDomainKoyoInformation(*data)
 	return &domainData, nil
+}
+
+func (u *koyoInformationUsecaseImpl) DeleteKoyoInformation(ctx context.Context, koyoId string) (string, error) {
+	id, err := u.koyoInformationRepository.DeleteKoyoInformation(ctx, pulid.ID(koyoId))
+	if err != nil {
+		return "", err
+	}
+
+	return string(*id), nil
 }

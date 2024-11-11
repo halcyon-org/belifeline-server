@@ -12,6 +12,7 @@ import (
 type KoyoInformationRepository interface {
 	CreateKoyoInformation(ctx context.Context, name string, description string, external []pulid.ID, params map[string]string, scales []float64, dataIds []pulid.ID, version string, license string, dataType koyoinformation.DataType, apiKey string) (*ent.KoyoInformation, error)
 	UpdateKoyoInformation(ctx context.Context, koyoId pulid.ID, name *string, description *string, external *[]pulid.ID, params *map[string]string, scales *[]float64, dataIds *[]pulid.ID, version *string, license *string, dataType *koyoinformation.DataType) (*ent.KoyoInformation, error)
+	DeleteKoyoInformation(ctx context.Context, koyoId pulid.ID) (*pulid.ID, error)
 	GetKoyoInformationByAPIKey(ctx context.Context, apiKey string) (*ent.KoyoInformation, error)
 }
 
@@ -71,6 +72,15 @@ func (r *koyoInformationRepositoryImpl) UpdateKoyoInformation(ctx context.Contex
 	}
 
 	return u.SetLastEntryAt(time.Now()).Save(ctx)
+}
+
+func (r *koyoInformationRepositoryImpl) DeleteKoyoInformation(ctx context.Context, koyoId pulid.ID) (*pulid.ID, error) {
+	err := r.DB.KoyoInformation.DeleteOneID(koyoId).Exec(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &koyoId, nil
 }
 
 func (r *koyoInformationRepositoryImpl) GetKoyoInformationByAPIKey(ctx context.Context, apiKey string) (*ent.KoyoInformation, error) {

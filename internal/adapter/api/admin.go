@@ -123,7 +123,14 @@ func (s *AdminServiceHandlerImpl) KoyoCreate(ctx context.Context, req *connect.R
 }
 
 func (s *AdminServiceHandlerImpl) KoyoDelete(ctx context.Context, req *connect.Request[mainv1.KoyoDeleteRequest]) (*connect.Response[mainv1.KoyoDeleteResponse], error) {
-	return nil, status.Error(codes.Unimplemented, "method KoyoDelete not implemented")
+	id, err := s.koyoInformationUsecase.DeleteKoyoInformation(ctx, req.Msg.KoyoId.Value)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	res := connect.NewResponse(&mainv1.KoyoDeleteResponse{KoyoId: &v1.ULID{Value: id}})
+
+	return res, nil
 }
 
 func (s *AdminServiceHandlerImpl) KoyoAPIRevoke(ctx context.Context, req *connect.Request[mainv1.KoyoAPIRevokeRequest]) (*connect.Response[mainv1.KoyoAPIRevokeResponse], error) {
