@@ -12,6 +12,7 @@ import (
 type ExternalInformationRepository interface {
 	CreateExternalInformation(ctx context.Context, name string, description string, license string, licenseDescription string, apiKey string) (*ent.ExternalInformation, error)
 	UpdateExternalInformation(ctx context.Context, external_id pulid.ID, name *string, description *string, license *string, licenseDescription *string) (*ent.ExternalInformation, error)
+	GetAllExternalInformation(ctx context.Context, limit int32) ([]*ent.ExternalInformation, error)
 	GetExternalInformationByAPIKey(ctx context.Context, apiKey string) (*ent.ExternalInformation, error)
 }
 
@@ -58,6 +59,17 @@ func (r *externalInformationRepositoryImpl) UpdateExternalInformation(ctx contex
 		return nil, err
 	}
 	return externalInformation, nil
+}
+
+func (r *externalInformationRepositoryImpl) GetAllExternalInformation(ctx context.Context, limit int32) ([]*ent.ExternalInformation, error) {
+	externalInformationList, err := r.DB.ExternalInformation.Query().
+		Limit(int(limit)).
+		All(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return externalInformationList, nil
 }
 
 func (r *externalInformationRepositoryImpl) GetExternalInformationByAPIKey(ctx context.Context, apiKey string) (*ent.ExternalInformation, error) {
