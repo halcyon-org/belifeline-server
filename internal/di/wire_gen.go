@@ -14,6 +14,7 @@ import (
 	"github.com/halcyon-org/kizuna/internal/adapter/repository/config"
 	ent2 "github.com/halcyon-org/kizuna/internal/adapter/repository/ent"
 	"github.com/halcyon-org/kizuna/internal/infrastructure/ent"
+	"github.com/halcyon-org/kizuna/internal/infrastructure/infra"
 	"github.com/halcyon-org/kizuna/internal/usecase"
 )
 
@@ -37,7 +38,8 @@ func InitializeControllerSet() (*ControllersSet, error) {
 	adminServiceHandler := api.NewAdminServiceHandler(clientInformationUsecase, koyoInformationUsecase, externalInformationUsecase)
 	providerServiceHandler := api.NewProviderServiceHandler()
 	externalInformationServiceHandler := api.NewExternalInformationServiceHandler()
-	koyoDataRepository := ent2.NewKoyoDataRepository(client)
+	filesInterface := infra.NewFilesInterface()
+	koyoDataRepository := ent2.NewKoyoDataRepository(client, filesInterface)
 	koyoDataUsecase := usecase.NewKoyoDataUsecase(koyoDataRepository)
 	koyoServiceHandler := api.NewKoyoServiceHandler(koyoInformationUsecase, koyoDataUsecase)
 	healthServiceHandler := api.NewHealthServiceHandler()
@@ -62,7 +64,7 @@ var adapterSet = wire.NewSet(api.NewAdminServiceHandler, api.NewProviderServiceH
 var controllerSet = wire.NewSet(controller.NewBeLifelineController)
 
 // Infrastructure
-var infrastructureSet = wire.NewSet(ent.InitDB)
+var infrastructureSet = wire.NewSet(ent.InitDB, infra.NewFilesInterface)
 
 // Usecase
 var usecaseSet = wire.NewSet(usecase.NewAuthUsecase, usecase.NewKoyoInformationUsecase, usecase.NewKoyoDataUsecase, usecase.NewClientInformationUsecase, usecase.NewExternalInformationUsecase)

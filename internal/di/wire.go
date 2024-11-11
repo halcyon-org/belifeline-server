@@ -11,6 +11,7 @@ import (
 	"github.com/halcyon-org/kizuna/internal/adapter/repository/config"
 	repoent "github.com/halcyon-org/kizuna/internal/adapter/repository/ent"
 	infraent "github.com/halcyon-org/kizuna/internal/infrastructure/ent"
+	"github.com/halcyon-org/kizuna/internal/infrastructure/infra"
 	"github.com/halcyon-org/kizuna/internal/usecase"
 )
 
@@ -41,6 +42,7 @@ var controllerSet = wire.NewSet(
 // Infrastructure
 var infrastructureSet = wire.NewSet(
 	infraent.InitDB,
+	infra.NewFilesInterface,
 )
 
 // Usecase
