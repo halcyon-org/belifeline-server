@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.3.0](https://github.com/halcyon-org/kizuna/compare/v1.2.0...v1.3.0) (2024-11-11)
+
+
+### Features
+
+* **admin:** Implement the `ExternalInformationSet` ([#84](https://github.com/halcyon-org/kizuna/issues/84)) ([5758faa](https://github.com/halcyon-org/kizuna/commit/5758faa9136de75b32f2f166a0eb141e0d823f42))
+* **admin:** Implement the `KoyoCreate` ([#108](https://github.com/halcyon-org/kizuna/issues/108)) ([3c6a25a](https://github.com/halcyon-org/kizuna/commit/3c6a25a471cd6fce3e473b4458faceada3d76705))
+* **koyo:** Implement the `KoyoDataAdd` ([#112](https://github.com/halcyon-org/kizuna/issues/112)) ([de2ff02](https://github.com/halcyon-org/kizuna/commit/de2ff02495da407d49f13415750408b796cd60bf))
+* **koyo:** Implement the `KoyoUpdate` ([#109](https://github.com/halcyon-org/kizuna/issues/109)) ([ddd756e](https://github.com/halcyon-org/kizuna/commit/ddd756e117e0c37d75c6608b90ed6e1819512dcd))
+
+
+### Bug Fixes
+
+* logging interceptor ([#105](https://github.com/halcyon-org/kizuna/issues/105)) ([b59ba58](https://github.com/halcyon-org/kizuna/commit/b59ba58263e570440b48c13a00356b54e3dcb29b))
+
 ## [1.2.0](https://github.com/halcyon-org/kizuna/compare/v1.1.1...v1.2.0) (2024-10-18)
 
 
